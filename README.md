@@ -12,6 +12,15 @@ ________________________________________________________________________
 
 ## Aktuální úkoly
 
+- [] Fork hrbolek/gql_events jako template pro naše Admissions, publikovat
 ________________________________________________________________________
 
-## Harmonogram skupinové práce pro Projects část IS
+## Harmonogram skupinové práce pro Admissions část IS
+
+__7.10.2024__ vybraná témata, publikované repositories
+
+__7.11.2024__ 1. projektový den, doložení kompletních descriptions (gql modely)
+
+__9.12.2024__ 2. projektový den, doložení funkcionality (crud)
+
+__29.1.2025__ 3. projektový den, doložení testů
