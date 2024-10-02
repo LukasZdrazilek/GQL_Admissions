@@ -12,7 +12,7 @@ ________________________________________________________________________
 
 ## Aktuální úkoly
 
-- [] Fork hrbolek/gql_events jako template pro naše Admissions, publikovat
+- [] Fork hrbolek/gql_events jako template pro naše Admissions
 ________________________________________________________________________
 
 ## Harmonogram skupinové práce pro Admissions část IS
