@@ -12,14 +12,14 @@ ________________________________________________________________________
 
 ## Aktuální úkoly
 
-- [] Fork hrbolek/gql_events jako template pro naše Admissions a nasdílet
+- [x] Fork hrbolek/gql_events jako template pro naše Admissions a nasdílet
 ________________________________________________________________________
 
 ## Harmonogram skupinové práce pro Admissions část IS
 
 __7.10.2024__ vybraná témata, publikované repositories
 
-__11.10.2024__ amalýza kódu 5_SQLalchemy 
+__11.10.2024__ analýza kódu 5_SQLalchemy 
 
 __7.11.2024__ 1. projektový den, doložení kompletních descriptions (gql modely)
 
