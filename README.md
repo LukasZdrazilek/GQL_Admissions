@@ -13,6 +13,13 @@ ________________________________________________________________________
 ## Aktuální úkoly
 
 - [x] Fork hrbolek/gql_events jako template pro naše Admissions a nasdílet
+
+- [x] Udělat hrubý náčrt databázové struktury
+
+- [] Seznámení se se stylem tvoření reálné databázové struktury (gql_events/src/DBDefinitions.py)
+
+- [] Tvorba reálné databázové struktury s parametry pro gql_admissions
+
 ________________________________________________________________________
 
 ## Harmonogram skupinové práce pro Admissions část IS
