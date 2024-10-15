@@ -12,23 +12,23 @@ ________________________________________________________________________
 
 Pracujeme s UG (user), GRANTING a DOCUMENTS
 
-Otevření, uzavření přihlášky
-Více programů studia
-Stejná user struktura
-Autentizace neřešit (generace login, hesla, nebo přes soc. sítě)
-1. uložení přihlášky, 2. odeslání přihlášky (lze vzít zpět do konce přihlašování)
-UG má state transition, state machine, vygenerovat (podaná, odeslaná, vzatá zpět)
-Vymazat nebo archivovat minulé přihlášky?
-Více zkoušek = relace 1 ku N, přihláška má testy, tabulka testů cizí klíč, ke které přihlášce se vztahuje, disciplíny cizí klíč na test
-Přihláška = propojení studenta a programu, program = předměty, předměty = disciplíny
-Jednotná entita disciplíny pro všechny
-Fakulty sdílí testy (nechat být)
-Přidat percentil umístění
-Peníze neřešit
-Práva ke čtení userů budou řešeny přes skupiny
-User bude mít stavovou entitu (Přihlašuje se / Student)
+- Otevření, uzavření přihlášky
+- Více programů studia
+- Stejná user struktura
+- Autentizace neřešit (generace login, hesla, nebo přes soc. sítě)
+- 1 uložení přihlášky, 2. odeslání přihlášky (lze vzít zpět do konce přihlašování)
+- UG má state transition, state machine, vygenerovat (podaná, odeslaná, vzatá zpět)
+- Vymazat nebo archivovat minulé přihlášky?
+- Více zkoušek = relace 1 ku N, přihláška má testy, tabulka testů cizí klíč, ke které přihlášce se vztahuje, disciplíny cizí klíč na test
+- Přihláška = propojení studenta a programu, program = předměty, předměty = disciplíny
+- Jednotná entita disciplíny pro všechny
+- Fakulty sdílí testy (nechat být)
+- Přidat percentil umístění
+- Peníze neřešit
+- Práva ke čtení userů budou řešeny přes skupiny
+- User bude mít stavovou entitu (Přihlašuje se / Student)
 
-1. Dle evolution vytvoření struktur databází
+- Dle evolution vytvoření struktur databází
 
 
 ## Aktuální úkoly
