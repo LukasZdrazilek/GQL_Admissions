@@ -30,6 +30,9 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - Dle evolution vytvoření struktur databází
 
+### Rozvržení databáze
+<img src="database_structure.png" alt="Nefunguje">
+
 
 ## Aktuální úkoly
 
