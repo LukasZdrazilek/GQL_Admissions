@@ -40,9 +40,13 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - [x] Udělat hrubý náčrt databázové struktury
 
-- [] Seznámení se se stylem tvoření reálné databázové struktury (gql_events/src/DBDefinitions.py)
+- [x] Seznámení se se stylem tvoření reálné databázové struktury (gql_events/src/DBDefinitions.py)
 
-- [] Vytvoření reálné databázové struktury s parametry pro gql_admissions
+- [x] Vytvořit modely tabulek 
+
+- [x] Zprovoznit reálné vytvoření tabulek
+
+- [ ] Vytvořit GraphTypeDefinitions
 
 ________________________________________________________________________
 
@@ -51,6 +55,12 @@ ________________________________________________________________________
 __7.10.2024__ vybraná témata, publikované repositories
 
 __11.10.2024__ analýza kódu 5_SQLalchemy 
+
+__20.10.2024__ vytvoření modelů tabulek v DBDefinitions
+
+__30.10.2024__ konzultace ohledně tvorby tabulek
+
+__31.10.2024__ zprovoznění tvorby tabulek v postgres/data
 
 __7.11.2024__ 1. projektový den, doložení kompletních descriptions (gql modely)
 
