@@ -5,11 +5,17 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from .baseDBModel import BaseModel
-from .eventDBModel import EventModel
+from .BaseModel import BaseModel
+from .AdmissionModel import AdmissionModel
+from .DisciplineModel import DisciplineModel
+from .DisciplineTypeModel import DisciplineTypeModel
+from .ExamModel import ExamModel
+from .ExamTypeModel import ExamTypeModel
+from .StudentAdmissionModel import StudentAdmissionModel
 
 async def startEngine(connectionstring, makeDrop=False, makeUp=True):
     """Provede nezbytne ukony a vrati asynchronni SessionMaker"""
+    print(f"Starting engine for {connectionstring}",flush=True)
     asyncEngine = create_async_engine(connectionstring)
 
     async with asyncEngine.begin() as conn:
