@@ -46,11 +46,11 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - [x] Zprovoznit reálné vytvoření tabulek
 
-- [ ] Vytvořit GraphTypeDefinitions
-
 - [ ] Upravit src/utils/Dataloaders.py
 
-- [ ] Upravit _GraphResolvers
+- [ ] Asi upravit src/GraphTypeDefinitions/externals.py
+
+- [ ] Upravit src/GraphTypeDefinitions/_GraphResolvers
 
 ________________________________________________________________________
 
