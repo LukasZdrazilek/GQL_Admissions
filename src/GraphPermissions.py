@@ -39,7 +39,8 @@ class BasePermission(strawberry.permission.BasePermission):
     message = "User is not authenticated"
 
     async def has_permission(
-            self, source, info: strawberry.types.Info, **kwargs
+        self, source, info: strawberry.types.Info, **kwargs
+      
     ) -> bool:
         raise NotImplemented()
         # print("BasePermission", source)
@@ -47,7 +48,7 @@ class BasePermission(strawberry.permission.BasePermission):
         # print("BasePermission", kwargs)
         # return True
 
-
+        
 from functools import cache
 
 # import aiohttp
@@ -140,6 +141,7 @@ rolelist = [
     }
 ]
 
+
 # async def getRoles(userId="", roleUrlEndpoint="http://localhost:8088/gql/", isDEMO=True):
 #     query = """query($userid: UUID!){
 #             roles: roleByUser(userId: $userid) {
@@ -171,7 +173,6 @@ rolelist = [
 #                 respJson = await resp.json()
 
 #     print(respJson)
-
 #     assert respJson.get("errors", None) is None
 #     respdata = respJson.get("data", None)
 #     assert respdata is not None
@@ -184,6 +185,7 @@ rolelist = [
 
 import requests
 from src.utils.gql_ug_proxy import createProxy
+
 
 
 def ReadAllRoles():
@@ -214,7 +216,6 @@ roleIndex = {role["name_en"]: role["id"] for role in rolelist}
 #     userId="2d9dc5ca-a4a2-11ed-b9df-0242ac120003",
 #     roleUrlEndpoint="http://localhost:8088/gql/",
 #     demo=True):
-
 #     query = """query($userid: UUID!){
 #             roles: roleByUser(userId: $userid) {
 #                 id
@@ -246,6 +247,7 @@ roleIndex = {role["name_en"]: role["id"] for role in rolelist}
 
 #     print(respJson)
 
+
 #     assert respJson.get("errors", None) is None
 #     respdata = respJson.get("data", None)
 #     assert respdata is not None
@@ -255,6 +257,7 @@ roleIndex = {role["name_en"]: role["id"] for role in rolelist}
 #     return [*roles]
 
 # def WhereAuthorized(userRoles, roleIdsNeeded=[]):
+
 
 #     # 👇 filtrace roli, ktere maji pozadovanou uroven autorizace
 #     roletypesFiltered = filter(lambda item: item["roletype"]["id"] in roleIdsNeeded, userRoles)
@@ -274,6 +277,7 @@ def RolesToList(roles: str = ""):
     return roleIdsNeeded
 
 
+
 from src.utils.Dataloaders import getLoadersFromInfo
 # from ._RBACObjectGQLModel import RBACObjectGQLModel
 
@@ -291,6 +295,7 @@ def OnlyForAuthentized(isList=False):
 
         async def has_permission(
                 self, source, info: strawberry.types.Info, **kwargs
+
         ) -> bool:
             if self.isDEMO:
                 print("DEMO Enabled, not for production")
@@ -307,6 +312,7 @@ def OnlyForAuthentized(isList=False):
             # else:
             #     return None
 
+            
         @cached_property
         def isDEMO(self):
             DEMO = os.getenv("DEMO", None)
@@ -316,7 +322,6 @@ def OnlyForAuthentized(isList=False):
                 return False
 
     return OnlyForAuthentized
-
 
 @cache
 def RoleBasedPermission(roles: str = "", whatreturn=[]):
@@ -328,11 +333,13 @@ def RoleBasedPermission(roles: str = "", whatreturn=[]):
 
         def on_unauthorized(self) -> None:
             return whatreturn
+          
 
         async def has_permission(
                 self, source: Any, info: strawberry.types.Info, **kwargs: Any
                 # self, source, info: strawberry.types.Info, **kwargs
                 # self, source, **kwargs
+
         ) -> bool:
             # return False
             logging.info(f"has_permission {kwargs}")
@@ -355,12 +362,14 @@ def RoleBasedPermission(roles: str = "", whatreturn=[]):
             # rbacobject = "2d9dc5ca-a4a2-11ed-b9df-0242ac120003"
 
             ## zjistime, jake role jsou vztazeny k rbacobject
+
             # print(response)
 
             authorizedroles = await RBACObjectGQLModel.resolve_roles(info=info, id=rbacobject)
             # authloader = getLoadersFromInfo(info=info).authorizations
             # authloader.setTokenByInfo(info)
             # authorizedroles = await authloader.load(rbacobject)
+
 
             print("RolebasedPermission.rbacobject", rbacobject)
             # _ = await self.canEditGroup(session,  source.id, ...)
@@ -372,8 +381,10 @@ def RoleBasedPermission(roles: str = "", whatreturn=[]):
             user = getUserFromInfo(info)
             # logging.info(f"RolebasedPermission.authorized user {user}")
             user_id = user["id"]
+            
             s = [r for r in authorizedroles if (r["roletype"]["id"] in roleIdsNeeded) and (r["user"]["id"] == user_id)]
             # s = [r for r in authorizedroles if r["roletype"]["id"] in roleIdsNeeded]
+
 
             logging.info(f"RolebasedPermission.authorized user {user} has roles {s}")
 
@@ -387,6 +398,7 @@ def RoleBasedPermission(roles: str = "", whatreturn=[]):
             return isAllowed
 
     return RolebasedPermission
+
 
 # class UserGDPRPermission(BasePermission):
 #     message = "User is not authenticated"

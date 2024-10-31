@@ -46,7 +46,11 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - [x] Zprovoznit reálné vytvoření tabulek
 
-- [ ] Vytvořit GraphTypeDefinitions
+- [ ] Upravit src/utils/Dataloaders.py
+
+- [ ] Asi upravit src/GraphTypeDefinitions/externals.py
+
+- [ ] Upravit src/GraphTypeDefinitions/_GraphResolvers
 
 ________________________________________________________________________
 
@@ -61,6 +65,8 @@ __20.10.2024__ vytvoření modelů tabulek v DBDefinitions
 __30.10.2024__ konzultace ohledně tvorby tabulek
 
 __31.10.2024__ zprovoznění tvorby tabulek v postgres/data
+
+__1.11.2024__ práce na GraphResolver a GraphPermissions
 
 __7.11.2024__ 1. projektový den, doložení kompletních descriptions (gql modely)
 
