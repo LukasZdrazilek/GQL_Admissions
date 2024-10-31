@@ -14,7 +14,6 @@ class AdmissionModel(BaseModel):
     name = Column(String, comment="Name of the admission entry")
     name_en = Column(String, comment="English name of the admission entry")
 
-    description = Column(String, comment="Description of the admission entry")
     #course_id = Column(ForeignKey("gql_granting.id"), index=True, comment="Foreign key referencing the associated course")
     course_id = UUIDFKey(nullable=True, comment="Foreign key referencing the associated course")
 

@@ -20,7 +20,6 @@ class DisciplineTypeModel(BaseModel):
 
     min_score = Column(Integer, comment="Minimum score required for this discipline")
     max_score = Column(Integer, comment="Maximum score achievable in this discipline")
-    description = Column(String, comment="Description of the discipline type")
 
     disciplines = relationship("DisciplineModel", back_populates="disciplinetype")
 

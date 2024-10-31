@@ -18,8 +18,6 @@ class ExamTypeModel(BaseModel):
     admission_id = Column(ForeignKey("admissions.id"), index=True, comment="Foreign key referencing the associated admission")
     admission = relationship("AdmissionModel", back_populates="examtypes")
 
-    description = Column(String, comment="Description of the exam type")
-
     exams = relationship("ExamModel", back_populates="examtype")
 
     valid = Column(Boolean, default=True, comment="Indicates if the exam type is valid")
