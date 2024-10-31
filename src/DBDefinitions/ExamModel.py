@@ -15,7 +15,7 @@ class ExamModel(BaseModel):
     examtype_id = Column(ForeignKey("examtypes.id"), index=True, comment="Foreign key referencing the associated exam type")
     examtype = relationship("ExamTypeModel", back_populates="exams")
 
-    admission_id = Column(ForeignKey("studentadmissions.id"), index=True, comment="Foreign key referencing the related student admission")
+    studentadmission_id = Column(ForeignKey("studentadmissions.id"), index=True, comment="Foreign key referencing the related student admission")
 
     valid = Column(Boolean, default=True, comment="Indicates if the exam entry is valid")
     created = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp when the exam was created")

@@ -14,7 +14,7 @@ isDEMO = os.environ.get("DEMO", "True")
 
 
 # def UserFromInfo(info):
-    # return info.context["user"]
+# return info.context["user"]
 
 """
 query ($id: ID!) {
@@ -40,6 +40,7 @@ class BasePermission(strawberry.permission.BasePermission):
 
     async def has_permission(
         self, source, info: strawberry.types.Info, **kwargs
+      
     ) -> bool:
         raise NotImplemented()
         # print("BasePermission", source)
@@ -47,100 +48,99 @@ class BasePermission(strawberry.permission.BasePermission):
         # print("BasePermission", kwargs)
         # return True
 
-
-
-
-
+        
 from functools import cache
+
 # import aiohttp
 
 
 rolelist = [
-        {
-            "name": "já",
-            "name_en": "myself",
-            "id": "05a3e0f5-f71e-4caa-8012-229d868aa8ca",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "administrátor",
-            "name_en": "administrator",
-            "id": "ced46aa4-3217-4fc1-b79d-f6be7d21c6b6",
-            "category_id": "774690a0-56b3-45d9-9887-0989ed3de4c0"
-        },
-        {
-            "name": "zpracovatel gdpr",
-            "name_en": "gdpr user",
-            "id": "b87aed46-dfc3-40f8-ad49-03f4138c7478",
-            "category_id": "774690a0-56b3-45d9-9887-0989ed3de4c0"
-        },
-        {
-            "name": "rektor",
-            "name_en": "rector",
-            "id": "ae3f0d74-6159-11ed-b753-0242ac120003",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "prorektor",
-            "name_en": "vicerector",
-            "id": "ae3f2886-6159-11ed-b753-0242ac120003",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "děkan",
-            "name_en": "dean",
-            "id": "ae3f2912-6159-11ed-b753-0242ac120003",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "proděkan",
-            "name_en": "vicedean",
-            "id": "ae3f2980-6159-11ed-b753-0242ac120003",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "vedoucí katedry",
-            "name_en": "head of department",
-            "id": "ae3f29ee-6159-11ed-b753-0242ac120003",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "vedoucí učitel",
-            "name_en": "leading teacher",
-            "id": "ae3f2a5c-6159-11ed-b753-0242ac120003",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "garant",
-            "name_en": "grant",
-            "id": "5f0c247e-931f-11ed-9b95-0242ac110002",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "garant (zástupce)",
-            "name_en": "grant (deputy)",
-            "id": "5f0c2532-931f-11ed-9b95-0242ac110002",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "garant předmětu",
-            "name_en": "subject's grant",
-            "id": "5f0c255a-931f-11ed-9b95-0242ac110002",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "přednášející",
-            "name_en": "lecturer",
-            "id": "5f0c2578-931f-11ed-9b95-0242ac110002",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        },
-        {
-            "name": "cvičící",
-            "name_en": "trainer",
-            "id": "5f0c2596-931f-11ed-9b95-0242ac110002",
-            "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
-        }
-    ]
+    {
+        "name": "já",
+        "name_en": "myself",
+        "id": "05a3e0f5-f71e-4caa-8012-229d868aa8ca",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "administrátor",
+        "name_en": "administrator",
+        "id": "ced46aa4-3217-4fc1-b79d-f6be7d21c6b6",
+        "category_id": "774690a0-56b3-45d9-9887-0989ed3de4c0"
+    },
+    {
+        "name": "zpracovatel gdpr",
+        "name_en": "gdpr user",
+        "id": "b87aed46-dfc3-40f8-ad49-03f4138c7478",
+        "category_id": "774690a0-56b3-45d9-9887-0989ed3de4c0"
+    },
+    {
+        "name": "rektor",
+        "name_en": "rector",
+        "id": "ae3f0d74-6159-11ed-b753-0242ac120003",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "prorektor",
+        "name_en": "vicerector",
+        "id": "ae3f2886-6159-11ed-b753-0242ac120003",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "děkan",
+        "name_en": "dean",
+        "id": "ae3f2912-6159-11ed-b753-0242ac120003",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "proděkan",
+        "name_en": "vicedean",
+        "id": "ae3f2980-6159-11ed-b753-0242ac120003",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "vedoucí katedry",
+        "name_en": "head of department",
+        "id": "ae3f29ee-6159-11ed-b753-0242ac120003",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "vedoucí učitel",
+        "name_en": "leading teacher",
+        "id": "ae3f2a5c-6159-11ed-b753-0242ac120003",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "garant",
+        "name_en": "grant",
+        "id": "5f0c247e-931f-11ed-9b95-0242ac110002",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "garant (zástupce)",
+        "name_en": "grant (deputy)",
+        "id": "5f0c2532-931f-11ed-9b95-0242ac110002",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "garant předmětu",
+        "name_en": "subject's grant",
+        "id": "5f0c255a-931f-11ed-9b95-0242ac110002",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "přednášející",
+        "name_en": "lecturer",
+        "id": "5f0c2578-931f-11ed-9b95-0242ac110002",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    },
+    {
+        "name": "cvičící",
+        "name_en": "trainer",
+        "id": "5f0c2596-931f-11ed-9b95-0242ac110002",
+        "category_id": "fd73596b-1043-46f0-837a-baa0734d64df"
+    }
+]
+
 
 # async def getRoles(userId="", roleUrlEndpoint="http://localhost:8088/gql/", isDEMO=True):
 #     query = """query($userid: UUID!){
@@ -173,7 +173,6 @@ rolelist = [
 #                 respJson = await resp.json()
 
 #     print(respJson)
-    
 #     assert respJson.get("errors", None) is None
 #     respdata = respJson.get("data", None)
 #     assert respdata is not None
@@ -186,6 +185,8 @@ rolelist = [
 
 import requests
 from src.utils.gql_ug_proxy import createProxy
+
+
 
 def ReadAllRoles():
     GQLUG_ENDPOINT_URL = os.environ.get("GQLUG_ENDPOINT_URL", None)
@@ -204,16 +205,17 @@ def ReadAllRoles():
     roles = list(map(lambda item: {**item, "nameEn": item["name_ne"]}, roles))
     return [*roles]
 
+
 if not isDEMO:
     rolelist = ReadAllRoles()
 
-roleIndex = { role["name_en"]: role["id"] for role in rolelist }
+roleIndex = {role["name_en"]: role["id"] for role in rolelist}
+
 
 # async def ReadRoles(
-#     userId="2d9dc5ca-a4a2-11ed-b9df-0242ac120003", 
+#     userId="2d9dc5ca-a4a2-11ed-b9df-0242ac120003",
 #     roleUrlEndpoint="http://localhost:8088/gql/",
 #     demo=True):
-    
 #     query = """query($userid: UUID!){
 #             roles: roleByUser(userId: $userid) {
 #                 id
@@ -244,7 +246,8 @@ roleIndex = { role["name_en"]: role["id"] for role in rolelist }
 #                 respJson = await resp.json()
 
 #     print(respJson)
-    
+
+
 #     assert respJson.get("errors", None) is None
 #     respdata = respJson.get("data", None)
 #     assert respdata is not None
@@ -254,7 +257,8 @@ roleIndex = { role["name_en"]: role["id"] for role in rolelist }
 #     return [*roles]
 
 # def WhereAuthorized(userRoles, roleIdsNeeded=[]):
-    
+
+
 #     # 👇 filtrace roli, ktere maji pozadovanou uroven autorizace
 #     roletypesFiltered = filter(lambda item: item["roletype"]["id"] in roleIdsNeeded, userRoles)
 #     # 👇 odvozeni, pro ktere skupiny ma tazatel patricnou uroven autorizace
@@ -272,6 +276,8 @@ def RolesToList(roles: str = ""):
     roleIdsNeeded = list(map(lambda roleName: roleIndex[roleName], roleNames))
     return roleIdsNeeded
 
+
+
 from src.utils.Dataloaders import getLoadersFromInfo
 # from ._RBACObjectGQLModel import RBACObjectGQLModel
 
@@ -288,22 +294,24 @@ def OnlyForAuthentized(isList=False):
         message = "User is not authenticated"
 
         async def has_permission(
-            self, source, info: strawberry.types.Info, **kwargs
+                self, source, info: strawberry.types.Info, **kwargs
+
         ) -> bool:
             if self.isDEMO:
                 print("DEMO Enabled, not for production")
                 return True
-            
+
             user = getUserFromInfo(info)
             return (False if user is None else True)
-            #     return False        
+            #     return False
             # return True
-        
+
         def on_unauthorized(self):
             return ([] if isList else None)
             #     return []
             # else:
             #     return None
+
             
         @cached_property
         def isDEMO(self):
@@ -312,7 +320,7 @@ def OnlyForAuthentized(isList=False):
                 return True
             else:
                 return False
-            
+
     return OnlyForAuthentized
 
 @cache
@@ -325,11 +333,13 @@ def RoleBasedPermission(roles: str = "", whatreturn=[]):
 
         def on_unauthorized(self) -> None:
             return whatreturn
-        
+          
+
         async def has_permission(
                 self, source: Any, info: strawberry.types.Info, **kwargs: Any
-            # self, source, info: strawberry.types.Info, **kwargs
-            # self, source, **kwargs
+                # self, source, info: strawberry.types.Info, **kwargs
+                # self, source, **kwargs
+
         ) -> bool:
             # return False
             logging.info(f"has_permission {kwargs}")
@@ -339,41 +349,43 @@ def RoleBasedPermission(roles: str = "", whatreturn=[]):
             # assert GQLUG_ENDPOINT_URL is not None
             # proxy = createProxy(GQLUG_ENDPOINT_URL)
 
-            print("RolebasedPermission", self) ##
-            print("RolebasedPermission", source) ## self as in GQLModel
+            print("RolebasedPermission", self)  ##
+            print("RolebasedPermission", source)  ## self as in GQLModel
             print("RolebasedPermission", kwargs)
 
             assert hasattr(source, "rbacobject"), f"missing rbacobject on {source}"
-            
+
             rbacobject = source.rbacobject
-            
-            #rbacobject
+
+            # rbacobject
             assert rbacobject is not None, f"RoleBasedPermission cannot be used on {source} as it has None value"
             # rbacobject = "2d9dc5ca-a4a2-11ed-b9df-0242ac120003"
 
+            ## zjistime, jake role jsou vztazeny k rbacobject
 
-            ## zjistime, jake role jsou vztazeny k rbacobject 
             # print(response)
 
             authorizedroles = await RBACObjectGQLModel.resolve_roles(info=info, id=rbacobject)
             # authloader = getLoadersFromInfo(info=info).authorizations
             # authloader.setTokenByInfo(info)
             # authorizedroles = await authloader.load(rbacobject)
-            
+
 
             print("RolebasedPermission.rbacobject", rbacobject)
             # _ = await self.canEditGroup(session,  source.id, ...)
             print("RolebasedPermission.authorized", authorizedroles)
-            
+
             # logging.info(f"RolebasedPermission.authorized {authorizedroles}")
 
             # user_id = "2d9dc5ca-a4a2-11ed-b9df-0242ac120003"
             user = getUserFromInfo(info)
             # logging.info(f"RolebasedPermission.authorized user {user}")
             user_id = user["id"]
-            s = [r for r in authorizedroles if (r["roletype"]["id"] in roleIdsNeeded)and(r["user"]["id"] == user_id)]
-            # s = [r for r in authorizedroles if r["roletype"]["id"] in roleIdsNeeded]
             
+            s = [r for r in authorizedroles if (r["roletype"]["id"] in roleIdsNeeded) and (r["user"]["id"] == user_id)]
+            # s = [r for r in authorizedroles if r["roletype"]["id"] in roleIdsNeeded]
+
+
             logging.info(f"RolebasedPermission.authorized user {user} has roles {s}")
 
             if len(s) > 0:
@@ -384,7 +396,7 @@ def RoleBasedPermission(roles: str = "", whatreturn=[]):
             print(roleIdsNeeded)
             isAllowed = len(s) > 0
             return isAllowed
-        
+
     return RolebasedPermission
 
 
