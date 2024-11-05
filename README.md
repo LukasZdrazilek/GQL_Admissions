@@ -50,7 +50,9 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - [ ] Asi upravit src/GraphTypeDefinitions/externals.py
 
-- [ ] Upravit src/GraphTypeDefinitions/_GraphResolvers
+- [ ] Upravit src/GraphTypeDefinitions/_GraphResolvers.py
+
+- [ ] Trochu upravit src/utils/DBFeeder.py 
 
 ________________________________________________________________________
 
