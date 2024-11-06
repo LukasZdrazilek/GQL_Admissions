@@ -7,10 +7,11 @@ from sqlalchemy.ext.asyncio import create_async_engine
 
 from .BaseModel import BaseModel
 from .AdmissionModel import AdmissionModel
-from .DisciplineModel import DisciplineModel
-from .DisciplineTypeModel import DisciplineTypeModel
-from .ExamModel import ExamModel
+
 from .ExamTypeModel import ExamTypeModel
+from .ExamModel import ExamModel
+from .ExamResultModel import ExamResultModel
+
 from .StudentAdmissionModel import StudentAdmissionModel
 
 async def startEngine(connectionstring, makeDrop=False, makeUp=True):

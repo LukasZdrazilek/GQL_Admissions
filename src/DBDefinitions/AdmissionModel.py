@@ -11,16 +11,32 @@ class AdmissionModel(BaseModel):
     __tablename__ = "admissions"
 
     id = UUIDColumn()
+
     name = Column(String, comment="Name of the admission entry")
     name_en = Column(String, comment="English name of the admission entry")
 
-    #course_id = Column(ForeignKey("gql_granting.id"), index=True, comment="Foreign key referencing the associated course")
+    state_id = UUIDFKey(nullable=True, comment="stav přijímacího řízení")
     program_id = UUIDFKey(nullable=True, comment="Foreign key referencing the associated course")
 
-    startdate = Column(DateTime, comment="Admission validity start date")
-    enddate = Column(DateTime, comment="Admission validity end date")
+    application_start_date = Column(DateTime, comment="Od kdy lze podat prihlasku")
+    application_last_date = Column(DateTime, comment="Do kdy lze podat prihlasku")
 
-    admissions = relationship("AdmissionTypeModel", back_populates="admissiontype")
+    end_date = Column(DateTime, comment="Admission validity end date")
+
+    condition_date = Column(DateTime, comment="Do kdy dolozit pozadavky")
+    request_condition_start_date = Column(DateTime, comment="Od kdy mozne zadat o prodlouzeni")
+    request_condition_last_date = Column(DateTime, comment="Do kdz mozne zadat o prodlouzeni")
+
+    request_exam_start_date = Column(DateTime, comment="Od kdy mozne podat zadost o nahradni termin")
+    request_exam_last_date = Column(DateTime, comment="Do kdy mozne podat zadost o nahradni termin")
+
+    payment_date = Column(DateTime, comment="")
+
+    request_enrollment_start_date = Column(DateTime, comment="From when its possible to ask for different date of enrollment")
+    request_enrollment_end_date = Column(DateTime, comment="To when its possible to ask for different date of enrollment")
+
+    student_admissions = relationship("StudentAdmissionModel", back_populates="admission")
+    exam_types = relationship("ExamTypeModel", back_populates="admission")
 
     valid = Column(Boolean, default=True, comment="Indicates if the admission entry is valid")
     created = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp when the admission entry was created")
