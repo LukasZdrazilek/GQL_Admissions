@@ -17,7 +17,7 @@ class ExamResultModel(BaseModel):
     exam_id = Column(ForeignKey("exams.id"), index=True, comment="Foreign key referencing the associated exam")
     exam = relationship("ExamModel", back_populates="exam_results")
 
-    student_admission_id = Column(ForeignKey("studentadmissions.id"), index=True, comment="Foreign key referencing the related student admission")
+    student_admission_id = Column(ForeignKey("student_admissions.id"), index=True, comment="Foreign key referencing the related student admission")
     student_admission = relationship("StudentAdmissionModel", back_populates="student_admissions")
 
     valid = Column(Boolean, default=True, comment="Indicates if the exam entry is valid")
