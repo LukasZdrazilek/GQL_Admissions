@@ -70,7 +70,13 @@ __31.10.2024__ zprovoznění tvorby tabulek v postgres/data
 
 __1.11.2024__ práce na GraphResolver a GraphPermissions
 
+__4.11.2024__ práce na finální struktuře tabulek v databázi + přidání užitečného kódu z hrbolek/gql_admissions
+
+__6.11.2024__ dokončení finální struktuře tabulek v databázi
+
 __7.11.2024__ 1. projektový den, doložení kompletních descriptions (gql modely)
+
+
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
 
