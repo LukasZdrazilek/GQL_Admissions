@@ -4,6 +4,8 @@ from .BaseModel import BaseModel
 from sqlalchemy.orm import relationship
 import sqlalchemy
 
+from .BaseModel import BaseModel
+
 class AdmissionModel(BaseModel):
     """
     Represents an admission entry for a specific course with associated metadata.
@@ -39,8 +41,3 @@ class AdmissionModel(BaseModel):
     exam_types = relationship("ExamTypeModel", back_populates="admission")
 
     valid = Column(Boolean, default=True, comment="Indicates if the admission entry is valid")
-    created = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp when the admission entry was created")
-    lastchange = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp of the last change to the admission entry")
-    createdby = UUIDFKey(nullable=True, comment="User ID of the creator")
-    changedby = UUIDFKey(nullable=True, comment="User ID of the last modifier")
-    rbacobject = UUIDFKey(nullable=True, comment="User or group ID that controls access to the admission entry")
