@@ -76,6 +76,8 @@ __6.11.2024__ dokončení finální struktuře tabulek v databázi
 
 __7.11.2024__ 1. projektový den, doložení kompletních descriptions (gql modely)
 
+__8.11.2024__ opravy chyb po projektovém dni
+
 
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
