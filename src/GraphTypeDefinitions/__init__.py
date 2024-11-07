@@ -11,6 +11,9 @@ class Query:
     ) -> str:
         return "hello world"
 
+    from .AdmissionGQLModel import admission_by_id
+    admission_by_id = admission_by_id
+
 schema = strawberry.federation.Schema(
     query=Query
 )

@@ -35,8 +35,8 @@ class AdmissionModel(BaseModel):
     request_enrollment_start_date = Column(DateTime, comment="From when its possible to ask for different date of enrollment")
     request_enrollment_end_date = Column(DateTime, comment="To when its possible to ask for different date of enrollment")
 
-    student_admissions = relationship("StudentAdmissionModel", back_populates="admission")
-    exam_types = relationship("ExamTypeModel", back_populates="admission")
+    # student_admissions = relationship("StudentAdmissionModel", back_populates="admission")
+    # exam_types = relationship("ExamTypeModel", back_populates="admission")
 
     valid = Column(Boolean, default=True, comment="Indicates if the admission entry is valid")
     created = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp when the admission entry was created")
@@ -44,3 +44,5 @@ class AdmissionModel(BaseModel):
     createdby = UUIDFKey(nullable=True, comment="User ID of the creator")
     changedby = UUIDFKey(nullable=True, comment="User ID of the last modifier")
     rbacobject = UUIDFKey(nullable=True, comment="User or group ID that controls access to the admission entry")
+
+    pass

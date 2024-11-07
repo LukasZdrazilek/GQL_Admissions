@@ -14,11 +14,11 @@ class ExamResultModel(BaseModel):
 
     score = Column(Float, nullable=False, default=0)
 
-    exam_id = Column(ForeignKey("exams.id"), index=True, comment="Foreign key referencing the associated exam")
-    exam = relationship("ExamModel", back_populates="exam_results")
+    # exam_id = Column(ForeignKey("exams.id"), index=True, comment="Foreign key referencing the associated exam")
+    # exam = relationship("ExamModel", back_populates="exam_results")
 
-    student_admission_id = Column(ForeignKey("student_admissions.id"), index=True, comment="Foreign key referencing the related student admission")
-    student_admission = relationship("StudentAdmissionModel", back_populates="student_admissions")
+    # student_admission_id = Column(ForeignKey("student_admissions.id"), index=True, comment="Foreign key referencing the related student admission")
+    # student_admission = relationship("StudentAdmissionModel", back_populates="student_admissions")
 
     valid = Column(Boolean, default=True, comment="Indicates if the exam entry is valid")
     created = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp when the exam was created")

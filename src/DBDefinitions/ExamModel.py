@@ -17,10 +17,10 @@ class ExamModel(BaseModel):
 
     date = Column(DateTime, comment="Date of exam")
 
-    exam_type_id = Column(ForeignKey('exam_types.id'), nullable=False, comment="Foreign key to exam type")
-    exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
-
-    exam_results = relationship('ExamResultModel', back_populates='exam')
+    # exam_type_id = Column(ForeignKey('exam_types.id'), nullable=False, comment="Foreign key to exam type")
+    # exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
+    #
+    # exam_results = relationship('ExamResultModel', back_populates='exam')
 
     valid = Column(Boolean, default=True, comment="Indicates if the exam type is valid")
     created = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp when the exam type was created")

@@ -18,8 +18,8 @@ class ExamTypeModel(BaseModel):
     min_score = Column(Float, comment="Minimum score of the exam type")
     max_score = Column(Float, comment="Maximum score of the exam type")
 
-    admission_id = Column(ForeignKey("admissions.id"), nullable=False)
-    admissions = relationship("AdmissionModel", back_populates="exam_types")
+    # admission_id = Column(ForeignKey("admissions.id"), nullable=False)
+    # admissions = relationship("AdmissionModel", back_populates="exam_types")
 
     valid = Column(Boolean, default=True, comment="Indicates if the exam type is valid")
     created = Column(DateTime, server_default=sqlalchemy.sql.func.now(), comment="Timestamp when the exam type was created")
