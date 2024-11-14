@@ -12,6 +12,10 @@ from ..DBDefinitions import AdmissionModel
 
 StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
 
+ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
+ExamTypeGQLModel = typing.Annotated["ExamTypeGQLModel", strawberry.lazy(".ExamTypeGQLModel")]
+ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
+
 @strawberry.type(description="""Admission for corresponding year and program""")
 class AdmissionGQLModel(BaseGQLModel):
 
@@ -72,6 +76,30 @@ class AdmissionGQLModel(BaseGQLModel):
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
 
+    @strawberry.field(description="Exams related to this admission")
+    async def exams(self, info: strawberry.types.Info) -> typing.List["ExamGQLModel"]:
+        from .ExamGQLModel import ExamGQLModel
+        loader = ExamGQLModel.getloader(info=info)
+        rows = await loader.filter_by(admission_id=self.id)
+        results = [ExamGQLModel.from_sqlalchemy(row) for row in rows]
+        return results
+    
+    @strawberry.field(description="Exam types associated with this admission")
+    async def exam_types(self, info: strawberry.types.Info) -> typing.List["ExamTypeGQLModel"]:
+        from .ExamTypeGQLModel import ExamTypeGQLModel
+        loader = ExamTypeGQLModel.getloader(info=info)
+        rows = await loader.filter_by(admission_id=self.id)
+        results = [ExamTypeGQLModel.from_sqlalchemy(row) for row in rows]
+        return results
+    
+    @strawberry.field(description="Exam results related to this admission")
+    async def exam_results(self, info: strawberry.types.Info) -> typing.List[ExamResultGQLModel]:
+        from .ExamResultGQLModel import ExamResultGQLModel
+        loader = ExamResultGQLModel.getloader(info=info)
+        rows = await loader.filter_by(admission_id=self.id)
+        results = [ExamResultGQLModel.from_sqlalchemy(row) for row in rows]
+        return results
+
     @strawberry.field(description="""List of student admissions related to the admission""")
     async def student_admissions(
             self, info: strawberry.types.Info
@@ -82,7 +110,9 @@ class AdmissionGQLModel(BaseGQLModel):
         results = (StudentAdmissionGQLModel.from_sqlalchemy(row) for row in rows)
         return results
 
+      
 @strawberry.field(description="""Returns an admission by id""")
 async def admission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[AdmissionGQLModel]:
     result = await AdmissionGQLModel.load_with_loader(info=info, id=id)
     return result
+    
