@@ -8,6 +8,9 @@ import strawberry.types
 from uoishelpers.resolvers import getLoadersFromInfo, getUserFromInfo
 
 from .BaseGQLModel import BaseGQLModel
+from ..DBDefinitions import AdmissionModel
+
+StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
 
 @strawberry.type(description="""Admission for corresponding year and program""")
 class AdmissionGQLModel(BaseGQLModel):
@@ -68,6 +71,16 @@ class AdmissionGQLModel(BaseGQLModel):
 
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
+
+    @strawberry.field(description="""List of student admissions related to the admission""")
+    async def student_admissions(
+            self, info: strawberry.types.Info
+    ) -> typing.List["StudentAdmissionGQLModel"]:
+        from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
+        loader = StudentAdmissionGQLModel.getloader(info=info)
+        rows = await loader.filter_by(admission_id=self.id)
+        results = (StudentAdmissionGQLModel.from_sqlalchemy(row) for row in rows)
+        return results
 
 @strawberry.field(description="""Returns an admission by id""")
 async def admission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[AdmissionGQLModel]:
