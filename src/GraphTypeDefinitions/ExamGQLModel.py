@@ -21,7 +21,7 @@ class ExamGQLModel(BaseGQLModel):
             "id": lambda row: row.id, 
             "name": lambda row: row.name,
             "name_en": lambda row: row.name_en,
-            "date": lambda row: row.date,
+            "exam_date": lambda row: row.exam_date,
             "exam_type_id": lambda row: row.exam_type_id,
         }
     
@@ -30,9 +30,9 @@ class ExamGQLModel(BaseGQLModel):
         return getLoadersFromInfo(info).ExamModel
 
     id: uuid.UUID = strawberry.field()
-    name: str = strawberry.field(description="Name of the exam type")
-    name_en: str = strawberry.field(description="English name of the exam type")
-    date: datetime.datetime = strawberry.field(description="Date of the exam")
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type")
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type")
+    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam")
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
 
     @strawberry.field(description="Type of the exam")
@@ -42,9 +42,16 @@ class ExamGQLModel(BaseGQLModel):
         return result
 
     @strawberry.field(description="Results of the exam")
-    async def exam_results(self, info: strawberry.types.Info) -> typing.List["ExamResultGQLModel"]:
+    async def exam_results(
+            self, info: strawberry.types.Info
+    ) -> typing.List["ExamResultGQLModel"]:
         from .ExamResultGQLModel import ExamResultGQLModel
         loader = ExamResultGQLModel.getloader(info=info)
         rows = await loader.filter_by(exam_id=self.id)
         results = (ExamResultGQLModel.from_sqlalchemy(row) for row in rows)
         return results
+
+@strawberry.field(description="""Returns an Exam by id""")
+async def exam_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamGQLModel]:
+    result = await ExamGQLModel.load_with_loader(info=info, id=id)
+    return result

@@ -31,9 +31,7 @@ async def startEngine(connectionstring, makeDrop=False, makeUp=True):
                 print("Unable automaticaly create tables")
                 return None
 
-    async_sessionMaker = sessionmaker(
-        asyncEngine, expire_on_commit=False, class_=AsyncSession
-    )
+    async_sessionMaker = sessionmaker(asyncEngine, expire_on_commit=False, class_=AsyncSession)
     return async_sessionMaker
 
 

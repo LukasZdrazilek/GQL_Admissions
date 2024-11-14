@@ -40,7 +40,7 @@ class StudentAdmissionGQLModel(BaseGQLModel):
     admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission")
     enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment")
 
-    @strawberry.field(description="")
+    @strawberry.field(description="The admission to which ExamType belong")
     async def admission(self, info: strawberry.types.Info) -> typing.Optional["AdmissionGQLModel"]:
         from .AdmissionGQLModel import AdmissionGQLModel
         result = await AdmissionGQLModel.load_with_loader(info=info, id=self.admission_id)

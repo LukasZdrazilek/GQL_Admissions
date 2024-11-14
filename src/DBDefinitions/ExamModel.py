@@ -11,7 +11,7 @@ class ExamModel(BaseModel):
     name = Column(String, comment="Name of the exam type")
     name_en = Column(String, comment="English name of the exam type")
 
-    date = Column(DateTime, comment="Date of exam")
+    exam_date = Column(DateTime, comment="Date of exam")
 
     exam_type_id = Column(ForeignKey('exam_types.id'), nullable=False, comment="Foreign key to exam type")
     exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')

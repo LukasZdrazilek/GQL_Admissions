@@ -17,6 +17,12 @@ class Query:
     from .StudentAdmissionGQLModel import studentadmission_by_id
     studentadmission_by_id = studentadmission_by_id
 
+    from .ExamTypeGQLModel import examType_by_id
+    examType_by_id = examType_by_id
+
+    from .ExamGQLModel import exam_by_id
+    exam_by_id = exam_by_id
+
 schema = strawberry.federation.Schema(
     query=Query
 )

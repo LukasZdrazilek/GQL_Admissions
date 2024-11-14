@@ -6,6 +6,7 @@ from uoishelpers.resolvers import getLoadersFromInfo
 from .BaseGQLModel import BaseGQLModel
 
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
+ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 
 @strawberry.type(description="Represents a type of exam associated with an admission, including metadata.")
 class ExamTypeGQLModel(BaseGQLModel):
@@ -32,7 +33,23 @@ class ExamTypeGQLModel(BaseGQLModel):
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
 
-    @strawberry.field(description="The admission to which this exam type belongs")
+    @strawberry.field(description="The admission to which ExamType belong")
     async def admission(self, info: strawberry.types.Info) -> typing.Optional["AdmissionGQLModel"]:
         from .AdmissionGQLModel import AdmissionGQLModel
-        return await AdmissionGQLModel.load_with_loader(info=info, id=self.admission_id)
+        result = await AdmissionGQLModel.load_with_loader(info=info, id=self.admission_id)
+        return result
+
+    @strawberry.field(description="Exams of corresponding exam type")
+    async def exams(
+            self, info: strawberry.types.Info
+    ) -> typing.List["ExamGQLModel"]:
+        from .ExamGQLModel import ExamGQLModel
+        loader = ExamGQLModel.getloader(info=info)
+        rows = await loader.filter_by(exam_type_id=self.id)
+        results = (ExamGQLModel.from_sqlalchemy(row) for row in rows)
+        return results
+
+@strawberry.field(description="""Returns a Student Admission by id""")
+async def examType_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamTypeGQLModel]:
+    result = await ExamTypeGQLModel.load_with_loader(info=info, id=id)
+    return result
