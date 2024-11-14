@@ -129,5 +129,37 @@
         "exam_date": "2024-06-15T14:00:00",
         "exam_type_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b29"
     }
-  ]
+  ],
+  "exam_results": [
+  {
+    "id": "158c09c9-9881-4b0d-915a-ba89d917ae18",
+    "score": 87,
+    "student_admission_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135",
+    "exam_id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5"
+  },
+  {
+    "id": "1a1bc900-8b48-4a88-883c-1d9237aae24c",
+    "score": 74,
+    "student_admission_id": "89b10735-ef94-49d4-965f-fbd475d65d1f",
+    "exam_id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f"
+  },
+  {
+    "id": "9a23470e-4ba7-48ab-85ed-26f6dcc9fac5",
+    "score": 92,
+    "student_admission_id": "7b5dc42a-8e33-4223-85c4-6526993c1063",
+    "exam_id": "c3d8b2e6-4e6a-4d4b-931f-a4f9d8b3f1a4"
+  },
+  {
+    "id": "835a5824-89b5-4821-b758-437366b06a4a",
+    "score": 61,
+    "student_admission_id": "8076d3f3-63b1-49f5-a65a-eea917e41a35",
+    "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c"
+  },
+  {
+    "id": "bc8dd444-cca2-4ee2-a770-354281e56ca0",
+    "score": 55,
+    "student_admission_id": "a9158244-5ce6-4582-bfa2-281923561062",
+    "exam_id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5"
+  }
+]
 }

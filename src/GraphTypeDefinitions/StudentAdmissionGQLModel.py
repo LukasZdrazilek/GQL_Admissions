@@ -10,6 +10,7 @@ from uoishelpers.resolvers import getLoadersFromInfo, getUserFromInfo
 from .BaseGQLModel import BaseGQLModel
 
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
+ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
 
 @strawberry.type(description="""Student's admission for corresponding admission""")
 class StudentAdmissionGQLModel(BaseGQLModel):
@@ -45,6 +46,16 @@ class StudentAdmissionGQLModel(BaseGQLModel):
         from .AdmissionGQLModel import AdmissionGQLModel
         result = await AdmissionGQLModel.load_with_loader(info=info, id=self.admission_id)
         return result
+
+    @strawberry.field(description="Exam results")
+    async def exam_results(
+            self, info: strawberry.types.Info
+    ) -> typing.List["ExamResultGQLModel"]:
+        from .ExamResultGQLModel import ExamResultGQLModel
+        loader = ExamResultGQLModel.getloader(info=info)
+        rows = await loader.filter_by(student_admission_id=self.id)
+        results = (ExamResultGQLModel.from_sqlalchemy(row) for row in rows)
+        return results
 
 @strawberry.field(description="""Returns a Student Admission by id""")
 async def studentadmission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[StudentAdmissionGQLModel]:

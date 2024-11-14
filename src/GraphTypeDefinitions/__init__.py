@@ -23,6 +23,9 @@ class Query:
     from .ExamGQLModel import exam_by_id
     exam_by_id = exam_by_id
 
+    from .ExamResultGQLModel import exam_result_by_id
+    exam_result_by_id = exam_result_by_id
+
 schema = strawberry.federation.Schema(
     query=Query
 )
