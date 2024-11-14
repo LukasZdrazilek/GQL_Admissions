@@ -8,12 +8,6 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from .BaseModel import BaseModel
 from .AdmissionModel import AdmissionModel
 
-from .ExamTypeModel import ExamTypeModel
-from .ExamModel import ExamModel
-from .ExamResultModel import ExamResultModel
-
-from .StudentAdmissionModel import StudentAdmissionModel
-
 async def startEngine(connectionstring, makeDrop=False, makeUp=True):
     """Provede nezbytne ukony a vrati asynchronni SessionMaker"""
     print(f"Starting engine for {connectionstring}",flush=True)
@@ -52,5 +46,6 @@ def ComposeConnectionString():
 
     driver = "postgresql+asyncpg"  # "postgresql+psycopg2"
     connectionstring = f"{driver}://{user}:{password}@{hostWithPort}/{database}"
+    connectionstring = os.environ.get("CONNECTION_STRING", connectionstring)
 
     return connectionstring

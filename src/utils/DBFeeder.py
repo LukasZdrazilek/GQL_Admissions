@@ -5,12 +5,7 @@ import uuid
 from uoishelpers.feeders import ImportModels
 
 from src.DBDefinitions import (
-    AdmissionModel,
-    DisciplineTypeModel,
-    DisciplineResulModel,
-    DisciplineModel,
-    PaymentInfoModel,
-    PaymentModel
+    AdmissionModel
     )
 
 
@@ -54,15 +49,11 @@ def get_demodata(filename="./systemdata.json"):
 
 async def initDB(asyncSessionMaker, filename="./systemdata.json"):
 
-    DEMODATA = os.environ.get("DEMODATA", None) in ["True", "true"]    
+    #DEMODATA = os.environ.get("DEMODATA", None) in ["True", "true"]
+    DEMODATA = True
     if DEMODATA:
         dbModels = [
-            PaymentInfoModel,
-            AdmissionModel,
-            PaymentModel,
-            DisciplineTypeModel,
-            DisciplineModel,
-            DisciplineResulModel,
+            AdmissionModel
         ]
     else:
         dbModels = []

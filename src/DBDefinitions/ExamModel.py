@@ -17,3 +17,4 @@ class ExamModel(BaseModel):
     exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
 
     exam_results = relationship('ExamResultModel', back_populates='exam')
+    

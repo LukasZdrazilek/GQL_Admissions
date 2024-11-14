@@ -15,3 +15,4 @@ class ExamResultModel(BaseModel):
 
     student_admission_id = Column(ForeignKey("student_admissions.id"), index=True, comment="Foreign key referencing the related student admission")
     student_admission = relationship("StudentAdmissionModel", back_populates="student_admissions")
+
