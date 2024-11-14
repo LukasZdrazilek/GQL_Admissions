@@ -10,7 +10,7 @@ class StudentAdmissionModel(BaseModel):
     __tablename__ = "student_admissions"
 
     admission_id = Column(ForeignKey("admissions.id"), index=True, comment="Foreign key referencing the related admission")
-    admission = relationship("AdmissionModel")
+    admission = relationship("AdmissionModel", viewonly=True, uselist=False, lazy="joined")
 
     user_id = UUIDFKey("gql_ug.id", comment="Foreign key referencing the user associated with this admission")
     state_id = UUIDFKey(nullable=True, comment="State of the admission")
@@ -18,3 +18,5 @@ class StudentAdmissionModel(BaseModel):
     extended_condition_date = Column(DateTime, nullable=True, comment="Date of extended condition")
     admissioned = Column(Boolean, default=False, comment="Bool if was admissioned")
     enrollment_date = Column(DateTime, comment="Date of entrollement")
+
+    # exams = relationship("ExamModel", secondary="student_exam_links", uselist=True, lazy="joined")

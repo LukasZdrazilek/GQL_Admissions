@@ -16,5 +16,6 @@ class ExamModel(BaseModel):
     exam_type_id = Column(ForeignKey('exam_types.id'), nullable=False, comment="Foreign key to exam type")
     exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
 
-    exam_results = relationship('ExamResultModel')
+    # exam_results = relationship('ExamResultModel', back_populates='exam')
+    # student_admissions = relationship('StudentAdmissionModel', secondary="student_exam_links", uselist=True, lazy="joined")
     

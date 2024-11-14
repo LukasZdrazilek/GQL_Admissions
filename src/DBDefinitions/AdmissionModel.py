@@ -32,5 +32,5 @@ class AdmissionModel(BaseModel):
     request_enrollment_start_date = Column(DateTime, comment="From when its possible to ask for different date of enrollment")
     request_enrollment_end_date = Column(DateTime, comment="To when its possible to ask for different date of enrollment")
 
-    student_admissions = relationship("StudentAdmissionModel")
-    exam_types = relationship("ExamTypeModel")
+    # student_admissions = relationship("StudentAdmissionModel", viewonly=True, uselist=False, lazy="joined")
+    # exam_types = relationship("ExamTypeModel", viewonly=True, uselist=False, lazy="joined")
