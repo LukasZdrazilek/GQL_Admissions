@@ -15,4 +15,4 @@ class ExamTypeModel(BaseModel):
     max_score = Column(Float, comment="Maximum score of the exam type")
 
     admission_id = Column(ForeignKey("admissions.id"), nullable=False)
-    admissions = relationship("AdmissionModel", back_populates="exam_types")
+    admission = relationship("AdmissionModel", viewonly=True, uselist=False, lazy="joined")

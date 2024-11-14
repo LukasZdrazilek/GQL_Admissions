@@ -5,8 +5,8 @@ import uuid
 from uoishelpers.feeders import ImportModels
 
 from src.DBDefinitions import (
-    AdmissionModel
-    )
+    AdmissionModel, StudentAdmissionModel, ExamTypeModel, ExamModel, ExamResultModel, StudentExamLinkModel
+)
 
 
 def readJsonFile(jsonFileName):
@@ -53,7 +53,12 @@ async def initDB(asyncSessionMaker, filename="./systemdata.json"):
     DEMODATA = True
     if DEMODATA:
         dbModels = [
-            AdmissionModel
+            AdmissionModel,
+            StudentAdmissionModel,
+            ExamTypeModel,
+            ExamModel,
+            ExamResultModel,
+            StudentExamLinkModel
         ]
     else:
         dbModels = []
