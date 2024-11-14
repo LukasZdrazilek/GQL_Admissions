@@ -10,7 +10,7 @@ class StudentAdmissionModel(BaseModel):
     __tablename__ = "student_admissions"
 
     admission_id = Column(ForeignKey("admissions.id"), index=True, comment="Foreign key referencing the related admission")
-    admission = relationship("AdmissionModel", back_populates="student_admissions")
+    admission = relationship("AdmissionModel")
 
     user_id = UUIDFKey("gql_ug.id", comment="Foreign key referencing the user associated with this admission")
     state_id = UUIDFKey(nullable=True, comment="State of the admission")

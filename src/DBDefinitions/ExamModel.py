@@ -6,7 +6,7 @@ class ExamModel(BaseModel):
     """
     Represents an actual exam on certain date
     """
-    __tablename__ = 'exams'
+    __tablename__ = "exams"
 
     name = Column(String, comment="Name of the exam type")
     name_en = Column(String, comment="English name of the exam type")
@@ -16,5 +16,5 @@ class ExamModel(BaseModel):
     exam_type_id = Column(ForeignKey('exam_types.id'), nullable=False, comment="Foreign key to exam type")
     exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
 
-    exam_results = relationship('ExamResultModel', back_populates='exam')
+    exam_results = relationship('ExamResultModel')
     

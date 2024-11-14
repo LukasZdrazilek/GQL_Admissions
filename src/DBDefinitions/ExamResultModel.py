@@ -11,8 +11,8 @@ class ExamResultModel(BaseModel):
     score = Column(Float, nullable=False, default=0)
 
     exam_id = Column(ForeignKey("exams.id"), index=True, comment="Foreign key referencing the associated exam")
-    exam = relationship("ExamModel", back_populates="exam_results")
+    exam = relationship("ExamModel")
 
     student_admission_id = Column(ForeignKey("student_admissions.id"), index=True, comment="Foreign key referencing the related student admission")
-    student_admission = relationship("StudentAdmissionModel", back_populates="student_admissions")
+    student_admission = relationship("StudentAdmissionModel")
 
