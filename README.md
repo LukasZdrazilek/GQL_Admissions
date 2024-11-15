@@ -10,6 +10,9 @@ ________________________________________________________________________
   <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FDcXYPtOVAAAoOKa.jpg&f=1&nofb=1&ipt=0fc47f721244bc99d0a6437e702c8b96f4e700beec4126987c92975e234f23e9&ipo=images" style="width: 30%">
 </div>
 
+## Progress of work
+- [x]  15.11. Dokončeny READ operace na GQL modelech, chybí Link
+
 Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - Otevření, uzavření přihlášky
