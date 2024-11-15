@@ -61,3 +61,9 @@ class StudentAdmissionGQLModel(BaseGQLModel):
 async def studentadmission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[StudentAdmissionGQLModel]:
     result = await StudentAdmissionGQLModel.load_with_loader(info=info, id=id)
     return result
+
+@strawberry.field(description="""Returns a list of student admissions""")
+async def studentadmission_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[StudentAdmissionGQLModel]:
+    loader = getLoadersFromInfo(info).student_admissions
+    result = await loader.page(skip, limit)
+    return result

@@ -11,20 +11,25 @@ class Query:
     ) -> str:
         return "hello world"
 
-    from .AdmissionGQLModel import admission_by_id
+    from .AdmissionGQLModel import admission_by_id, admission_page
     admission_by_id = admission_by_id
+    admission_page = admission_page
 
-    from .StudentAdmissionGQLModel import studentadmission_by_id
+    from .StudentAdmissionGQLModel import studentadmission_by_id, studentadmission_page
     studentadmission_by_id = studentadmission_by_id
+    studentadmission_page = studentadmission_page
 
-    from .ExamTypeGQLModel import examType_by_id
+    from .ExamTypeGQLModel import examType_by_id, exam_type_page
     examType_by_id = examType_by_id
+    exam_type_page = exam_type_page
 
-    from .ExamGQLModel import exam_by_id
+    from .ExamGQLModel import exam_by_id, exam_page
     exam_by_id = exam_by_id
+    exam_page = exam_page
 
-    from .ExamResultGQLModel import exam_result_by_id
+    from .ExamResultGQLModel import exam_result_by_id, exam_result_page
     exam_result_by_id = exam_result_by_id
+    exam_result_page = exam_result_page
 
 schema = strawberry.federation.Schema(
     query=Query

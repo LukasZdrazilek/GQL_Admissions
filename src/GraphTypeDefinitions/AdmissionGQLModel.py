@@ -4,14 +4,13 @@ import datetime
 import typing
 
 import strawberry.types
+from sqlalchemy.engine import row
 
 from uoishelpers.resolvers import getLoadersFromInfo, getUserFromInfo
 
 from .BaseGQLModel import BaseGQLModel
-from ..DBDefinitions import AdmissionModel
 
 StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
-
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 ExamTypeGQLModel = typing.Annotated["ExamTypeGQLModel", strawberry.lazy(".ExamTypeGQLModel")]
 ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
@@ -115,4 +114,9 @@ class AdmissionGQLModel(BaseGQLModel):
 async def admission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[AdmissionGQLModel]:
     result = await AdmissionGQLModel.load_with_loader(info=info, id=id)
     return result
-    
+
+@strawberry.field(description="""Returns a list of admissions""")
+async def admission_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[AdmissionGQLModel]:
+    loader = getLoadersFromInfo(info).admissions
+    result = await loader.page(skip, limit)
+    return result

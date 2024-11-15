@@ -47,3 +47,9 @@ class ExamResultGQLModel(BaseGQLModel):
 async def exam_result_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamResultGQLModel]:
     result = await ExamResultGQLModel.load_with_loader(info=info, id=id)
     return result
+
+@strawberry.field(description="""Returns a list of exam results""")
+async def exam_result_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[ExamResultGQLModel]:
+    loader = getLoadersFromInfo(info).exam_results
+    result = await loader.page(skip, limit)
+    return result
