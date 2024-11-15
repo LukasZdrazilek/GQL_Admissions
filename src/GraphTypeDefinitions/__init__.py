@@ -31,6 +31,13 @@ class Query:
     exam_result_by_id = exam_result_by_id
     exam_result_page = exam_result_page
 
+@strawberry.type(description="""Type for mutation root""")
+class Mutation:
+    from .AdmissionGQLModel import admission_insert
+    admission_insert = admission_insert
+
+
 schema = strawberry.federation.Schema(
-    query=Query
+    query=Query,
+    mutation=Mutation,
 )

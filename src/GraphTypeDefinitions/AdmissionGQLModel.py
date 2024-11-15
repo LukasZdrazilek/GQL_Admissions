@@ -45,6 +45,13 @@ class AdmissionGQLModel(BaseGQLModel):
 
             "request_enrollment_start_date": lambda row: row.request_enrollment_start_date,
             "request_enrollment_end_date": lambda row: row.request_enrollment_end_date,
+
+            "lastchange": lambda row: row.lastchange,
+            "created": lambda row: row.created,
+            "createdby_id": lambda row: row.createdby_id,
+            "changedby_id": lambda row: row.changedby_id,
+            "rbaobject_id": lambda row: row.rbaobject_id,
+            "valid": lambda row: row.valid,
         }
 
     @classmethod
@@ -74,6 +81,8 @@ class AdmissionGQLModel(BaseGQLModel):
 
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
+
+
 
     @strawberry.field(description="Exams related to this admission")
     async def exams(self, info: strawberry.types.Info) -> typing.List["ExamGQLModel"]:
@@ -109,7 +118,6 @@ class AdmissionGQLModel(BaseGQLModel):
         results = (StudentAdmissionGQLModel.from_sqlalchemy(row) for row in rows)
         return results
 
-      
 @strawberry.field(description="""Returns an admission by id""")
 async def admission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[AdmissionGQLModel]:
     result = await AdmissionGQLModel.load_with_loader(info=info, id=id)
@@ -119,4 +127,62 @@ async def admission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> t
 async def admission_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[AdmissionGQLModel]:
     loader = getLoadersFromInfo(info).admissions
     result = await loader.page(skip, limit)
+    return result
+
+########################################################################################################################
+#                                                                                                                      #
+#                                                    Mutations                                                         #
+#                                                                                                                      #
+########################################################################################################################
+
+@strawberry.input(description="""Definition of an admission used for creation""")
+class AdmissionInsertGQLModel:
+    id: uuid.UUID = strawberry.field()
+    name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
+
+    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="stav přijímacího řízení", default=None)
+    program_id: typing.Optional[uuid.UUID] = strawberry.field(description="Foreign key referencing the associated course", default=None)
+
+    application_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy lze podat prihlasku", default=None)
+    application_last_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy lze podat prihlasku", default=None)
+
+    end_date: typing.Optional[datetime.datetime] = strawberry.field(description="Admission validity end date",default=None)
+
+    condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy dolozit pozadavky",default=None)
+    request_condition_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy mozne zadat o prodlouzeni", default=None)
+    request_condition_last_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdz mozne zadat o prodlouzeni", default=None)
+
+    request_exam_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy mozne podat zadost o nahradni termin", default=None)
+    request_exam_last_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy mozne podat zadost o nahradni termin", default=None)
+
+    payment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy lze zaplatit poplatek",default=None)
+
+    request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
+    request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
+
+    lastchange: typing.Optional[datetime.datetime] = strawberry.field(description="Timestamp when the admission entry was last modified", default=None)
+    created: typing.Optional[datetime.datetime] = strawberry.field(description="Timestamp when the admission entry was created", default=None)
+    createdby_id: typing.Optional[uuid.UUID] = strawberry.field(description="User ID of the creator", default=None)
+    changedby_id: typing.Optional[uuid.UUID] = strawberry.field(description="User ID of the last modifier", default=None)
+    rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="User or group ID that controls access to the admission entry", default=None)
+    valid: typing.Optional[bool] = strawberry.field(description="Indicates if the admission entry is valid", default=None)
+
+@strawberry.type(description="Result of a mutation for an admission")
+class AdmissionResultGQLModel:
+    id: uuid.UUID = strawberry.field(description="The ID of the admission", default=None)
+    msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
+
+    @strawberry.field(description="Returns the admission")
+    async def admission(self, info: strawberry.types.Info) -> typing.Union[AdmissionGQLModel, None]:
+        result = await AdmissionGQLModel.resolve_reference(info, self.id)
+        return result
+
+@strawberry.mutation(description="Adds a new admission.")
+async def admission_insert(self, info: strawberry.types.Info, admission: AdmissionInsertGQLModel) -> AdmissionResultGQLModel:
+    loader = getLoadersFromInfo(info).admissions
+    row = await loader.insert(admission)
+    result = AdmissionResultGQLModel()
+    result.msg = "ok"
+    result.id = row.id
     return result
