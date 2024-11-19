@@ -12,6 +12,7 @@ ________________________________________________________________________
 
 ## Progress of work
 - [x]  15.11. Dokončeny READ operace na GQL modelech, chybí Link
+- [x]  19.11. Dokončeny CREATE operace na GQL modelech
 
 Pracujeme s UG (user), GRANTING a DOCUMENTS
 
@@ -48,7 +49,7 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - [x] Dokončit READ operace na GQL modelech
 
-- [ ] Dokončit CREATE operace na GQL modelech
+- [x] Dokončit CREATE operace na GQL modelech
 
 - [ ] Dokončit UPDATE operace na GQL modelech
 
@@ -86,6 +87,8 @@ __15.11.2024__ práce na GQL modelech
 __16.11.2024__ dokončení GQL modelů, úprava DBDefinitions
 
 __18.11.2024__ práce na CREATE, vytvoření prvních mutací
+
+__19.11.2024__ vytvořen CREATE
 
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
