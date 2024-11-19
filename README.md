@@ -33,9 +33,6 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - Dle evolution vytvoření struktur databází
 
-### Rozvržení databáze
-<img src="database_structure.png" alt="Nefunguje">
-
 
 ## Aktuální úkoly
 
@@ -49,13 +46,14 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 
 - [x] Zprovoznit reálné vytvoření tabulek
 
-- [ ] Upravit src/utils/Dataloaders.py
+- [x] Dokončit READ operace na GQL modelech
 
-- [ ] Asi upravit src/GraphTypeDefinitions/externals.py
+- [ ] Dokončit CREATE operace na GQL modelech
 
-- [ ] Upravit src/GraphTypeDefinitions/_GraphResolvers.py
+- [ ] Dokončit UPDATE operace na GQL modelech
 
-- [ ] Trochu upravit src/utils/DBFeeder.py 
+- [ ] Dokončit DELETE operace na GQL modelech
+
 
 ________________________________________________________________________
 
@@ -81,6 +79,13 @@ __7.11.2024__ 1. projektový den, doložení kompletních descriptions (gql mode
 
 __8.11.2024__ opravy chyb po projektovém dni
 
+__13.11.2024__ vytvoření DBFeeder a Dataloaders
+
+__15.11.2024__ práce na GQL modelech
+
+__16.11.2024__ dokončení GQL modelů, úprava DBDefinitions
+
+__18.11.2024__ práce na CREATE, vytvoření prvních mutací
 
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
