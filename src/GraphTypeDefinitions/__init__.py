@@ -39,6 +39,9 @@ class Mutation:
     from .ExamTypeGQLModel import exam_type_insert
     exam_type_insert = exam_type_insert
 
+    from .ExamResultGQLModel import exam_result_insert
+    exam_result_insert = exam_result_insert
+
 
 schema = strawberry.federation.Schema(
     query=Query,
