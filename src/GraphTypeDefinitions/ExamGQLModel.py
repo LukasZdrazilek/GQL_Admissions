@@ -23,6 +23,13 @@ class ExamGQLModel(BaseGQLModel):
             "name_en": lambda row: row.name_en,
             "exam_date": lambda row: row.exam_date,
             "exam_type_id": lambda row: row.exam_type_id,
+
+            "lastchange": lambda row: row.lastchange,
+            "created": lambda row: row.created,
+            "createdby_id": lambda row: row.createdby_id,
+            "changedby_id": lambda row: row.changedby_id,
+            "rbaobject_id": lambda row: row.rbaobject_id,
+            "valid": lambda row: row.valid,
         }
     
     @classmethod
@@ -60,4 +67,27 @@ async def exam_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing
 async def exam_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[ExamGQLModel]:
     loader = getLoadersFromInfo(info).exams
     result = await loader.page(skip, limit)
+    return result
+
+########################################################################################################################
+#                                                                                                                      #
+#                                                    Mutations                                                         #
+#                                                                                                                      #
+########################################################################################################################
+
+@strawberry.input(description="Definition of an exam used for creation")
+class ExamInsertGQLModel:
+    id: uuid.UUID = strawberry.field(description="The ID of the exam")
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
+    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
+    exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
+
+@strawberry.mutation(description="Adds a new exam.")
+async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> ExamGQLModel:
+    loader = getLoadersFromInfo(info).exams
+    row = await loader.insert(exam)
+    result = ExamGQLModel()
+    result.msg = "ok"
+    result.id = row.id
     return result
