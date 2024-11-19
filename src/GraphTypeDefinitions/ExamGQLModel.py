@@ -1,3 +1,5 @@
+import asyncio
+
 import strawberry
 import uuid
 import datetime
@@ -9,6 +11,7 @@ from uoishelpers.resolvers import getLoadersFromInfo
 
 from .BaseGQLModel import BaseGQLModel
 
+StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
 ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
 ExamTypeGQLModel = typing.Annotated["ExamTypeGQLModel", strawberry.lazy(".ExamTypeGQLModel")]
 
@@ -57,6 +60,14 @@ class ExamGQLModel(BaseGQLModel):
         rows = await loader.filter_by(exam_id=self.id)
         results = (ExamResultGQLModel.from_sqlalchemy(row) for row in rows)
         return results
+
+    @strawberry.field(description="Student's Exams")
+    async def students(self, info: strawberry.types.Info) -> typing.List["StudentAdmissionGQLModel"]:
+        from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
+        loader = getLoadersFromInfo(info).student_exam_links
+        rows = await loader.filter_by(exam_id=self.id)
+        awaitable = (StudentAdmissionGQLModel.resolve_reference(info, row.student_id) for row in rows)
+        return await asyncio.gather(*awaitable)
 
 @strawberry.field(description="""Returns an Exam by id""")
 async def exam_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamGQLModel]:

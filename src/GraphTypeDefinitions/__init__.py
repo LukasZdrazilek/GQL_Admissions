@@ -19,8 +19,8 @@ class Query:
     studentadmission_by_id = studentadmission_by_id
     studentadmission_page = studentadmission_page
 
-    from .ExamTypeGQLModel import examType_by_id, exam_type_page
-    examType_by_id = examType_by_id
+    from .ExamTypeGQLModel import exam_type_by_id, exam_type_page
+    exam_type_by_id = exam_type_by_id
     exam_type_page = exam_type_page
 
     from .ExamGQLModel import exam_by_id, exam_page
@@ -36,6 +36,12 @@ class Mutation:
     from .AdmissionGQLModel import admission_insert
     admission_insert = admission_insert
 
+    from .ExamTypeGQLModel import exam_type_insert
+    exam_type_insert = exam_type_insert
+
+    from .ExamResultGQLModel import exam_result_insert
+    exam_result_insert = exam_result_insert
+    
     from.ExamGQLModel import exam_insert
     exam_insert = exam_insert
 

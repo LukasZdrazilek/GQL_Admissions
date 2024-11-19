@@ -161,5 +161,42 @@
     "student_admission_id": "a9158244-5ce6-4582-bfa2-281923561062",
     "exam_id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5"
   }
-]
+],
+  "student_exam_links": [
+    {
+      "id": "067d10e8-b188-4f6b-a50e-687c3fd49b01",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    },
+    {
+      "id": "0ce60eb9-3feb-46e6-837b-f1ec057eb479",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "7b5dc42a-8e33-4223-85c4-6526993c1063"
+    },
+    {
+      "id": "12f96e4d-038f-4f28-b8df-8992cde48928",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "89b10735-ef94-49d4-965f-fbd475d65d1f"
+    },
+    {
+      "id": "0369a9a4-7b1f-44d8-a3c9-101963ff54fb",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "8076d3f3-63b1-49f5-a65a-eea917e41a35"
+    },
+    {
+      "id": "0ed8b157-4467-4bfa-999c-d6abcfc617be",
+      "exam_id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    },
+    {
+      "id": "038796bc-d443-4aeb-9991-c70c26c4bea9",
+      "exam_id": "c3d8b2e6-4e6a-4d4b-931f-a4f9d8b3f1a4",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    },
+    {
+      "id": "298c957a-211e-49b7-bec2-3768e54b7364",
+      "exam_id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    }
+  ]
 }

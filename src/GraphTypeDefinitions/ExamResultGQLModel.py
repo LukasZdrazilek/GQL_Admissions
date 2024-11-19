@@ -53,3 +53,36 @@ async def exam_result_page(self, info: strawberry.types.Info, skip: int = 0, lim
     loader = getLoadersFromInfo(info).exam_results
     result = await loader.page(skip, limit)
     return result
+
+########################################################################################################################
+#                                                                                                                      #
+#                                                    Mutations                                                         #
+#                                                                                                                      #
+########################################################################################################################
+
+@strawberry.input(description="""Definition of an ExamResult used for creation""")
+class ExamResultInsertGQLModel:
+    id: typing.Optional[uuid.UUID] = strawberry.field()
+    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result")
+    exam_id: uuid.UUID = strawberry.field(description="The ID of the associated exam")
+    student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission")
+
+@strawberry.type(description="Result of a mutation for an exam result")
+class ExamResultResultGQLModel:
+    id: uuid.UUID = strawberry.field(description="The ID of the exam result", default=None)
+    msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
+
+    @strawberry.field(description="Returns the exam result")
+    async def exam_result(self, info: strawberry.types.Info) -> typing.Union[ExamResultGQLModel, None]:
+        result = await ExamResultGQLModel.resolve_reference(info, self.id)
+        return result
+
+@strawberry.mutation(description="Adds a new exam result.")
+async def exam_result_insert(self, info: strawberry.types.Info,
+                           exam_result: ExamResultInsertGQLModel) -> ExamResultResultGQLModel:
+    loader = getLoadersFromInfo(info).exam_results
+    row = await loader.insert(exam_result)
+    result = ExamResultResultGQLModel()
+    result.msg = "ok"
+    result.id = row.id
+    return result
