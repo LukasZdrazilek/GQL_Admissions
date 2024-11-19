@@ -50,7 +50,7 @@ class ExamTypeGQLModel(BaseGQLModel):
         return results
 
 @strawberry.field(description="""Returns a Student Admission by id""")
-async def examType_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamTypeGQLModel]:
+async def exam_type_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamTypeGQLModel]:
     result = await ExamTypeGQLModel.load_with_loader(info=info, id=id)
     return result
 
@@ -58,4 +58,39 @@ async def examType_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> ty
 async def exam_type_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[ExamTypeGQLModel]:
     loader = getLoadersFromInfo(info).exam_types
     result = await loader.page(skip, limit)
+    return result
+
+########################################################################################################################
+#                                                                                                                      #
+#                                                    Mutations                                                         #
+#                                                                                                                      #
+########################################################################################################################
+
+@strawberry.input(description="""Definition of an exam type used for creation""")
+class ExamTypeInsertGQLModel:
+    id: uuid.UUID = strawberry.field()
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
+    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
+    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
+    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+
+@strawberry.type(description="Result of a mutation for an exam type")
+class ExamTypeResultGQLModel:
+    id: uuid.UUID = strawberry.field(description="The ID of the admission", default=None)
+    msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
+
+    @strawberry.field(description="Returns the admission")
+    async def exam_type(self, info: strawberry.types.Info) -> typing.Union[ExamTypeGQLModel, None]:
+        result = await ExamTypeGQLModel.resolve_reference(info, self.id)
+        return result
+
+@strawberry.mutation(description="Adds a new admission.")
+async def exam_type_insert(self, info: strawberry.types.Info,
+                           exam_type: ExamTypeInsertGQLModel) -> ExamTypeResultGQLModel:
+    loader = getLoadersFromInfo(info).exam_types
+    row = await loader.insert(exam_type)
+    result = ExamTypeResultGQLModel()
+    result.msg = "ok"
+    result.id = row.id
     return result
