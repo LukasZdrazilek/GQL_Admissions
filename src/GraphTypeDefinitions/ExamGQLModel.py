@@ -26,13 +26,6 @@ class ExamGQLModel(BaseGQLModel):
             "name_en": lambda row: row.name_en,
             "exam_date": lambda row: row.exam_date,
             "exam_type_id": lambda row: row.exam_type_id,
-
-            "lastchange": lambda row: row.lastchange,
-            "created": lambda row: row.created,
-            "createdby_id": lambda row: row.createdby_id,
-            "changedby_id": lambda row: row.changedby_id,
-            "rbaobject_id": lambda row: row.rbaobject_id,
-            "valid": lambda row: row.valid,
         }
     
     @classmethod
@@ -111,4 +104,23 @@ async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLMode
     result = ExamMutationResultGQLModel()
     result.msg = "ok"
     result.id = row.id
+    return result
+
+@strawberry.input(description="Definition of an StudentExam Link used for addition")
+class StudentExamLinkAddGQLModel:
+    exam_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam")
+    student_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the student")
+
+@strawberry.mutation(description="Adds a new StudentExam link.")
+async def student_exam_link_add(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> ExamMutationResultGQLModel:
+    loader = getLoadersFromInfo(info).student_exam_links
+    rows = await loader.filter_by(exam_id=link.exam_id, student_id=link.student_id)
+    row = next(rows, None)
+    result = ExamMutationResultGQLModel()
+    if row is None:
+        row = await loader.insert(link)
+        result.msg = "ok"
+    if row is not None:
+        result.msg = "exists"
+    result.id = link.exam_id
     return result

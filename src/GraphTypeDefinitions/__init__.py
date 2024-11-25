@@ -42,8 +42,9 @@ class Mutation:
     from .ExamResultGQLModel import exam_result_insert
     exam_result_insert = exam_result_insert
     
-    from.ExamGQLModel import exam_insert
+    from.ExamGQLModel import exam_insert, student_exam_link_add
     exam_insert = exam_insert
+    student_exam_link_add = student_exam_link_add
 
     from .StudentAdmissionGQLModel import student_admission_insert
     student_admission_insert = student_admission_insert
