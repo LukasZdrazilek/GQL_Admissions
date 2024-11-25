@@ -49,8 +49,9 @@ class Mutation:
     from .StudentAdmissionGQLModel import student_admission_insert
     student_admission_insert = student_admission_insert
 
-
+from uoishelpers.schema import WhoAmIExtension
 schema = strawberry.federation.Schema(
     query=Query,
     mutation=Mutation,
+    extensions=[WhoAmIExtension()]
 )

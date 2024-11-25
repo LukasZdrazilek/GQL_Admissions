@@ -29,7 +29,7 @@ class ExamGQLModel(BaseGQLModel):
         }
     
     @classmethod
-    def getloader(cls, info: strawberry.types.Info):
+    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamModel
 
     id: uuid.UUID = strawberry.field()
@@ -97,13 +97,19 @@ class ExamMutationResultGQLModel:
         result = await ExamGQLModel.resolve_reference(info, self.id)
         return result
 
-@strawberry.mutation(description="Adds a new exam.")
-async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> ExamMutationResultGQLModel:
-    loader = getLoadersFromInfo(info).exams
-    row = await loader.insert(exam)
-    result = ExamMutationResultGQLModel()
-    result.msg = "ok"
-    result.id = row.id
+# @strawberry.mutation(description="Adds a new exam.")
+# async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> ExamMutationResultGQLModel:
+#     loader = getLoadersFromInfo(info).exams
+#     row = await loader.insert(exam)
+#     result = ExamMutationResultGQLModel()
+#     result.msg = "ok"
+#     result.id = row.id
+#     return result
+
+from uoishelpers.resolvers import Insert, InsertError
+@strawberry.mutation(description="Adds a new exam using stefek magic.")
+async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:
+    result = await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
     return result
 
 @strawberry.input(description="Definition of an StudentExam Link used for addition")
@@ -124,3 +130,8 @@ async def student_exam_link_add(self, info: strawberry.types.Info, link: Student
         result.msg = "exists"
     result.id = link.exam_id
     return result
+
+# @strawberry.mutation(description="Adds a new StudentExam link using stefek magic.")
+# async def student_exam_link_add(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:
+#     result = await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=link)
+#     return result

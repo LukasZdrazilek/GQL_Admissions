@@ -23,7 +23,7 @@ class ExamTypeGQLModel(BaseGQLModel):
         }
 
     @classmethod
-    def getloader(cls, info: strawberry.types.Info):
+    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamTypeModel
 
     id: uuid.UUID = strawberry.field()
@@ -85,12 +85,18 @@ class ExamTypeMutationResultGQLModel:
         result = await ExamTypeGQLModel.resolve_reference(info, self.id)
         return result
 
-@strawberry.mutation(description="Adds a new exam type.")
-async def exam_type_insert(self, info: strawberry.types.Info,
-                           exam_type: ExamTypeInsertGQLModel) -> ExamTypeMutationResultGQLModel:
-    loader = getLoadersFromInfo(info).exam_types
-    row = await loader.insert(exam_type)
-    result = ExamTypeMutationResultGQLModel()
-    result.msg = "ok"
-    result.id = row.id
+# @strawberry.mutation(description="Adds a new exam type.")
+# async def exam_type_insert(self, info: strawberry.types.Info,
+#                            exam_type: ExamTypeInsertGQLModel) -> ExamTypeMutationResultGQLModel:
+#     loader = getLoadersFromInfo(info).exam_types
+#     row = await loader.insert(exam_type)
+#     result = ExamTypeMutationResultGQLModel()
+#     result.msg = "ok"
+#     result.id = row.id
+#     return result
+
+from uoishelpers.resolvers import Insert, InsertError
+@strawberry.mutation(description="Adds a new exam type using stefek magic.")
+async def exam_type_insert(self, info: strawberry.types.Info, exam_type: ExamTypeInsertGQLModel) -> typing.Union[ExamTypeGQLModel, InsertError[ExamTypeGQLModel]]:
+    result = await Insert[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
     return result

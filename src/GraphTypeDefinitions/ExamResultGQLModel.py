@@ -77,12 +77,18 @@ class ExamResultMutationResultGQLModel:
         result = await ExamResultGQLModel.resolve_reference(info, self.id)
         return result
 
-@strawberry.mutation(description="Adds a new exam result.")
-async def exam_result_insert(self, info: strawberry.types.Info,
-                           exam_result: ExamResultInsertGQLModel) -> ExamResultMutationResultGQLModel:
-    loader = getLoadersFromInfo(info).exam_results
-    row = await loader.insert(exam_result)
-    result = ExamResultMutationResultGQLModel()
-    result.msg = "ok"
-    result.id = row.id
+# @strawberry.mutation(description="Adds a new exam result.")
+# async def exam_result_insert(self, info: strawberry.types.Info,
+#                            exam_result: ExamResultInsertGQLModel) -> ExamResultMutationResultGQLModel:
+#     loader = getLoadersFromInfo(info).exam_results
+#     row = await loader.insert(exam_result)
+#     result = ExamResultMutationResultGQLModel()
+#     result.msg = "ok"
+#     result.id = row.id
+#     return result
+
+from uoishelpers.resolvers import Insert, InsertError
+@strawberry.mutation(description="Adds a new exam result using stefek magic.")
+async def exam_result_insert(self, info: strawberry.types.Info, exam_result: ExamResultInsertGQLModel) -> typing.Union[ExamResultGQLModel, InsertError[ExamResultGQLModel]]:
+    result = await Insert[ExamResultGQLModel].DoItSafeWay(info=info, entity=exam_result)
     return result

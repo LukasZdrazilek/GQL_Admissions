@@ -104,11 +104,17 @@ class StudentAdmissionMutationResultGQLModel:
         result = await StudentAdmissionGQLModel.resolve_reference(info, self.id)
         return result
 
-@strawberry.mutation(description="Adds a new admission.")
-async def student_admission_insert(self, info: strawberry.types.Info, student_admission: StudentAdmissionInsertGQLModel) -> StudentAdmissionMutationResultGQLModel:
-    loader = getLoadersFromInfo(info).student_admissions
-    row = await loader.insert(student_admission)
-    result = StudentAdmissionMutationResultGQLModel()
-    result.msg = "ok"
-    result.id = row.id
+# @strawberry.mutation(description="Adds a new admission.")
+# async def student_admission_insert(self, info: strawberry.types.Info, student_admission: StudentAdmissionInsertGQLModel) -> StudentAdmissionMutationResultGQLModel:
+#     loader = getLoadersFromInfo(info).student_admissions
+#     row = await loader.insert(student_admission)
+#     result = StudentAdmissionMutationResultGQLModel()
+#     result.msg = "ok"
+#     result.id = row.id
+#     return result
+
+from uoishelpers.resolvers import Insert, InsertError
+@strawberry.mutation(description="Adds a new student admission using stefek magic.")
+async def student_admission_insert(self, info: strawberry.types.Info, student_admission: StudentAdmissionInsertGQLModel) -> typing.Union[StudentAdmissionGQLModel, InsertError[StudentAdmissionGQLModel]]:
+    result = await Insert[StudentAdmissionGQLModel].DoItSafeWay(info=info, entity=student_admission)
     return result
