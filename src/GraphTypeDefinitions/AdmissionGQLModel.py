@@ -138,7 +138,7 @@ class AdmissionInsertGQLModel:
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
 
 @strawberry.type(description="Result of a mutation for an admission")
-class AdmissionResultGQLModel:
+class AdmissionMutationResultGQLModel:
     id: uuid.UUID = strawberry.field(description="The ID of the admission", default=None)
     msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
 
@@ -148,10 +148,10 @@ class AdmissionResultGQLModel:
         return result
 
 @strawberry.mutation(description="Adds a new admission.")
-async def admission_insert(self, info: strawberry.types.Info, admission: AdmissionInsertGQLModel) -> AdmissionResultGQLModel:
+async def admission_insert(self, info: strawberry.types.Info, admission: AdmissionInsertGQLModel) -> AdmissionMutationResultGQLModel:
     loader = getLoadersFromInfo(info).admissions
     row = await loader.insert(admission)
-    result = AdmissionResultGQLModel()
+    result = AdmissionMutationResultGQLModel()
     result.msg = "ok"
     result.id = row.id
     return result

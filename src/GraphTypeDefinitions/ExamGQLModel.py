@@ -94,11 +94,21 @@ class ExamInsertGQLModel:
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
 
+@strawberry.type(description="Result of a mutation for an exam")
+class ExamMutationResultGQLModel:
+    id: uuid.UUID = strawberry.field(description="The ID of the exam", default=None)
+    msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
+
+    @strawberry.field(description="Returns the exam type")
+    async def exam(self, info: strawberry.types.Info) -> typing.Union[ExamGQLModel, None]:
+        result = await ExamGQLModel.resolve_reference(info, self.id)
+        return result
+
 @strawberry.mutation(description="Adds a new exam.")
-async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> ExamGQLModel:
+async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> ExamMutationResultGQLModel:
     loader = getLoadersFromInfo(info).exams
     row = await loader.insert(exam)
-    result = ExamGQLModel()
+    result = ExamMutationResultGQLModel()
     result.msg = "ok"
     result.id = row.id
     return result
