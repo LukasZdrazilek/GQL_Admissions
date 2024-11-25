@@ -11,9 +11,9 @@ from uoishelpers.resolvers import getLoadersFromInfo, getUserFromInfo
 from .BaseGQLModel import BaseGQLModel
 
 StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
-ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
+# ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 ExamTypeGQLModel = typing.Annotated["ExamTypeGQLModel", strawberry.lazy(".ExamTypeGQLModel")]
-ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
+# ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
 
 @strawberry.type(description="""Admission for corresponding year and program""")
 class AdmissionGQLModel(BaseGQLModel):
@@ -45,13 +45,6 @@ class AdmissionGQLModel(BaseGQLModel):
 
             "request_enrollment_start_date": lambda row: row.request_enrollment_start_date,
             "request_enrollment_end_date": lambda row: row.request_enrollment_end_date,
-
-            "lastchange": lambda row: row.lastchange,
-            "created": lambda row: row.created,
-            "createdby_id": lambda row: row.createdby_id,
-            "changedby_id": lambda row: row.changedby_id,
-            "rbaobject_id": lambda row: row.rbaobject_id,
-            "valid": lambda row: row.valid,
         }
 
     @classmethod
@@ -82,15 +75,6 @@ class AdmissionGQLModel(BaseGQLModel):
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
 
-
-
-    @strawberry.field(description="Exams related to this admission")
-    async def exams(self, info: strawberry.types.Info) -> typing.List["ExamGQLModel"]:
-        from .ExamGQLModel import ExamGQLModel
-        loader = ExamGQLModel.getloader(info=info)
-        rows = await loader.filter_by(admission_id=self.id)
-        results = [ExamGQLModel.from_sqlalchemy(row) for row in rows]
-        return results
     
     @strawberry.field(description="Exam types associated with this admission")
     async def exam_types(self, info: strawberry.types.Info) -> typing.List["ExamTypeGQLModel"]:
@@ -98,14 +82,6 @@ class AdmissionGQLModel(BaseGQLModel):
         loader = ExamTypeGQLModel.getloader(info=info)
         rows = await loader.filter_by(admission_id=self.id)
         results = [ExamTypeGQLModel.from_sqlalchemy(row) for row in rows]
-        return results
-    
-    @strawberry.field(description="Exam results related to this admission")
-    async def exam_results(self, info: strawberry.types.Info) -> typing.List[ExamResultGQLModel]:
-        from .ExamResultGQLModel import ExamResultGQLModel
-        loader = ExamResultGQLModel.getloader(info=info)
-        rows = await loader.filter_by(admission_id=self.id)
-        results = [ExamResultGQLModel.from_sqlalchemy(row) for row in rows]
         return results
 
     @strawberry.field(description="""List of student admissions related to the admission""")
@@ -160,13 +136,6 @@ class AdmissionInsertGQLModel:
 
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
-
-    lastchange: typing.Optional[datetime.datetime] = strawberry.field(description="Timestamp when the admission entry was last modified", default=None)
-    created: typing.Optional[datetime.datetime] = strawberry.field(description="Timestamp when the admission entry was created", default=None)
-    createdby_id: typing.Optional[uuid.UUID] = strawberry.field(description="User ID of the creator", default=None)
-    changedby_id: typing.Optional[uuid.UUID] = strawberry.field(description="User ID of the last modifier", default=None)
-    rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="User or group ID that controls access to the admission entry", default=None)
-    valid: typing.Optional[bool] = strawberry.field(description="Indicates if the admission entry is valid", default=None)
 
 @strawberry.type(description="Result of a mutation for an admission")
 class AdmissionResultGQLModel:
