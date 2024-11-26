@@ -1,6 +1,7 @@
 from sqlalchemy import Column, DateTime, String, ForeignKey
 from .BaseModel import BaseModel
 from sqlalchemy.orm import relationship
+from .UUIDColumn import UnifiedUUIDColumn
 
 class ExamModel(BaseModel):
     """
@@ -15,6 +16,8 @@ class ExamModel(BaseModel):
 
     exam_type_id = Column(ForeignKey('exam_types.id'), nullable=False, comment="Foreign key to exam type")
     exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
+
+    unified_id = UnifiedUUIDColumn(comment="UUID used for unification of exams")
 
     # exam_results = relationship('ExamResultModel', back_populates='exam')
     # student_admissions = relationship('StudentAdmissionModel', secondary="student_exam_links", uselist=True, lazy="joined")

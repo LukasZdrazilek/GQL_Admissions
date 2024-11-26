@@ -26,6 +26,7 @@ class ExamGQLModel(BaseGQLModel):
             "name_en": lambda row: row.name_en,
             "exam_date": lambda row: row.exam_date,
             "exam_type_id": lambda row: row.exam_type_id,
+            "unified_id": lambda row: row.unified_id
         }
     
     @classmethod
@@ -37,6 +38,7 @@ class ExamGQLModel(BaseGQLModel):
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type")
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam")
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams")
 
     @strawberry.field(description="Type of the exam")
     async def exam_type(self, info: strawberry.types.Info) -> typing.Optional["ExamTypeGQLModel"]:
@@ -86,6 +88,7 @@ class ExamInsertGQLModel:
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams")
 
 @strawberry.type(description="Result of a mutation for an exam")
 class ExamMutationResultGQLModel:
@@ -136,18 +139,19 @@ class StudentExamLinkAddGQLModel:
     exam_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam")
     student_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the student")
 
-@strawberry.mutation(description="Adds a new StudentExam link.")
-async def student_exam_link_add(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> ExamMutationResultGQLModel:
+@strawberry.mutation(description="""Links student to exam""")
+async def link_student_to_exam(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:#ExamMutationResultGQLModel:
     loader = getLoadersFromInfo(info).student_exam_links
     rows = await loader.filter_by(exam_id=link.exam_id, student_id=link.student_id)
     row = next(rows, None)
-    result = ExamMutationResultGQLModel()
     if row is None:
         row = await loader.insert(link)
-        result.msg = "ok"
-    if row is not None:
-        result.msg = "exists"
-    result.id = link.exam_id
+        result = await ExamGQLModel.resolve_reference(info, link.exam_id)
+        return result
+
+    result = InsertError[ExamGQLModel]()
+    result.msg = "item exists"
+    result.input = link
     return result
 
 # @strawberry.mutation(description="Adds a new StudentExam link using stefek magic.")

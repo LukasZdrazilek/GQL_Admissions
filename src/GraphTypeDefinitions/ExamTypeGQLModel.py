@@ -4,6 +4,7 @@ import typing
 import datetime
 from uoishelpers.resolvers import getLoadersFromInfo
 from .BaseGQLModel import BaseGQLModel
+from strawberry.scalars import JSON
 
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
@@ -20,6 +21,7 @@ class ExamTypeGQLModel(BaseGQLModel):
             "min_score": lambda row: row.min_score,
             "max_score": lambda row: row.max_score,
             "admission_id": lambda row: row.admission_id,
+            "data": lambda row: row.data,
         }
 
     @classmethod
@@ -32,6 +34,7 @@ class ExamTypeGQLModel(BaseGQLModel):
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type")
 
     @strawberry.field(description="The admission to which ExamType belong")
     async def admission(self, info: strawberry.types.Info) -> typing.Optional["AdmissionGQLModel"]:
@@ -74,6 +77,7 @@ class ExamTypeInsertGQLModel:
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type")
 
 @strawberry.type(description="Result of a mutation for an exam type")
 class ExamTypeMutationResultGQLModel:
