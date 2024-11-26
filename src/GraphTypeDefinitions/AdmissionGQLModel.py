@@ -79,7 +79,7 @@ class AdmissionGQLModel(BaseGQLModel):
     @strawberry.field(description="Exam types associated with this admission")
     async def exam_types(self, info: strawberry.types.Info) -> typing.List["ExamTypeGQLModel"]:
         from .ExamTypeGQLModel import ExamTypeGQLModel
-        loader = ExamTypeGQLModel.getloader(info=info)
+        loader = ExamTypeGQLModel.getLoader(info=info)
         rows = await loader.filter_by(admission_id=self.id)
         results = [ExamTypeGQLModel.from_sqlalchemy(row) for row in rows]
         return results
@@ -89,7 +89,7 @@ class AdmissionGQLModel(BaseGQLModel):
             self, info: strawberry.types.Info
     ) -> typing.List["StudentAdmissionGQLModel"]:
         from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
-        loader = StudentAdmissionGQLModel.getloader(info=info)
+        loader = StudentAdmissionGQLModel.getLoader(info=info)
         rows = await loader.filter_by(admission_id=self.id)
         results = (StudentAdmissionGQLModel.from_sqlalchemy(row) for row in rows)
         return results

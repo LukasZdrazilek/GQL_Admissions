@@ -49,7 +49,7 @@ class ExamGQLModel(BaseGQLModel):
             self, info: strawberry.types.Info
     ) -> typing.List["ExamResultGQLModel"]:
         from .ExamResultGQLModel import ExamResultGQLModel
-        loader = ExamResultGQLModel.getloader(info=info)
+        loader = ExamResultGQLModel.getLoader(info=info)
         rows = await loader.filter_by(exam_id=self.id)
         results = (ExamResultGQLModel.from_sqlalchemy(row) for row in rows)
         return results
@@ -112,6 +112,25 @@ async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLMode
     result = await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
     return result
 
+######### LINK GQL
+
+# @strawberry.type(description="Represents an student exam link")
+# class StudentExamLinkGQLModel(BaseGQLModel):
+#
+#     @classmethod
+#     def get_table_resolvers(cls):
+#         return {
+#             "exam_id": lambda row: row.exam_id,
+#             "student_id": lambda row: row.student_id
+#         }
+#
+#     @classmethod
+#     def getLoader(cls, info: strawberry.types.Info):
+#         return getLoadersFromInfo(info).ExamModel
+#
+#     exam_id: uuid.UUID = strawberry.field(description="The ID of the exam")
+#     student_id: uuid.UUID = strawberry.field(description="The ID of the student")
+
 @strawberry.input(description="Definition of an StudentExam Link used for addition")
 class StudentExamLinkAddGQLModel:
     exam_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam")
@@ -132,6 +151,6 @@ async def student_exam_link_add(self, info: strawberry.types.Info, link: Student
     return result
 
 # @strawberry.mutation(description="Adds a new StudentExam link using stefek magic.")
-# async def student_exam_link_add(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:
-#     result = await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=link)
+# async def student_exam_link_add(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> typing.Union[StudentExamLinkGQLModel, InsertError[StudentExamLinkGQLModel]]:
+#     result = await Insert[StudentExamLinkGQLModel].DoItSafeWay(info=info, entity=link)
 #     return result

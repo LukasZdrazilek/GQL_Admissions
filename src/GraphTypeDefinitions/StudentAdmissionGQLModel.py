@@ -32,7 +32,7 @@ class StudentAdmissionGQLModel(BaseGQLModel):
         }
 
     @classmethod
-    def getloader(cls, info: strawberry.types.Info):
+    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).StudentAdmissionModel
 
     id: uuid.UUID = strawberry.field()
@@ -54,7 +54,7 @@ class StudentAdmissionGQLModel(BaseGQLModel):
             self, info: strawberry.types.Info
     ) -> typing.Optional[typing.List["ExamResultGQLModel"]]:
         from .ExamResultGQLModel import ExamResultGQLModel
-        loader = ExamResultGQLModel.getloader(info=info)
+        loader = ExamResultGQLModel.getLoader(info=info)
         rows = await loader.filter_by(student_admission_id=self.id)
         results = (ExamResultGQLModel.from_sqlalchemy(row) for row in rows)
         return results
@@ -86,13 +86,13 @@ async def studentadmission_page(self, info: strawberry.types.Info, skip: int = 0
 
 @strawberry.input(description="""Definition of an student admission used for creation""")
 class StudentAdmissionInsertGQLModel:
-    id: typing.Optional[uuid.UUID] = strawberry.field()
+    id: uuid.UUID = strawberry.field()
     admission_id: uuid.UUID = strawberry.field(description="UUID of an admission")
-    user_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a user")
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state")
-    extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition")
-    admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission")
-    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment")
+    user_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a user", default=None)
+    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state", default=None)
+    extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition", default=None)
+    admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission", default=None)
+    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)
 
 @strawberry.type(description="Result of a mutation for a student admission")
 class StudentAdmissionMutationResultGQLModel:

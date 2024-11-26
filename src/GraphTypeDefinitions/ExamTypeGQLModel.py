@@ -44,7 +44,7 @@ class ExamTypeGQLModel(BaseGQLModel):
             self, info: strawberry.types.Info
     ) -> typing.List["ExamGQLModel"]:
         from .ExamGQLModel import ExamGQLModel
-        loader = ExamGQLModel.getloader(info=info)
+        loader = ExamGQLModel.getLoader(info=info)
         rows = await loader.filter_by(exam_type_id=self.id)
         results = (ExamGQLModel.from_sqlalchemy(row) for row in rows)
         return results
