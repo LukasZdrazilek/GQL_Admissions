@@ -51,7 +51,6 @@ class AdmissionGQLModel(BaseGQLModel):
 
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
-    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).AdmissionModel
 
     id: uuid.UUID = strawberry.field()

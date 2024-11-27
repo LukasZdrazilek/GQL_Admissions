@@ -30,7 +30,6 @@ class ExamGQLModel(BaseGQLModel):
     
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
-    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamModel
 
     id: uuid.UUID = strawberry.field()
