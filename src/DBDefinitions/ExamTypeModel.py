@@ -2,6 +2,7 @@ from sqlalchemy import Column, String, ForeignKey, Float
 from sqlalchemy.dialects.postgresql import HSTORE
 from .BaseModel import BaseModel
 from sqlalchemy.orm import relationship
+from UUIDColumn import UnifiedUUIDColumn
 
 class ExamTypeModel(BaseModel):
     """
@@ -16,6 +17,7 @@ class ExamTypeModel(BaseModel):
     max_score = Column(Float, comment="Maximum score of the exam type")
 
     data = Column(HSTORE, comment="Dictionary of an score table")
+    unified_id = UnifiedUUIDColumn(comment="Unified ID of the exam type")
 
     admission_id = Column(ForeignKey("admissions.id"), nullable=False)
     admission = relationship("AdmissionModel", viewonly=True, uselist=False, lazy="joined")

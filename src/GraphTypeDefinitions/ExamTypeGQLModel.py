@@ -5,6 +5,7 @@ import datetime
 from uoishelpers.resolvers import getLoadersFromInfo
 from .BaseGQLModel import BaseGQLModel
 from strawberry.scalars import JSON
+import json
 
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
@@ -63,11 +64,6 @@ async def exam_type_page(self, info: strawberry.types.Info, skip: int = 0, limit
     result = await loader.page(skip, limit)
     return result
 
-########################################################################################################################
-#                                                                                                                      #
-#                                                    Mutations                                                         #
-#                                                                                                                      #
-########################################################################################################################
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeInsertGQLModel:
@@ -79,28 +75,11 @@ class ExamTypeInsertGQLModel:
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
     data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type")
 
-@strawberry.type(description="Result of a mutation for an exam type")
-class ExamTypeMutationResultGQLModel:
-    id: uuid.UUID = strawberry.field(description="The ID of the exam type", default=None)
-    msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
-
-    @strawberry.field(description="Returns the exam type")
-    async def exam_type(self, info: strawberry.types.Info) -> typing.Union[ExamTypeGQLModel, None]:
-        result = await ExamTypeGQLModel.resolve_reference(info, self.id)
-        return result
-
-# @strawberry.mutation(description="Adds a new exam type.")
-# async def exam_type_insert(self, info: strawberry.types.Info,
-#                            exam_type: ExamTypeInsertGQLModel) -> ExamTypeMutationResultGQLModel:
-#     loader = getLoadersFromInfo(info).exam_types
-#     row = await loader.insert(exam_type)
-#     result = ExamTypeMutationResultGQLModel()
-#     result.msg = "ok"
-#     result.id = row.id
-#     return result
 
 from uoishelpers.resolvers import Insert, InsertError
 @strawberry.mutation(description="Adds a new exam type using stefek magic.")
 async def exam_type_insert(self, info: strawberry.types.Info, exam_type: ExamTypeInsertGQLModel) -> typing.Union[ExamTypeGQLModel, InsertError[ExamTypeGQLModel]]:
+    exam_type.data = ', '.join(f'"{key}" => "{value}"' for key, value in json.loads(exam_type.data).items())
+
     result = await Insert[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
     return result
