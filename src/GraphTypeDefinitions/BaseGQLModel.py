@@ -8,7 +8,7 @@ class BaseGQLModel:
         raise NotImplementedError()
 
     @classmethod
-    def getloader(cls, info: strawberry.types.Info):
+    def getLoader(cls, info: strawberry.types.Info):
         raise NotImplementedError()
 
     @classmethod
@@ -25,14 +25,14 @@ class BaseGQLModel:
 
     @classmethod
     async def load_with_loader(cls, info: strawberry.types.Info, id: uuid.UUID):
-        loader = cls.getloader(info=info)
+        loader = cls.getLoader(info=info)
         db_row = await loader.load(id)
         return cls.from_sqlalchemy(db_row=db_row)
 
     @classmethod
     async def resolve_reference(cls, info: strawberry.types.Info, id: uuid.UUID):
         if id is None: return None
-        loader = cls.getloader(info)
+        loader = cls.getLoader(info)
         if isinstance(id, str): id = uuid.UUID(id)
         result = await loader.load(id)
         if result is not None:

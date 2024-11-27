@@ -29,7 +29,7 @@ class ExamGQLModel(BaseGQLModel):
         }
     
     @classmethod
-    def getloader(cls, info: strawberry.types.Info):
+    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamModel
 
     id: uuid.UUID = strawberry.field()
@@ -87,6 +87,22 @@ class ExamInsertGQLModel:
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
 
+@strawberry.input(description="Definition of an exam used for creation")
+class ExamUpdateGQLModel:
+    id: uuid.UUID = strawberry.field(description="The ID of the exam")
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
+    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
+    exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
+
+@strawberry.input(description="Definition of an exam used for creation")
+class ExamDeleteGQLModel:
+    id: uuid.UUID = strawberry.field(description="The ID of the exam")
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
+    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
+    exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
+
 @strawberry.type(description="Result of a mutation for an exam")
 class ExamMutationResultGQLModel:
     id: uuid.UUID = strawberry.field(description="The ID of the exam", default=None)
@@ -96,20 +112,13 @@ class ExamMutationResultGQLModel:
     async def exam(self, info: strawberry.types.Info) -> typing.Union[ExamGQLModel, None]:
         result = await ExamGQLModel.resolve_reference(info, self.id)
         return result
-
-@strawberry.mutation(description="Adds a new exam.")
-async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> ExamMutationResultGQLModel:
-    loader = getLoadersFromInfo(info).exams
-    row = await loader.insert(exam)
-    result = ExamMutationResultGQLModel()
-    result.msg = "ok"
-    result.id = row.id
-    return result
-
+    
 @strawberry.input(description="Definition of an StudentExam Link used for addition")
 class StudentExamLinkAddGQLModel:
     exam_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam")
     student_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the student")
+
+########################################################################################################################
 
 @strawberry.mutation(description="Adds a new StudentExam link.")
 async def student_exam_link_add(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> ExamMutationResultGQLModel:
@@ -123,4 +132,22 @@ async def student_exam_link_add(self, info: strawberry.types.Info, link: Student
     if row is not None:
         result.msg = "exists"
     result.id = link.exam_id
+    return result
+
+from uoishelpers.resolvers import Insert, InsertError
+@strawberry.mutation(description="Adds a new exam using stefek magic.")
+async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:
+    result = await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
+    return result
+
+from uoishelpers.resolvers import Update, UpdateError
+@strawberry.mutation(description="Updates an exam using stefek magic.")
+async def exam_update(self, info: strawberry.types.Info, exam: ExamUpdateGQLModel) -> typing.Union[ExamGQLModel, UpdateError[ExamGQLModel]]:
+    result = await Update[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
+    return result
+
+from uoishelpers.resolvers import Delete, DeleteError
+@strawberry.mutation(description="Deletes exam using stefek magic.")
+async def exam_delete(self, info: strawberry.types.Info, exam: ExamDeleteGQLModel) -> typing.Union[ExamGQLModel, DeleteError[ExamGQLModel]]:
+    result = await Delete[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
     return result

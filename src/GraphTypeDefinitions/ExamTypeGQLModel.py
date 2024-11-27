@@ -23,7 +23,7 @@ class ExamTypeGQLModel(BaseGQLModel):
         }
 
     @classmethod
-    def getloader(cls, info: strawberry.types.Info):
+    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamTypeModel
 
     id: uuid.UUID = strawberry.field()
@@ -75,6 +75,24 @@ class ExamTypeInsertGQLModel:
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
 
+@strawberry.input(description="""Definition of an exam type used for creation""")
+class ExamTypeUpdateGQLModel:
+    id: uuid.UUID = strawberry.field()
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
+    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
+    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
+    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+
+@strawberry.input(description="""Definition of an exam type used for creation""")
+class ExamTypeDeleteGQLModel:
+    id: uuid.UUID = strawberry.field()
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
+    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
+    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
+    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+
 @strawberry.type(description="Result of a mutation for an exam type")
 class ExamTypeMutationResultGQLModel:
     id: uuid.UUID = strawberry.field(description="The ID of the exam type", default=None)
@@ -85,12 +103,22 @@ class ExamTypeMutationResultGQLModel:
         result = await ExamTypeGQLModel.resolve_reference(info, self.id)
         return result
 
-@strawberry.mutation(description="Adds a new exam type.")
-async def exam_type_insert(self, info: strawberry.types.Info,
-                           exam_type: ExamTypeInsertGQLModel) -> ExamTypeMutationResultGQLModel:
-    loader = getLoadersFromInfo(info).exam_types
-    row = await loader.insert(exam_type)
-    result = ExamTypeMutationResultGQLModel()
-    result.msg = "ok"
-    result.id = row.id
+########################################################################################################################
+
+from uoishelpers.resolvers import Insert, InsertError
+@strawberry.mutation(description="Adds a new exam type using stefek magic.")
+async def exam_type_insert(self, info: strawberry.types.Info, exam_type: ExamTypeInsertGQLModel) -> typing.Union[ExamTypeGQLModel, InsertError[ExamTypeGQLModel]]:
+    result = await Insert[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
+    return result
+
+from uoishelpers.resolvers import Update, UpdateError
+@strawberry.mutation(description="Updates an exam type using stefek magic.")
+async def exam_type_update(self, info: strawberry.types.Info, exam_type: ExamTypeUpdateGQLModel) -> typing.Union[ExamTypeGQLModel, UpdateError[ExamTypeGQLModel]]:
+    result = await Update[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
+    return result
+
+from uoishelpers.resolvers import Delete, DeleteError
+@strawberry.mutation(description="Deletes exam type using stefek magic.")
+async def exam_type_delete(self, info: strawberry.types.Info, exam_type: ExamTypeDeleteGQLModel) -> typing.Union[ExamTypeGQLModel, DeleteError[ExamTypeGQLModel]]:
+    result = await Delete[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
     return result

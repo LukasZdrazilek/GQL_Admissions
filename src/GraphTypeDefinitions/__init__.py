@@ -33,24 +33,35 @@ class Query:
 
 @strawberry.type(description="""Type for mutation root""")
 class Mutation:
-    from .AdmissionGQLModel import admission_insert
+    from .AdmissionGQLModel import admission_insert, admission_update, admission_delete
     admission_insert = admission_insert
+    admission_update = admission_update
+    admission_delete = admission_delete
 
-    from .ExamTypeGQLModel import exam_type_insert
+    from .ExamTypeGQLModel import exam_type_insert, exam_type_update, exam_type_delete
     exam_type_insert = exam_type_insert
+    exam_type_update = exam_type_update
+    exam_type_delete = exam_type_delete
 
-    from .ExamResultGQLModel import exam_result_insert
+    from .ExamResultGQLModel import exam_result_insert, exam_result_update, exam_result_delete
     exam_result_insert = exam_result_insert
+    exam_result_update = exam_result_update
+    exam_result_delete = exam_result_delete
     
-    from.ExamGQLModel import exam_insert, student_exam_link_add
+    from.ExamGQLModel import exam_insert, student_exam_link_add, exam_update, exam_delete
     exam_insert = exam_insert
+    exam_update = exam_update
+    exam_delete = exam_delete
     student_exam_link_add = student_exam_link_add
 
-    from .StudentAdmissionGQLModel import student_admission_insert
+    from .StudentAdmissionGQLModel import student_admission_insert, student_admission_update, student_admission_delete
     student_admission_insert = student_admission_insert
+    student_admission_update = student_admission_update
+    student_admission_delete = student_admission_delete
 
-
+from uoishelpers.schema import WhoAmIExtension
 schema = strawberry.federation.Schema(
     query=Query,
     mutation=Mutation,
+    extensions=[WhoAmIExtension()]
 )
