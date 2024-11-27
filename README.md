@@ -10,29 +10,10 @@ ________________________________________________________________________
   <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FDcXYPtOVAAAoOKa.jpg&f=1&nofb=1&ipt=0fc47f721244bc99d0a6437e702c8b96f4e700beec4126987c92975e234f23e9&ipo=images" style="width: 30%">
 </div>
 
+
 ## Progress of work
 - [x]  15.11. Dokončeny READ operace na GQL modelech, chybí Link
 - [x]  19.11. Dokončeny CREATE operace na GQL modelech
-
-Pracujeme s UG (user), GRANTING a DOCUMENTS
-
-- Otevření, uzavření přihlášky
-- Více programů studia
-- Stejná user struktura
-- Autentizace neřešit (generace login, hesla, nebo přes soc. sítě)
-- 1 uložení přihlášky, 2. odeslání přihlášky (lze vzít zpět do konce přihlašování)
-- UG má state transition, state machine, vygenerovat (podaná, odeslaná, vzatá zpět)
-- Vymazat nebo archivovat minulé přihlášky?
-- Více zkoušek = relace 1 ku N, přihláška má testy, tabulka testů cizí klíč, ke které přihlášce se vztahuje, disciplíny cizí klíč na test
-- Přihláška = propojení studenta a programu, program = předměty, předměty = disciplíny
-- Jednotná entita disciplíny pro všechny
-- Fakulty sdílí testy (nechat být)
-- Přidat percentil umístění
-- Peníze neřešit
-- Práva ke čtení userů budou řešeny přes skupiny
-- User bude mít stavovou entitu (Přihlašuje se / Student)
-
-- Dle evolution vytvoření struktur databází
 
 
 ## Aktuální úkoly
@@ -54,6 +35,10 @@ Pracujeme s UG (user), GRANTING a DOCUMENTS
 - [ ] Dokončit UPDATE operace na GQL modelech
 
 - [ ] Dokončit DELETE operace na GQL modelech
+
+- [ ] Dokončit Disciplíny
+
+- [ ] Dokončit Payments
 
 
 ________________________________________________________________________
@@ -89,6 +74,14 @@ __16.11.2024__ dokončení GQL modelů, úprava DBDefinitions
 __18.11.2024__ práce na CREATE, vytvoření prvních mutací
 
 __19.11.2024__ vytvořen CREATE
+
+__22.11.2024__ vytvořen UPDATE
+
+__24.11.2024__ vytvoření nových funkcí pro CREATE, UPDATE a DELETE
+
+__25.11.2024__ implementace a testy nových CREATE a UPDATE funkcí
+
+__26.11.2024__ práce na Disciplínách a linku
 
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)

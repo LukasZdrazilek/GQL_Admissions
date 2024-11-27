@@ -30,6 +30,7 @@ class ExamGQLModel(BaseGQLModel):
     
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
+    def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamModel
 
     id: uuid.UUID = strawberry.field()
@@ -49,7 +50,7 @@ class ExamGQLModel(BaseGQLModel):
             self, info: strawberry.types.Info
     ) -> typing.List["ExamResultGQLModel"]:
         from .ExamResultGQLModel import ExamResultGQLModel
-        loader = ExamResultGQLModel.getloader(info=info)
+        loader = ExamResultGQLModel.getLoader(info=info)
         rows = await loader.filter_by(exam_id=self.id)
         results = (ExamResultGQLModel.from_sqlalchemy(row) for row in rows)
         return results
