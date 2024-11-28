@@ -162,7 +162,20 @@ async def link_student_to_exam(self, info: strawberry.types.Info, link: StudentE
     result.input = link
     return result
 
-# @strawberry.mutation(description="Adds a new StudentExam link using stefek magic.")
-# async def student_exam_link_add(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> typing.Union[StudentExamLinkGQLModel, InsertError[StudentExamLinkGQLModel]]:
-#     result = await Insert[StudentExamLinkGQLModel].DoItSafeWay(info=info, entity=link)
-#     return result
+from uoishelpers.resolvers import Insert, InsertError
+@strawberry.mutation(description="Adds a new exam using stefek magic.")
+async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:
+    result = await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
+    return result
+
+from uoishelpers.resolvers import Update, UpdateError
+@strawberry.mutation(description="Updates an exam using stefek magic.")
+async def exam_update(self, info: strawberry.types.Info, exam: ExamUpdateGQLModel) -> typing.Union[ExamGQLModel, UpdateError[ExamGQLModel]]:
+    result = await Update[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
+    return result
+
+from uoishelpers.resolvers import Delete, DeleteError
+@strawberry.mutation(description="Deletes exam using stefek magic.")
+async def exam_delete(self, info: strawberry.types.Info, exam: ExamDeleteGQLModel) -> typing.Union[ExamGQLModel, DeleteError[ExamGQLModel]]:
+    result = await Delete[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
+    return result
