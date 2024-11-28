@@ -2,7 +2,9 @@ import strawberry
 import uuid
 import typing
 import datetime
-from uoishelpers.resolvers import getLoadersFromInfo
+
+from attr import dataclass
+from uoishelpers.resolvers import getLoadersFromInfo, createInputs
 from .BaseGQLModel import BaseGQLModel
 from strawberry.scalars import JSON
 import json
@@ -23,6 +25,7 @@ class ExamTypeGQLModel(BaseGQLModel):
             "max_score": lambda row: row.max_score,
             "admission_id": lambda row: row.admission_id,
             "data": lambda row: row.data,
+            "unified_id": lambda row: row.unified_id,
         }
 
     @classmethod
@@ -36,6 +39,7 @@ class ExamTypeGQLModel(BaseGQLModel):
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
     data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type")
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types")
 
     @strawberry.field(description="The admission to which ExamType belong")
     async def admission(self, info: strawberry.types.Info) -> typing.Optional["AdmissionGQLModel"]:
@@ -54,14 +58,48 @@ class ExamTypeGQLModel(BaseGQLModel):
         return results
 
 @strawberry.field(description="""Returns a Student Admission by id""")
-async def exam_type_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamTypeGQLModel]:
+async def exam_type_by_id(
+        self,
+        info: strawberry.types.Info,
+        id: uuid.UUID
+) -> typing.Optional[ExamTypeGQLModel]:
     result = await ExamTypeGQLModel.load_with_loader(info=info, id=id)
     return result
 
+@createInputs
+@dataclass
+class ExamTypeWhereFilter:
+    unified_id: uuid.UUID
+
 @strawberry.field(description="""Returns a list of exam types""")
-async def exam_type_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[ExamTypeGQLModel]:
+async def exam_type_page(
+        self,
+        info: strawberry.types.Info,
+        skip: int = 0,
+        limit: int = 10,
+        where: typing.Optional[ExamTypeWhereFilter] = None
+) -> typing.List[ExamTypeGQLModel]:
     loader = getLoadersFromInfo(info).exam_types
-    result = await loader.page(skip, limit)
+    where = strawberry.asdict(where) if where else None
+    print(f"Where filter: {where}")
+    result = await loader.page(skip, limit, where=where)
+    return result
+
+@strawberry.field(description="""Returns a list of unified exam type by id""")
+async def unified_exam_type_by_id(
+        self,
+        info: strawberry.types.Info,
+        unified_id: uuid.UUID,
+        skip: int = 0,
+        limit: int = 10,
+) -> typing.List[ExamTypeGQLModel]:
+    loader = getLoadersFromInfo(info).exam_types
+    where = {
+        "unified_id" : {
+            "_eq" : unified_id
+        }
+    }
+    result = await loader.page(skip, limit, where=where)
     return result
 
 
@@ -74,12 +112,12 @@ class ExamTypeInsertGQLModel:
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
     data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type")
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types")
 
 
 from uoishelpers.resolvers import Insert, InsertError
 @strawberry.mutation(description="Adds a new exam type using stefek magic.")
 async def exam_type_insert(self, info: strawberry.types.Info, exam_type: ExamTypeInsertGQLModel) -> typing.Union[ExamTypeGQLModel, InsertError[ExamTypeGQLModel]]:
     exam_type.data = ', '.join(f'"{key}" => "{value}"' for key, value in json.loads(exam_type.data).items())
-
     result = await Insert[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
     return result

@@ -75,6 +75,23 @@ async def exam_page(self, info: strawberry.types.Info, skip: int = 0, limit: int
     result = await loader.page(skip, limit)
     return result
 
+@strawberry.field(description="""Returns a list of unified exams by id""")
+async def unified_exam_by_id(
+        self,
+        info: strawberry.types.Info,
+        unified_id: uuid.UUID,
+        skip: int = 0,
+        limit: int = 10,
+) -> typing.List[ExamGQLModel]:
+    loader = getLoadersFromInfo(info).exams
+    where = {
+        "unified_id" : {
+            "_eq" : unified_id
+        }
+    }
+    result = await loader.page(skip, limit, where=where)
+    return result
+
 ########################################################################################################################
 #                                                                                                                      #
 #                                                    Mutations                                                         #

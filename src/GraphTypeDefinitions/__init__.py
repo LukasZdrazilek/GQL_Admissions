@@ -19,13 +19,15 @@ class Query:
     studentadmission_by_id = studentadmission_by_id
     studentadmission_page = studentadmission_page
 
-    from .ExamTypeGQLModel import exam_type_by_id, exam_type_page
+    from .ExamTypeGQLModel import exam_type_by_id, exam_type_page, unified_exam_type_by_id
     exam_type_by_id = exam_type_by_id
     exam_type_page = exam_type_page
+    unified_exam_type_by_id = unified_exam_type_by_id
 
-    from .ExamGQLModel import exam_by_id, exam_page
+    from .ExamGQLModel import exam_by_id, exam_page, unified_exam_by_id
     exam_by_id = exam_by_id
     exam_page = exam_page
+    unified_exam_by_id = unified_exam_by_id
 
     from .ExamResultGQLModel import exam_result_by_id, exam_result_page
     exam_result_by_id = exam_result_by_id
@@ -53,5 +55,7 @@ from uoishelpers.schema import WhoAmIExtension
 schema = strawberry.federation.Schema(
     query=Query,
     mutation=Mutation,
-    extensions=[WhoAmIExtension()]
+    extensions=[]
 )
+
+schema.extensions.append(WhoAmIExtension)

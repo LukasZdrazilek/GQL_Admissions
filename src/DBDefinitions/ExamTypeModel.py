@@ -2,7 +2,7 @@ from sqlalchemy import Column, String, ForeignKey, Float
 from sqlalchemy.dialects.postgresql import HSTORE
 from .BaseModel import BaseModel
 from sqlalchemy.orm import relationship
-from UUIDColumn import UnifiedUUIDColumn
+from .UUIDColumn import UnifiedUUIDColumn
 
 class ExamTypeModel(BaseModel):
     """
