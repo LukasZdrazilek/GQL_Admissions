@@ -119,6 +119,6 @@ async def exam_type_update(self, info: strawberry.types.Info, exam_type: ExamTyp
 
 from uoishelpers.resolvers import Delete, DeleteError
 @strawberry.mutation(description="Deletes exam type using stefek magic.")
-async def exam_type_delete(self, info: strawberry.types.Info, exam_type: ExamTypeDeleteGQLModel) -> typing.Union[ExamTypeGQLModel, DeleteError[ExamTypeGQLModel]]:
+async def exam_type_delete(self, info: strawberry.types.Info, exam_type: ExamTypeDeleteGQLModel) -> typing.Optional[DeleteError[ExamTypeGQLModel]]:
     result = await Delete[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
     return result

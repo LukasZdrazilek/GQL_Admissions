@@ -59,9 +59,11 @@ class Mutation:
     student_admission_update = student_admission_update
     student_admission_delete = student_admission_delete
 
-from uoishelpers.schema import WhoAmIExtension
 schema = strawberry.federation.Schema(
     query=Query,
     mutation=Mutation,
-    extensions=[WhoAmIExtension()]
+    extensions=[]
 )
+
+from uoishelpers.schema import WhoAmIExtension
+schema.extensions.append(WhoAmIExtension)

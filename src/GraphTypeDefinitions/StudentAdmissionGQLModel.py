@@ -92,7 +92,7 @@ class StudentAdmissionInsertGQLModel:
     state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state")
     extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition")
     admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission")
-    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment")
+    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)
 
 @strawberry.input(description="""Definition of an student admission used for creation""")
 class StudentAdmissionUpdateGQLModel:
@@ -102,7 +102,7 @@ class StudentAdmissionUpdateGQLModel:
     state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state")
     extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition")
     admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission")
-    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment")
+    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)
 
 @strawberry.input(description="""Definition of an student admission used for creation""")
 class StudentAdmissionDeleteGQLModel:
@@ -112,7 +112,7 @@ class StudentAdmissionDeleteGQLModel:
     state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state")
     extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition")
     admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission")
-    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment")    
+    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)    
 
 @strawberry.type(description="Result of a mutation for a student admission")
 class StudentAdmissionMutationResultGQLModel:
@@ -132,14 +132,14 @@ async def student_admission_insert(self, info: strawberry.types.Info, student_ad
     result = await Insert[StudentAdmissionGQLModel].DoItSafeWay(info=info, entity=student_admission)
     return result
 
-from uoishelpers.resolvers import Insert, InsertError
+from uoishelpers.resolvers import Update, UpdateError
 @strawberry.mutation(description="Updates new student admission using stefek magic.")
 async def student_admission_update(self, info: strawberry.types.Info, student_admission: StudentAdmissionUpdateGQLModel) -> typing.Union[StudentAdmissionGQLModel, InsertError[StudentAdmissionGQLModel]]:
-    result = await Insert[StudentAdmissionGQLModel].DoItSafeWay(info=info, entity=student_admission)
+    result = await Update[StudentAdmissionGQLModel].DoItSafeWay(info=info, entity=student_admission)
     return result
 
-from uoishelpers.resolvers import Insert, InsertError
+from uoishelpers.resolvers import Delete, DeleteError
 @strawberry.mutation(description="Deletes new student admission using stefek magic.")
-async def student_admission_delete(self, info: strawberry.types.Info, student_admission: StudentAdmissionDeleteGQLModel) -> typing.Union[StudentAdmissionGQLModel, InsertError[StudentAdmissionGQLModel]]:
-    result = await Insert[StudentAdmissionGQLModel].DoItSafeWay(info=info, entity=student_admission)
-    return result
+async def student_admission_delete(self, info: strawberry.types.Info, student_admission: StudentAdmissionDeleteGQLModel) -> typing.Optional[DeleteError[StudentAdmissionGQLModel]]:
+    result = await Delete[StudentAdmissionGQLModel].DoItSafeWay(info=info, entity=student_admission)
+    return result                                                                                          

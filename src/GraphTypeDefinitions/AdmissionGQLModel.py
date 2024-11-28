@@ -235,6 +235,6 @@ async def admission_update(self, info: strawberry.types.Info, admission: Admissi
 
 from uoishelpers.resolvers import Delete, DeleteError
 @strawberry.mutation(description="Deletes admission using stefek magic.")
-async def admission_delete(self, info: strawberry.types.Info, admission: AdmissionDeleteGQLModel) -> typing.Union[AdmissionGQLModel, DeleteError[AdmissionGQLModel]]:
+async def admission_delete(self, info: strawberry.types.Info, admission: AdmissionDeleteGQLModel) -> typing.Optional[DeleteError[AdmissionGQLModel]]:
     result = await Delete[AdmissionGQLModel].DoItSafeWay(info=info, entity=admission)
     return result
