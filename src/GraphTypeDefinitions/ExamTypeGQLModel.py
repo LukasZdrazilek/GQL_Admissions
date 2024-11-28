@@ -26,6 +26,8 @@ class ExamTypeGQLModel(BaseGQLModel):
             "admission_id": lambda row: row.admission_id,
             "data": lambda row: row.data,
             "unified_id": lambda row: row.unified_id,
+            "unified_name": lambda row: row.unified_name,
+            "unified_name_en": lambda row: row.unified_name_en,
         }
 
     @classmethod
@@ -38,8 +40,10 @@ class ExamTypeGQLModel(BaseGQLModel):
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
-    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type")
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types")
+    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type", default=None)
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types", default=None)
+    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
+    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam", default=None)
 
     @strawberry.field(description="The admission to which ExamType belong")
     async def admission(self, info: strawberry.types.Info) -> typing.Optional["AdmissionGQLModel"]:
@@ -111,8 +115,10 @@ class ExamTypeInsertGQLModel:
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
-    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type")
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types")
+    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type", default=None)
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types", default=None)
+    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
+    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam", default=None)
 
 
 from uoishelpers.resolvers import Insert, InsertError

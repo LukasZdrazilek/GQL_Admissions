@@ -17,7 +17,10 @@ class ExamTypeModel(BaseModel):
     max_score = Column(Float, comment="Maximum score of the exam type")
 
     data = Column(HSTORE, comment="Dictionary of an score table")
+
     unified_id = UnifiedUUIDColumn(comment="Unified ID of the exam type")
+    unified_name = Column(String, nullable=True, default=None, comment="Unified name of the exam")
+    unified_name_en = Column(String, nullable=True, default=None, comment="English unified name of the exam")
 
     admission_id = Column(ForeignKey("admissions.id"), nullable=False)
     admission = relationship("AdmissionModel", viewonly=True, uselist=False, lazy="joined")

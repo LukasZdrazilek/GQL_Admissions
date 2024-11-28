@@ -18,6 +18,8 @@ class ExamModel(BaseModel):
     exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
 
     unified_id = UnifiedUUIDColumn(comment="UUID used for unification of exams")
+    unified_name = Column(String, nullable=True, default=None, comment="Unified name of the exam")
+    unified_name_en = Column(String, nullable=True, default=None, comment="English unified name of the exam")
 
     # exam_results = relationship('ExamResultModel', back_populates='exam')
     # student_admissions = relationship('StudentAdmissionModel', secondary="student_exam_links", uselist=True, lazy="joined")

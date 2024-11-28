@@ -26,7 +26,9 @@ class ExamGQLModel(BaseGQLModel):
             "name_en": lambda row: row.name_en,
             "exam_date": lambda row: row.exam_date,
             "exam_type_id": lambda row: row.exam_type_id,
-            "unified_id": lambda row: row.unified_id
+            "unified_id": lambda row: row.unified_id,
+            "unified_name": lambda row: row.unified_name,
+            "unified_name_en": lambda row: row.unified_name_en,
         }
     
     @classmethod
@@ -34,11 +36,13 @@ class ExamGQLModel(BaseGQLModel):
         return getLoadersFromInfo(info).ExamModel
 
     id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type")
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type")
-    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam")
+    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
+    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams")
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams", default=None)
+    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
+    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam", default=None)
 
     @strawberry.field(description="Type of the exam")
     async def exam_type(self, info: strawberry.types.Info) -> typing.Optional["ExamTypeGQLModel"]:
@@ -105,7 +109,9 @@ class ExamInsertGQLModel:
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams")
+    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams", default=None)
+    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
+    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam", default=None)
 
 @strawberry.type(description="Result of a mutation for an exam")
 class ExamMutationResultGQLModel:
