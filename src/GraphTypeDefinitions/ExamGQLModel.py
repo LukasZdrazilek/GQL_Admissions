@@ -81,15 +81,18 @@ async def exam_page(self, info: strawberry.types.Info, skip: int = 0, limit: int
 
 @strawberry.input(description="Definition of an exam used for creation")
 class ExamInsertGQLModel:
-    id: uuid.UUID = strawberry.field(description="The ID of the exam")
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
-    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
-    exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type", default=None)
+    name: str = strawberry.field(description="Name of the exam type")
+    id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam", default="")
+    exam_type_id: typing.Optional[uuid.UUID] = strawberry.field(description="Foreign key to exam type", default="")
+
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default="")
+    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default="")
 
 @strawberry.input(description="Definition of an exam used for creation")
 class ExamUpdateGQLModel:
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
     id: uuid.UUID = strawberry.field(description="The ID of the exam")
+    
     name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
@@ -97,11 +100,8 @@ class ExamUpdateGQLModel:
 
 @strawberry.input(description="Definition of an exam used for creation")
 class ExamDeleteGQLModel:
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
     id: uuid.UUID = strawberry.field(description="The ID of the exam")
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
-    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
-    exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type", default=None)
 
 @strawberry.type(description="Result of a mutation for an exam")
 class ExamMutationResultGQLModel:

@@ -1,5 +1,6 @@
 import strawberry
 import uuid
+import datetime
 import typing
 import strawberry.types
 
@@ -62,24 +63,24 @@ async def exam_result_page(self, info: strawberry.types.Info, skip: int = 0, lim
 
 @strawberry.input(description="""Definition of an ExamResult used for creation""")
 class ExamResultInsertGQLModel:
-    id: typing.Optional[uuid.UUID] = strawberry.field()
-    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result")
+    id: typing.Optional[uuid.UUID] = strawberry.field(description="primary key", default="")
+    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result", default=0.0)
     exam_id: uuid.UUID = strawberry.field(description="The ID of the associated exam")
-    student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission", default=None)
+    student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission")
 
 @strawberry.input(description="""Definition of an ExamResult used for creation""")
 class ExamResultUpdateGQLModel:
-    id: typing.Optional[uuid.UUID] = strawberry.field()
-    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result")
-    exam_id: uuid.UUID = strawberry.field(description="The ID of the associated exam")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
+    id: uuid.UUID = strawberry.field(description="Primary key")
+
+    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result", default=None)
+    exam_id: uuid.UUID = strawberry.field(description="The ID of the associated exam", default=None)
     student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission", default=None)
 
 @strawberry.input(description="""Definition of an ExamResult used for creation""")
 class ExamResultDeleteGQLModel:
-    id: typing.Optional[uuid.UUID] = strawberry.field()
-    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result")
-    exam_id: uuid.UUID = strawberry.field(description="The ID of the associated exam")
-    student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission", default=None)
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
+    id: uuid.UUID = strawberry.field(description="Primary key")
 
 @strawberry.type(description="Result of a mutation for an exam result")
 class ExamResultMutationResultGQLModel:

@@ -68,30 +68,29 @@ async def exam_type_page(self, info: strawberry.types.Info, skip: int = 0, limit
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeInsertGQLModel:
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
-    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
-    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+    name: str = strawberry.field(description="Name of the exam type")
+    id: typing.Optional[uuid.UUID] = strawberry.field(description="primary key", default="")
+    admission_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the associated admission", default="")
+
+    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default="")
+    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=0.0)
+    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=0.0)
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeUpdateGQLModel:
-    id: uuid.UUID = strawberry.field()
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
+    id: uuid.UUID = strawberry.field(description="Primary key")
+    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+
     name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeDeleteGQLModel:
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
     id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
-    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
-    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
 
 @strawberry.type(description="Result of a mutation for an exam type")
 class ExamTypeMutationResultGQLModel:
