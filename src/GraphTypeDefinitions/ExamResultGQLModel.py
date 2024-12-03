@@ -21,6 +21,7 @@ class ExamResultGQLModel(BaseGQLModel):
             "score": lambda row: row.score,
             "exam_id": lambda row: row.exam_id,
             "student_admission_id": lambda row: row.student_admission_id,
+            "lastchange":lambda row: row.lastchange
         }
 
     @classmethod
@@ -31,6 +32,7 @@ class ExamResultGQLModel(BaseGQLModel):
     score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result")
     exam_id: uuid.UUID = strawberry.field(description="The ID of the associated exam")
     student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
 
     @strawberry.field(description="Exam associated with result")
     async def exam(self, info: strawberry.types.Info) -> typing.Optional["ExamGQLModel"]:

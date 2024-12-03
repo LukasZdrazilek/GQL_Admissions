@@ -26,6 +26,7 @@ class ExamGQLModel(BaseGQLModel):
             "name_en": lambda row: row.name_en,
             "exam_date": lambda row: row.exam_date,
             "exam_type_id": lambda row: row.exam_type_id,
+            "lastchange":lambda row: row.lastchange
         }
     
     @classmethod
@@ -37,6 +38,7 @@ class ExamGQLModel(BaseGQLModel):
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type")
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam")
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
 
     @strawberry.field(description="Type of the exam")
     async def exam_type(self, info: strawberry.types.Info) -> typing.Optional["ExamTypeGQLModel"]:

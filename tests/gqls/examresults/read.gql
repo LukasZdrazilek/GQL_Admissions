@@ -7,7 +7,16 @@ query ($id: UUID!) {
 
 fragment ExamResult on ExamResultGQLModel {
   id
-	score
+  lastchange
+  exam
+  {
+    name
+  }
+  score
   examId
   studentAdmissionId
+  studentAdmission
+  {
+    id
+  }
 }

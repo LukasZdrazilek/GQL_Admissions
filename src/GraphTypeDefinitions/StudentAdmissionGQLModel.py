@@ -21,6 +21,7 @@ class StudentAdmissionGQLModel(BaseGQLModel):
     def get_table_resolvers(cls):
         return {
             "id": lambda row: row.id,
+            "lastchange":lambda row: row.lastchange,
 
             "admission_id": lambda row: row.admission_id,
             "user_id": lambda row: row.user_id,
@@ -36,6 +37,7 @@ class StudentAdmissionGQLModel(BaseGQLModel):
         return getLoadersFromInfo(info).StudentAdmissionModel
 
     id: uuid.UUID = strawberry.field()
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
     admission_id: uuid.UUID = strawberry.field(description="UUID of an admission")
     user_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a user")
     state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state")

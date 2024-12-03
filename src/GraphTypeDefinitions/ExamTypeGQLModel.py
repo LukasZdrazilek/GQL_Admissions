@@ -20,6 +20,8 @@ class ExamTypeGQLModel(BaseGQLModel):
             "min_score": lambda row: row.min_score,
             "max_score": lambda row: row.max_score,
             "admission_id": lambda row: row.admission_id,
+            "lastchange":lambda row: row.lastchange
+
         }
 
     @classmethod
@@ -32,6 +34,7 @@ class ExamTypeGQLModel(BaseGQLModel):
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
 
     @strawberry.field(description="The admission to which ExamType belong")
     async def admission(self, info: strawberry.types.Info) -> typing.Optional["AdmissionGQLModel"]:
