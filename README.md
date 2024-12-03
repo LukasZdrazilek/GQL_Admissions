@@ -40,6 +40,8 @@ ________________________________________________________________________
 
 - [ ] Dokončit Payments
 
+- [ ] Dodělat testy
+
 
 ________________________________________________________________________
 
@@ -86,6 +88,10 @@ __26.11.2024__ práce na Disciplínách a linku
 __27.11.2024__ práce na SECRET datatypu, UUUID, implementace nových UPDATE a DELETE funkcí
 
 __28.11.2024__ dokončení DELETE operací, práce na UUUID
+
+__2.12.2024__ úprava GQL modelů dle vzoru
+
+__3.12.2024__ konzultace, počáteční práce na testech
 
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
