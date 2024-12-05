@@ -10,12 +10,6 @@ ________________________________________________________________________
   <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fpbs.twimg.com%2Fmedia%2FDcXYPtOVAAAoOKa.jpg&f=1&nofb=1&ipt=0fc47f721244bc99d0a6437e702c8b96f4e700beec4126987c92975e234f23e9&ipo=images" style="width: 30%">
 </div>
 
-
-## Progress of work
-- [x]  15.11. Dokončeny READ operace na GQL modelech, chybí Link
-- [x]  19.11. Dokončeny CREATE operace na GQL modelech
-
-
 ## Aktuální úkoly
 
 - [x] Fork hrbolek/gql_events jako template pro naše Admissions a nasdílet
@@ -92,6 +86,8 @@ __28.11.2024__ dokončení DELETE operací, práce na UUUID
 __2.12.2024__ úprava GQL modelů dle vzoru
 
 __3.12.2024__ konzultace, počáteční práce na testech
+
+__5.12.2024__ dokončení test queries, příprava na projektový den
 
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
