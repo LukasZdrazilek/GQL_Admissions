@@ -90,7 +90,7 @@ async def studentadmission_page(self, info: strawberry.types.Info, skip: int = 0
 class StudentAdmissionInsertGQLModel:
     id: typing.Optional[uuid.UUID] = strawberry.field(description="primary key", default="")
     admission_id: uuid.UUID = strawberry.field(description="UUID of an admission")
-    user_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a user", default="")
+    user_id: uuid.UUID = strawberry.field(description="UUID of a user", default="")
     state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state", default="")
 
     extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition", default="")

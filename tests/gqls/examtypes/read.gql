@@ -1,0 +1,27 @@
+query ReadExamType($id: UUID!) {
+  result: examTypeById(id: $id) {
+    __typename
+    ...ExamType
+  }
+}
+
+fragment ExamType on ExamTypeGQLModel {
+  id
+  lastchange
+  name
+  nameEn
+  minScore
+  maxScore
+  admissionId
+  admission
+  {
+    id
+    name
+  }
+  exams
+  {
+    id
+    name
+    examDate
+  }
+}

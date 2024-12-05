@@ -1,0 +1,21 @@
+mutation AddExamType($id: UUID, $name: String!, $name_en: String, $min_score: Float, $max_score: Float, $admission_id: UUID) {
+  examTypeInsert(
+    examType: {
+      id: $id
+    	name: $name
+      nameEn: $name_en
+      minScore: $min_score
+      maxScore: $max_score
+      admissionId: $admission_id  
+    }
+  ) {
+    __typename
+    ...Error
+  }
+}
+
+fragment Error on InsertError{
+  msg
+  input
+  failed
+}

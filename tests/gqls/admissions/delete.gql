@@ -1,0 +1,20 @@
+mutation deleteAdmission($id: UUID!,$lastchange: DateTime!) {
+  admissionDelete(admission:
+  {
+ 		id: $id,
+    lastchange: $lastchange
+  }){
+    __typename
+    ...E
+  }
+}
+
+fragment E on AdmissionGQLModelDeleteError
+{
+  msg
+  input
+  Entity {
+    id
+    lastchange
+  }
+}

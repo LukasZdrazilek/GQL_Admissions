@@ -148,6 +148,8 @@ class AdmissionUpdateGQLModel:
     
     name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
+    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="stav přijímacího řízení", default="")
+    program_id: typing.Optional[uuid.UUID] = strawberry.field(description="Foreign key referencing the associated course", default="")
     application_start_date: typing.Optional[datetime.datetime] = strawberry.field(
         description="Od kdy lze podat prihlasku", default=None)
     application_last_date: typing.Optional[datetime.datetime] = strawberry.field(

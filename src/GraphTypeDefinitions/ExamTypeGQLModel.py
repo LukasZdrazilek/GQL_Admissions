@@ -83,7 +83,7 @@ class ExamTypeInsertGQLModel:
 class ExamTypeUpdateGQLModel:
     lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
     id: uuid.UUID = strawberry.field(description="Primary key")
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+    #admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
 
     name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
