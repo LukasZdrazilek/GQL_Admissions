@@ -1,11 +1,14 @@
 import pytest
 import logging
-import uuid
-import sqlalchemy
-import json
-import datetime
+from .gt_utils import (
+    createByIdTest2,
+    createUpdateTest2,
+    createTest2,
+    createDeleteTest2,
+    getQuery
+)
 
-
+# Initial Environment Validation
 myquery = """
 {
   me {
@@ -22,114 +25,390 @@ myquery = """
 
 @pytest.mark.asyncio
 async def test_result_test(NoRole_UG_Server):
-    # response = {}
     response = await NoRole_UG_Server(query=myquery, variables={})
+    assert "data" in response, f"Expected 'data' in response, got: {response}"
+    assert response["data"]["me"] is not None, "Expected 'me' field in response data"
+    logging.info(f"User data: {response}")
+
+
+# MOZNA POUZIT NA ZISKANI LASTCHANGE U UPDATE A DELETE, ZATIM NEVIM JAK TO BUDE BRAT
+async def get_lastchange(SchemaExecutorDemo, tableName, entity_id):
+    """
+    Fetch the latest 'lastchange' value for a given entity.
+    This ensures the most up-to-date value is used for update or delete operations.
     
-    print("response", response, flush=True)
-    logging.info(f"response {response}")
-    pass
+    :param SchemaExecutorDemo: The executor for sending GraphQL queries.
+    :param tableName: The name of the table/model being queried.
+    :param entity_id: The UUID of the entity whose 'lastchange' value is to be fetched.
+    :return: The 'lastchange' value as a string.
+    """
+    queryRead = getQuery(tableName=tableName, queryName="read")
+    response = await SchemaExecutorDemo(query=queryRead, variable_values={"id": entity_id})
+    responseData = response.get("data", {})
+    entity = responseData.get("result")
+    assert entity is not None, f"Entity not found: {response}"
+    lastchange = entity.get("lastchange")
+    assert lastchange is not None, f"'lastchange' is missing in the fetched entity: {entity}"
+    return lastchange
 
-from .gt_utils import (
-    getQuery,
 
-    createByIdTest2, 
-    createUpdateTest2, 
-    createTest2, 
-    createDeleteTest2
-)
+################################################################ Admission CRUD Tests
 
-test_facility_by_id = createByIdTest2(tableName="facilities")
-test_facility_coverage = createByIdTest2(tableName="facilities", queryName="coverage")
-test_facility_update = createUpdateTest2(tableName="facilities", variables={"name": "newname"})
-test_facility_create = createTest2(tableName="facilities", queryName="create", variables={"name": "newname"})
-test_facility_delete = createDeleteTest2(tableName="facilities", variables={"id": "18375c23-767c-4c1e-adb6-9b2beb463533", "name": "newname"})
-
-test_facility_type_by_id = createByIdTest2(tableName="facilitytypes")
-# test_facility_type_page = createTest2(tableName="facilitytypes", queryName="readp")
-test_facility_type_create = createTest2(tableName="facilitytypes", queryName="create", variables={"name": "newname"})
-test_facility_type_update = createUpdateTest2(tableName="facilitytypes", variables={"name": "newname"})
-test_facility_type_delete = createDeleteTest2(tableName="facilitytypes", variables={"name": "newname"})
-
-test_reservation = createByIdTest2(tableName="facilities_events", variables={"id": "7dcf3d10-3a41-4c36-9700-99d885a1e474"})
-test_reservation_create = createTest2(
-    tableName="facilities_events", 
+# Create Admission
+test_admission_create = createTest2(
+    tableName="admissions",
     queryName="create",
     variables={
-        "id": "bab05e55-3f92-40b5-9272-4b66a368138f", 
-        "facility_id": "7dcf3d10-3a41-4c36-9700-99d885a1e474",
-        "event_id": "a64871f8-2308-48ff-adb2-33fb0b0741f1",
-        "state_id": "1639d8f7-f949-4a23-b93c-9bb96128b54f"
-        }
-    )
-
-@pytest.mark.asyncio
-async def test_reservation_update(SchemaExecutorDemo):
-    tableName="facilities_events"
-    variables={
-        "id": "e622232d-e34d-4efc-8094-74ace62c7989",
-        "facility_id": "7dcf3d10-3a41-4c36-9700-99d885a1e474",
-        "state_id": "83e7e264-464d-47ce-8ccd-a5b962fdeed4"
-    }
-    queryRead = getQuery(tableName=tableName, queryName="read")
-    queryUpdate = getQuery(tableName=tableName, queryName="update")
-    _variables = variables
-
-    variable_values = {**variables}
-    variable_values["id"] = variables["facility_id"]
-    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values=variable_values)
-    responseData = responseJson.get("data")
-    assert responseData is not None, f"got no data while asking for lastchange atribute {responseJson}"
-    
-    [responseEntity, *_] = responseData.values()
-    assert responseEntity is not None, f"got no entity while asking for lastchange atribute {responseJson}"
-    reservations = responseEntity["reservations"]
-    reservation = next(filter(lambda r: r["id"] == variables["id"], reservations), None)
-    assert reservation is not None, f"reservation not found {reservations}"
-    lastchange = reservation.get("lastchange", None)
-    assert lastchange is not None, f"query read for table {tableName} is not asking for lastchange which is needed"
-    _variables["lastchange"] = lastchange
-    responseJson = await SchemaExecutorDemo(query=queryUpdate, variable_values=_variables)
-    assert "errors" not in responseJson, f"update failed {responseJson}"
-    logging.info(f"query for {queryUpdate} with {_variables}, no tested response")
-
-    pass
-
-@pytest.mark.asyncio
-async def test_reservation_delete(SchemaExecutorDemo):
-    tableName="facilities_events"
-    variables={
-        "id": "e622232d-e34d-4efc-8094-74ace62c7989",
-        "facility_id": "7dcf3d10-3a41-4c36-9700-99d885a1e474",
-        "state_id": "83e7e264-464d-47ce-8ccd-a5b962fdeed4"
-    }
-    queryRead = getQuery(tableName=tableName, queryName="read")
-    queryDelete = getQuery(tableName=tableName, queryName="delete")
-    _variables = variables
-
-    variable_values = {**variables}
-    variable_values["id"] = variables["facility_id"]
-    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values=variable_values)
-    responseData = responseJson.get("data")
-    assert responseData is not None, f"got no data while asking for lastchange atribute {responseJson}"
-    
-    [responseEntity, *_] = responseData.values()
-    assert responseEntity is not None, f"got no entity while asking for lastchange atribute {responseJson}"
-    reservations = responseEntity["reservations"]
-    reservation = next(filter(lambda r: r["id"] == variables["id"], reservations), None)
-    assert reservation is not None, f"reservation not found {reservations}"
-    lastchange = reservation.get("lastchange", None)
-    assert lastchange is not None, f"query read for table {tableName} is not asking for lastchange which is needed"
-    _variables["lastchange"] = lastchange
-    responseJson = await SchemaExecutorDemo(query=queryDelete, variable_values=_variables)
-    assert "errors" not in responseJson, f"update failed {responseJson}"
-    logging.info(f"query for {queryDelete} with {_variables}, no tested response")
-
-    pass
-
-text_event_resolve_reference = createTest2(
-    tableName="events",
-    queryName="resolve_reference",
-    variables={
-        "id": "a64871f8-2308-48ff-adb2-33fb0b0741f1"
+        "name": "New Admission",
+        "name_en": "New Admission EN",
+        "state_id": "state-id",
+        "program_id": "program-id",
+        "application_start_date": "2024-01-01T00:00:00",
+        "application_last_date": "2024-02-01T00:00:00",
+        "end_date": "2024-06-01T00:00:00",
+        "condition_date": "2024-05-01T00:00:00"
     }
 )
+
+# Read Admission by ID
+test_admission_by_id = createByIdTest2(tableName="admissions")
+
+# Update Admission
+test_admission_update = createUpdateTest2(
+    tableName="admissions",
+    variables={
+        "id": "admission-id",
+        "lastchange": "2024-01-01T00:00:00",
+        "name": "Updated Admission Name",
+        "name_en": "Updated Admission EN"
+    }
+)
+
+# Delete Admission
+test_admission_delete = createDeleteTest2(
+    tableName="admissions",
+    variables={
+        "id": "admission-id",
+        "lastchange": "2024-01-01T00:00:00"
+    }
+)
+
+# Custom Tests
+@pytest.mark.asyncio
+async def test_admission_invalid_date_range(SchemaExecutorDemo):
+    variables = {
+        "name": "Admission with Invalid Dates",
+        "application_start_date": "2024-02-01T00:00:00",
+        "application_last_date": "2024-01-01T00:00:00"
+    }
+    query = getQuery(tableName="admissions", queryName="create")
+    response = await SchemaExecutorDemo(query=query, variable_values=variables)
+    assert "errors" in response, f"Expected errors for invalid date range: {response}"
+
+@pytest.mark.asyncio
+async def test_admission_delete_with_validation(SchemaExecutorDemo):
+    tableName = "admissions"
+    variables = {
+        "id": "admission-id",
+        "lastchange": "2024-01-01T00:00:00"
+    }
+    queryRead = getQuery(tableName=tableName, queryName="read")
+    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": variables["id"]})
+    admission = responseJson.get("data", {}).get("result")
+    assert admission is not None, f"Admission not found: {responseJson}"
+
+    variables["lastchange"] = admission["lastchange"]
+    queryDelete = getQuery(tableName=tableName, queryName="delete")
+    responseJson = await SchemaExecutorDemo(query=queryDelete, variable_values=variables)
+    assert "errors" not in responseJson, f"Delete failed: {responseJson}"
+    logging.info(f"Successfully deleted admission: {responseJson}")
+
+    ################################################################################## Exam CRUD Tests
+
+    # Create Admission
+test_admission_create = createTest2(
+    tableName="admissions",
+    queryName="create",
+    variables={
+        "name": "New Admission",
+        "name_en": "New Admission EN",
+        "state_id": "state-id",
+        "program_id": "program-id",
+        "application_start_date": "2024-01-01T00:00:00",
+        "application_last_date": "2024-02-01T00:00:00",
+        "end_date": "2024-06-01T00:00:00",
+        "condition_date": "2024-05-01T00:00:00"
+    }
+)
+
+# Read Admission by ID
+test_admission_by_id = createByIdTest2(tableName="admissions")
+
+# Update Admission
+test_admission_update = createUpdateTest2(
+    tableName="admissions",
+    variables={
+        "id": "admission-id",
+        "lastchange": "2024-01-01T00:00:00",
+        "name": "Updated Admission Name",
+        "name_en": "Updated Admission EN"
+    }
+)
+
+# Delete Admission
+test_admission_delete = createDeleteTest2(
+    tableName="admissions",
+    variables={
+        "id": "admission-id",
+        "lastchange": "2024-01-01T00:00:00"
+    }
+)
+
+@pytest.mark.asyncio
+async def test_exam_invalid_exam_type(SchemaExecutorDemo):
+    variables = {
+        "name": "Invalid Type Exam",
+        "exam_date": "2024-03-15T10:00:00",
+        "exam_type_id": "non-existent-id"
+    }
+    query = getQuery(tableName="exams", queryName="create")
+    response = await SchemaExecutorDemo(query=query, variable_values=variables)
+    assert "errors" in response, f"Expected errors for invalid exam type: {response}"
+
+@pytest.mark.asyncio
+async def test_exam_delete_with_results(SchemaExecutorDemo):
+    tableName = "exams"
+    variables = {
+        "id": "exam-with-results-id",
+        "lastchange": "2024-03-15T10:00:00"
+    }
+
+    queryRead = getQuery(tableName=tableName, queryName="read")
+    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": variables["id"]})
+    exam = responseJson.get("data", {}).get("result")
+    assert exam is not None, f"Exam not found: {responseJson}"
+
+    assert len(exam["examResults"]) > 0, "Expected exam to have results but found none"
+
+    queryDelete = getQuery(tableName=tableName, queryName="delete")
+    responseJson = await SchemaExecutorDemo(query=queryDelete, variable_values=variables)
+    assert "errors" in responseJson, "Exam with results should not be deletable"
+    logging.info(f"Delete attempt failed as expected: {responseJson}")
+
+    ########################################################################## Exam Results CRUD Tests
+
+    # Exam Results Tests
+test_exam_result_create = createTest2(
+    tableName="exam_results",
+    queryName="create",
+    variables={
+        "score": 95.5,
+        "exam_id": "exam-id",
+        "student_admission_id": "student-admission-id"
+    }
+)
+
+test_exam_result_by_id = createByIdTest2(
+    tableName="exam_results"
+)
+
+test_exam_result_update = createUpdateTest2(
+    tableName="exam_results",
+    variables={
+        "id": "exam-result-id",
+        "lastchange": "2024-03-15T10:00:00",
+        "score": 89.0,
+        "exam_id": "updated-exam-id",
+        "student_admission_id": "updated-student-admission-id"
+    }
+)
+
+test_exam_result_delete = createDeleteTest2(
+    tableName="exam_results",
+    variables={
+        "id": "exam-result-id",
+        "lastchange": "2024-03-15T10:00:00"
+    }
+)
+
+@pytest.mark.asyncio
+async def test_exam_result_relationships(SchemaExecutorDemo):
+    exam_result_id = "valid-exam-result-id"
+    query = getQuery(tableName="exam_results", queryName="read")
+    responseJson = await SchemaExecutorDemo(query=query, variable_values={"id": exam_result_id})
+    result = responseJson.get("data", {}).get("result")
+    assert result is not None, f"ExamResult not found: {responseJson}"
+    assert result["exam"] is not None, f"Expected exam relationship, found: {result['exam']}"
+    assert result["studentAdmission"] is not None, f"Expected studentAdmission relationship, found: {result['studentAdmission']}"
+
+@pytest.mark.asyncio
+async def test_exam_result_delete_restricted(SchemaExecutorDemo):
+    variables = {
+        "id": "linked-exam-result-id",
+        "lastchange": "2024-03-15T10:00:00"
+    }
+    queryDelete = getQuery(tableName="exam_results", queryName="delete")
+    responseJson = await SchemaExecutorDemo(query=queryDelete, variable_values=variables)
+    assert "errors" in responseJson, "Expected deletion to fail due to dependencies"
+    logging.info(f"Deletion restricted as expected: {responseJson}")
+
+@pytest.mark.asyncio
+async def test_exam_result_invalid_foreign_keys(SchemaExecutorDemo):
+    variables = {
+        "score": 90.0,
+        "exam_id": "invalid-exam-id",
+        "student_admission_id": "invalid-student-admission-id"
+    }
+    queryCreate = getQuery(tableName="exam_results", queryName="create")
+    responseJson = await SchemaExecutorDemo(query=queryCreate, variable_values=variables)
+    assert "errors" in responseJson, f"Expected errors for invalid foreign keys: {responseJson}"
+
+    ############################################################################## Exam Types CRUD Tests
+
+# Exam Types Tests
+test_exam_type_create = createTest2(
+    tableName="exam_types",
+    queryName="create",
+    variables={
+        "name": "Midterm Exam Type",
+        "name_en": "Midterm Exam Type EN",
+        "min_score": 50.0,
+        "max_score": 100.0,
+        "admission_id": "admission-id"  # Replace with a valid UUID
+    }
+)
+
+test_exam_type_by_id = createByIdTest2(
+    tableName="exam_types"
+)
+
+test_exam_type_update = createUpdateTest2(
+    tableName="exam_types",
+    variables={
+        "id": "exam-type-id",
+        "lastchange": "2024-01-01T00:00:00",  # Placeholder
+        "name": "Updated Exam Type",
+        "name_en": "Updated Exam Type EN",
+        "min_score": 55.0,
+        "max_score": 95.0
+    }
+)
+
+test_exam_type_delete = createDeleteTest2(
+    tableName="exam_types",
+    variables={
+        "id": "exam-type-id",
+        "lastchange": "2024-01-01T00:00:00"  # Placeholder
+    }
+)
+
+@pytest.mark.asyncio
+async def test_exam_type_admission_relationship(SchemaExecutorDemo):
+    tableName = "exam_types"
+    entity_id = "exam-type-id"
+
+    queryRead = getQuery(tableName=tableName, queryName="read")
+    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": entity_id})
+    result = responseJson.get("data", {}).get("result")
+    assert result is not None, f"ExamType not found: {responseJson}"
+    admission = result.get("admission")
+    assert admission is not None, f"Expected admission relationship, found: {admission}"
+
+@pytest.mark.asyncio
+async def test_exam_type_delete_with_exams(SchemaExecutorDemo):
+    tableName = "exam_types"
+    entity_id = "exam-type-with-exams-id"
+
+    variables = {
+        "id": entity_id,
+        "lastchange": "2024-01-01T00:00:00"  # Placeholder
+    }
+    queryDelete = getQuery(tableName=tableName, queryName="delete")
+    responseJson = await SchemaExecutorDemo(query=queryDelete, variable_values=variables)
+    assert "errors" in responseJson, "Expected deletion to fail due to linked exams"
+
+
+    ############################################################################ Student Admissions CRUD Tests
+
+# Student Admissions Tests
+test_student_admission_create = createTest2(
+    tableName="student_admissions",
+    queryName="create",
+    variables={
+        "admission_id": "admission-id",
+        "user_id": "user-id",
+        "state_id": "state-id",
+        "extended_condition_date": "2024-03-20T10:00:00",
+        "admissioned": True,
+        "enrollment_date": "2024-03-25T10:00:00"
+    }
+)
+
+test_student_admission_by_id = createByIdTest2(
+    tableName="student_admissions"
+)
+
+test_student_admission_update = createUpdateTest2(
+    tableName="student_admissions",
+    variables={
+        "id": "student-admission-id",
+        "lastchange": "2024-01-01T00:00:00",
+        "admission_id": "updated-admission-id",
+        "user_id": "updated-user-id",
+        "state_id": "updated-state-id",
+        "extended_condition_date": "2024-04-01T10:00:00",
+        "admissioned": False,
+        "enrollment_date": "2024-04-05T10:00:00"
+    }
+)
+
+test_student_admission_delete = createDeleteTest2(
+    tableName="student_admissions",
+    variables={
+        "id": "student-admission-id",
+        "lastchange": "2024-01-01T00:00:00"
+    }
+)
+
+@pytest.mark.asyncio
+async def test_student_admission_admission_relationship(SchemaExecutorDemo):
+    tableName = "student_admissions"
+    entity_id = "student-admission-id"
+
+    queryRead = getQuery(tableName=tableName, queryName="read")
+    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": entity_id})
+    result = responseJson.get("data", {}).get("result")
+    assert result is not None, f"StudentAdmission not found: {responseJson}"
+    admission = result.get("admission")
+    assert admission is not None, f"Expected admission relationship, found: {admission}"
+
+@pytest.mark.asyncio
+async def test_student_admission_delete_with_exam_results(SchemaExecutorDemo):
+    tableName = "student_admissions"
+    entity_id = "student-admission-with-exam-results-id"
+
+    variables = {
+        "id": entity_id,
+        "lastchange": "2024-01-01T00:00:00"
+    }
+    queryDelete = getQuery(tableName=tableName, queryName="delete")
+    responseJson = await SchemaExecutorDemo(query=queryDelete, variable_values=variables)
+    assert "errors" in responseJson, "Expected deletion to fail due to linked exam results"
+
+@pytest.mark.asyncio
+async def test_student_admission_exams_and_results(SchemaExecutorDemo):
+    tableName = "student_admissions"
+    entity_id = "student-admission-id"
+
+    queryRead = getQuery(tableName=tableName, queryName="read")
+    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": entity_id})
+    result = responseJson.get("data", {}).get("result")
+    assert result is not None, f"StudentAdmission not found: {responseJson}"
+
+    exams = result.get("exams", [])
+    assert len(exams) > 0, "Expected at least one linked exam"
+    logging.info(f"Linked exams: {exams}")
+
+    examResults = result.get("examResults", [])
+    assert len(examResults) > 0, "Expected at least one exam result"
+    logging.info(f"Exam results validated: {examResults}")
