@@ -22,6 +22,7 @@ mutation UpdateAdmission($lastchange: DateTime!, $id: UUID!, $name: String, $nam
   ) {
     __typename
     ...Error
+    ...Admission
   }
 }
 
@@ -34,4 +35,24 @@ fragment Error on AdmissionGQLModelUpdateError {
     lastchange
   }
   
+}
+
+fragment Admission on AdmissionGQLModel {
+  id
+  lastchange
+  name  
+  nameEn
+  stateId
+  programId
+  applicationStartDate
+  applicationLastDate
+  endDate
+  conditionDate
+  requestConditionStartDate
+  requestConditionLastDate
+  requestExamStartDate
+  requestExamLastDate
+  paymentDate
+  requestEnrollmentStartDate
+  requestEnrollmentEndDate
 }

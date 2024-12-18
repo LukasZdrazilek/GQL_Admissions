@@ -12,6 +12,7 @@ mutation AddStudentAdmission($id: UUID, $admission_id: UUID!, $user_id: UUID, $s
   ) {
     __typename
     ...Error
+    ...FE
   }
 }
 
@@ -19,4 +20,15 @@ fragment Error on InsertError{
   msg
   input
   failed
+}
+
+fragment FE on StudentAdmissionGQLModel{
+  lastchange
+  id
+  admissionId
+  userId
+  stateId
+  extendedConditionDate
+  admissioned
+  enrollmentDate
 }

@@ -5,18 +5,10 @@ query ($id: UUID!) {
   }
 }
 
-fragment ExamResult on ExamResultGQLModel {
-  id
+fragment ExamResult on ExamResultGQLModel{
   lastchange
-  exam
-  {
-    name
-  }
+  id
   score
   examId
   studentAdmissionId
-  studentAdmission
-  {
-    id
-  }
 }

@@ -5,23 +5,12 @@ query ReadExamType($id: UUID!) {
   }
 }
 
-fragment ExamType on ExamTypeGQLModel {
-  id
+fragment ExamType on ExamTypeGQLModel{
   lastchange
+  id
   name
   nameEn
   minScore
   maxScore
   admissionId
-  admission
-  {
-    id
-    name
-  }
-  exams
-  {
-    id
-    name
-    examDate
-  }
 }

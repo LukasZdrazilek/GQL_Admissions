@@ -32,6 +32,7 @@ fragment Error on InsertError{
 }
 
 fragment FE on AdmissionGQLModel{
+  lastchange
   id
   name
   nameEn

@@ -1,0 +1,16 @@
+query{
+  result: examTypePage{
+    __typename
+    ...ExamType
+  }
+}
+
+fragment ExamType on ExamTypeGQLModel{
+  lastchange
+  id
+  name
+  nameEn
+  minScore
+  maxScore
+  admissionId
+}

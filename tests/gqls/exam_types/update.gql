@@ -11,6 +11,7 @@ mutation UpdateExamType($lastchange: DateTime!, $id: UUID!, $name: String, $name
   ) {
     __typename
     ...Error
+    ...ExamType
   }
 }
 
@@ -18,4 +19,18 @@ fragment Error on ExamTypeGQLModelUpdateError {
   msg
   input
   failed
+  Entity
+  {
+    lastchange
+  }
+}
+
+fragment ExamType on ExamTypeGQLModel{
+  lastchange
+  id
+  name
+  nameEn
+  minScore
+  maxScore
+  admissionId
 }

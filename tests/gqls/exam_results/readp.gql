@@ -1,0 +1,14 @@
+query {
+  result: examResultPage {
+    __typename
+    ...ExamResult
+  }
+}
+
+fragment ExamResult on ExamResultGQLModel{
+  lastchange
+  id
+  score
+  examId
+  studentAdmissionId
+}

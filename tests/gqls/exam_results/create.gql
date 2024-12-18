@@ -21,6 +21,7 @@ fragment Error on InsertError{
 }
 
 fragment FE on ExamResultGQLModel{
+  lastchange
   id
   score
   examId

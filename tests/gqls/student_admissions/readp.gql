@@ -1,0 +1,17 @@
+query{
+  result: studentadmissionPage {
+    __typename
+    ...StudentAdmission
+  }
+}
+
+fragment StudentAdmission on StudentAdmissionGQLModel{
+  lastchange
+  id
+  admissionId
+  userId
+  stateId
+  extendedConditionDate
+  admissioned
+  enrollmentDate
+}

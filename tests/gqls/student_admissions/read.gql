@@ -1,0 +1,17 @@
+query ReadStudentAdmission($id: UUID!) {
+  result: studentadmissionById(id: $id) {
+    __typename
+    ...StudentAdmission
+  }
+}
+
+fragment StudentAdmission on StudentAdmissionGQLModel{
+  lastchange
+  id
+  admissionId
+  userId
+  stateId
+  extendedConditionDate
+  admissioned
+  enrollmentDate
+}

@@ -36,7 +36,7 @@ def runOauth(port, resolvers):
     _api_process.start()
     # time.sleep(2)
     logging.info(f"OAuthServer started at {port}")
-    
+    time.sleep(1)
     yield _api_process
     _api_process.terminate()
     _api_process.join()
@@ -148,10 +148,10 @@ async def Context():
     monkeypatch = pytest.MonkeyPatch()
     monkeypatch.setenv("DEMODATA", "True")
 
-    from src.DBFeeder import initDB
+    from src.utils.DBFeeder import initDB
     await initDB(asyncSessionMaker=async_session_maker, filename="./systemdata.json")
     # context
-    from Dataloaders import createLoadersContext
+    from src.utils.Dataloaders import createLoadersContext
     loadersContext = createLoadersContext(asyncSessionMaker=async_session_maker)
     # ...
 

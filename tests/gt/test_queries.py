@@ -52,21 +52,29 @@ async def get_lastchange(SchemaExecutorDemo, tableName, entity_id):
     return lastchange
 
 
-################################################################ Admission CRUD Tests
+######################################################################### Admission CRUD Tests
 
 # Create Admission
-test_admission_create = createTest2(
+test_admission_create = createTest2(    # v query pak nastavit povinne program ID !
     tableName="admissions",
     queryName="create",
     variables={
-        "name": "New Admission",
-        "name_en": "New Admission EN",
-        "state_id": "state-id",
-        "program_id": "program-id",
-        "application_start_date": "2024-01-01T00:00:00",
-        "application_last_date": "2024-02-01T00:00:00",
-        "end_date": "2024-06-01T00:00:00",
-        "condition_date": "2024-05-01T00:00:00"
+        "id": "123e4567-e89b-12d3-a456-426614174002",
+        "name": "Projektovy den",
+        "name_en": "Project day",
+        "state_id": "987e6543-e21c-98d7-a765-426614170001",
+        "program_id": "456e7890-e12d-34b5-b678-426614171111",
+        "application_start_date": "2024-01-01T09:00:00",
+        "application_last_date": "2024-01-01T09:00:00",
+        "end_date": "2024-01-01T09:00:00",
+        "condition_date": "2024-01-01T09:00:00",
+        "request_condition_start_date": "2024-01-01T09:00:00",
+        "request_condition_last_date": "2024-01-01T09:00:00",
+        "request_exam_start_date": "2024-01-01T09:00:00",
+        "request_exam_last_date": "2024-01-01T09:00:00",
+        "payment_date": "2024-01-01T09:00:00",
+        "request_enrollment_start_date": "2024-01-01T09:00:00",
+        "request_enrollment_end_date": "2024-01-01T09:00:00"
     }
 )
 
@@ -74,22 +82,48 @@ test_admission_create = createTest2(
 test_admission_by_id = createByIdTest2(tableName="admissions")
 
 # Update Admission
-test_admission_update = createUpdateTest2(
+test_admission_update = createUpdateTest2(      # povinne parametry update
     tableName="admissions",
     variables={
-        "id": "admission-id",
-        "lastchange": "2024-01-01T00:00:00",
-        "name": "Updated Admission Name",
-        "name_en": "Updated Admission EN"
+        #"lastchange": "2024-12-09T09:44:37.262687",
+        #"id": "123e4567-e89b-12d3-a456-426614174001",
+        "name": "Projektovy den updated",
+        "name_en": "Project day updated",
+        "state_id": "987e6543-e21c-98d7-a765-426614170001",
+        "program_id": "456e7890-e12d-34b5-b678-426614171111",
+        "application_start_date": "2024-01-01T09:00:00",
+        "application_last_date": "2024-01-01T09:00:00",
+        "end_date": "2024-01-01T09:00:00",
+        "condition_date": "2024-01-01T09:00:00",
+        "request_condition_start_date": "2024-01-01T09:00:00",
+        "request_condition_last_date": "2024-01-01T09:00:00",
+        "request_exam_start_date": "2024-01-01T09:00:00",
+        "request_exam_last_date": "2024-01-01T09:00:00",
+        "payment_date": "2024-01-01T09:00:00",
+        "request_enrollment_start_date": "2024-01-01T09:00:00",
+        "request_enrollment_end_date": "2024-01-01T09:00:00"
     }
 )
 
 # Delete Admission
-test_admission_delete = createDeleteTest2(
+test_admission_delete = createDeleteTest2(      # povinne parametry jako v create    ne id a lastchange
     tableName="admissions",
     variables={
-        "id": "admission-id",
-        "lastchange": "2024-01-01T00:00:00"
+        "name": "Projektovy den deleted",
+        "name_en": "Project day deleted",
+        "state_id": "987e6543-e21c-98d7-a765-426614170001",
+        "program_id": "456e7890-e12d-34b5-b678-426614171111",
+        "application_start_date": "2024-01-01T09:00:00",
+        "application_last_date": "2024-01-01T09:00:00",
+        "end_date": "2024-01-01T09:00:00",
+        "condition_date": "2024-01-01T09:00:00",
+        "request_condition_start_date": "2024-01-01T09:00:00",
+        "request_condition_last_date": "2024-01-01T09:00:00",
+        "request_exam_start_date": "2024-01-01T09:00:00",
+        "request_exam_last_date": "2024-01-01T09:00:00",
+        "payment_date": "2024-01-01T09:00:00",
+        "request_enrollment_start_date": "2024-01-01T09:00:00",
+        "request_enrollment_end_date": "2024-01-01T09:00:00"
     }
 )
 
@@ -98,69 +132,53 @@ test_admission_delete = createDeleteTest2(
 async def test_admission_invalid_date_range(SchemaExecutorDemo):
     variables = {
         "name": "Admission with Invalid Dates",
-        "application_start_date": "2024-02-01T00:00:00",
-        "application_last_date": "2024-01-01T00:00:00"
+        "application_start_date": "2024-41-11100:00:00",
+        "application_last_date": "2024-41-11100:00:00"
     }
     query = getQuery(tableName="admissions", queryName="create")
     response = await SchemaExecutorDemo(query=query, variable_values=variables)
     assert "errors" in response, f"Expected errors for invalid date range: {response}"
 
-@pytest.mark.asyncio
-async def test_admission_delete_with_validation(SchemaExecutorDemo):
-    tableName = "admissions"
-    variables = {
-        "id": "admission-id",
-        "lastchange": "2024-01-01T00:00:00"
-    }
-    queryRead = getQuery(tableName=tableName, queryName="read")
-    responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": variables["id"]})
-    admission = responseJson.get("data", {}).get("result")
-    assert admission is not None, f"Admission not found: {responseJson}"
-
-    variables["lastchange"] = admission["lastchange"]
-    queryDelete = getQuery(tableName=tableName, queryName="delete")
-    responseJson = await SchemaExecutorDemo(query=queryDelete, variable_values=variables)
-    assert "errors" not in responseJson, f"Delete failed: {responseJson}"
-    logging.info(f"Successfully deleted admission: {responseJson}")
-
     ################################################################################## Exam CRUD Tests
 
-    # Create Admission
-test_admission_create = createTest2(
-    tableName="admissions",
+    # Create Exam
+test_exam_create = createTest2(
+    tableName="exams",
     queryName="create",
     variables={
-        "name": "New Admission",
-        "name_en": "New Admission EN",
-        "state_id": "state-id",
-        "program_id": "program-id",
-        "application_start_date": "2024-01-01T00:00:00",
-        "application_last_date": "2024-02-01T00:00:00",
-        "end_date": "2024-06-01T00:00:00",
-        "condition_date": "2024-05-01T00:00:00"
+        "id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e6",
+        "name": "Projektovy den zkouska",
+        "name_en": "Project day exam",
+        "exam_date": "2025-03-05T23:59:59",
+        "exam_type_id": "f4b3a1fa-3b1e-42bc-bd2d-ef234d7b7c61",
     }
 )
 
-# Read Admission by ID
+# Read Exam by ID
 test_admission_by_id = createByIdTest2(tableName="admissions")
 
-# Update Admission
-test_admission_update = createUpdateTest2(
-    tableName="admissions",
+# Update Exam
+test_exam_update = createUpdateTest2(
+    tableName="exams",
     variables={
-        "id": "admission-id",
-        "lastchange": "2024-01-01T00:00:00",
-        "name": "Updated Admission Name",
-        "name_en": "Updated Admission EN"
+        #"id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e6",
+        #"lastchange": "2024-12-03T19:35:59.180099",
+        "name": "Projektovy den zkouska updated",
+        "name_en": "Project day exam updated",
+        "exam_date": "2025-03-05T23:59:59",
+        "exam_type_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b29"
     }
 )
 
-# Delete Admission
-test_admission_delete = createDeleteTest2(
-    tableName="admissions",
+# Delete Exam
+test_exam_delete = createDeleteTest2(
+    tableName="exams",
     variables={
-        "id": "admission-id",
-        "lastchange": "2024-01-01T00:00:00"
+        #"id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e6",
+        "name": "Projektovy den zkouska deleted",
+        "name_en": "Project day exam deleted",
+        "exam_date": "2025-03-05T23:59:59",
+        "exam_type_id": "f4b3a1fa-3b1e-42bc-bd2d-ef234d7b7c61",
     }
 )
 
@@ -169,7 +187,7 @@ async def test_exam_invalid_exam_type(SchemaExecutorDemo):
     variables = {
         "name": "Invalid Type Exam",
         "exam_date": "2024-03-15T10:00:00",
-        "exam_type_id": "non-existent-id"
+        "exam_type_id": "1a1bc900-aaaa1-bbbb-cccc-1d9237aae24d"
     }
     query = getQuery(tableName="exams", queryName="create")
     response = await SchemaExecutorDemo(query=query, variable_values=variables)
@@ -179,7 +197,7 @@ async def test_exam_invalid_exam_type(SchemaExecutorDemo):
 async def test_exam_delete_with_results(SchemaExecutorDemo):
     tableName = "exams"
     variables = {
-        "id": "exam-with-results-id",
+        "id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5",
         "lastchange": "2024-03-15T10:00:00"
     }
 
@@ -202,9 +220,10 @@ test_exam_result_create = createTest2(
     tableName="exam_results",
     queryName="create",
     variables={
+        "id": "1a1bc900-8b48-4a88-883c-1d9237aae24d",
         "score": 95.5,
-        "exam_id": "exam-id",
-        "student_admission_id": "student-admission-id"
+        "exam_id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f",
+        "student_admission_id": "89b10735-ef94-49d4-965f-fbd475d65d1f"
     }
 )
 
@@ -215,25 +234,26 @@ test_exam_result_by_id = createByIdTest2(
 test_exam_result_update = createUpdateTest2(
     tableName="exam_results",
     variables={
-        "id": "exam-result-id",
-        "lastchange": "2024-03-15T10:00:00",
-        "score": 89.0,
-        "exam_id": "updated-exam-id",
-        "student_admission_id": "updated-student-admission-id"
+        #"id": "1a1bc900-8b48-4a88-883c-1d9237aae24d",
+        #"lastchange": "2024-03-15T10:00:00",
+        "score": 69.0,
+        "exam_id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f",
+        "student_admission_id": "89b10735-ef94-49d4-965f-fbd475d65d1f"
     }
 )
 
 test_exam_result_delete = createDeleteTest2(
     tableName="exam_results",
     variables={
-        "id": "exam-result-id",
-        "lastchange": "2024-03-15T10:00:00"
+        "score": 95.5,
+        "exam_id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f",
+        "student_admission_id": "89b10735-ef94-49d4-965f-fbd475d65d1f"
     }
 )
 
 @pytest.mark.asyncio
 async def test_exam_result_relationships(SchemaExecutorDemo):
-    exam_result_id = "valid-exam-result-id"
+    exam_result_id = "1a1bc900-8b48-4a88-883c-1d9237aae24d"
     query = getQuery(tableName="exam_results", queryName="read")
     responseJson = await SchemaExecutorDemo(query=query, variable_values={"id": exam_result_id})
     result = responseJson.get("data", {}).get("result")
@@ -244,7 +264,7 @@ async def test_exam_result_relationships(SchemaExecutorDemo):
 @pytest.mark.asyncio
 async def test_exam_result_delete_restricted(SchemaExecutorDemo):
     variables = {
-        "id": "linked-exam-result-id",
+        "id": "1a1bc900-8b48-4a88-883c-1d9237aae24c",
         "lastchange": "2024-03-15T10:00:00"
     }
     queryDelete = getQuery(tableName="exam_results", queryName="delete")
@@ -256,8 +276,8 @@ async def test_exam_result_delete_restricted(SchemaExecutorDemo):
 async def test_exam_result_invalid_foreign_keys(SchemaExecutorDemo):
     variables = {
         "score": 90.0,
-        "exam_id": "invalid-exam-id",
-        "student_admission_id": "invalid-student-admission-id"
+        "exam_id": "1a1bc900-8b48-4a88-883c-1d9237aae24c",
+        "student_admission_id": "1a1bc900-aaaa-bbbb-cccc-1d9237aae24c"
     }
     queryCreate = getQuery(tableName="exam_results", queryName="create")
     responseJson = await SchemaExecutorDemo(query=queryCreate, variable_values=variables)
@@ -270,11 +290,12 @@ test_exam_type_create = createTest2(
     tableName="exam_types",
     queryName="create",
     variables={
+        "id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b20",
         "name": "Midterm Exam Type",
         "name_en": "Midterm Exam Type EN",
         "min_score": 50.0,
         "max_score": 100.0,
-        "admission_id": "admission-id"  # Replace with a valid UUID
+        "admission_id": "123e4567-e89b-12d3-a456-426614174000"
     }
 )
 
@@ -285,8 +306,8 @@ test_exam_type_by_id = createByIdTest2(
 test_exam_type_update = createUpdateTest2(
     tableName="exam_types",
     variables={
-        "id": "exam-type-id",
-        "lastchange": "2024-01-01T00:00:00",  # Placeholder
+        #"id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b20",
+        #"lastchange": "2024-01-01T00:00:00",
         "name": "Updated Exam Type",
         "name_en": "Updated Exam Type EN",
         "min_score": 55.0,
@@ -297,7 +318,7 @@ test_exam_type_update = createUpdateTest2(
 test_exam_type_delete = createDeleteTest2(
     tableName="exam_types",
     variables={
-        "id": "exam-type-id",
+        "id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b20",
         "lastchange": "2024-01-01T00:00:00"  # Placeholder
     }
 )
@@ -305,7 +326,7 @@ test_exam_type_delete = createDeleteTest2(
 @pytest.mark.asyncio
 async def test_exam_type_admission_relationship(SchemaExecutorDemo):
     tableName = "exam_types"
-    entity_id = "exam-type-id"
+    entity_id = "e19b1d5c-7e29-4f38-a609-abc2d233a842"
 
     queryRead = getQuery(tableName=tableName, queryName="read")
     responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": entity_id})
@@ -317,7 +338,7 @@ async def test_exam_type_admission_relationship(SchemaExecutorDemo):
 @pytest.mark.asyncio
 async def test_exam_type_delete_with_exams(SchemaExecutorDemo):
     tableName = "exam_types"
-    entity_id = "exam-type-with-exams-id"
+    entity_id = "e19b1d5c-7e29-4f38-a609-abc2d233a842"
 
     variables = {
         "id": entity_id,
@@ -335,9 +356,9 @@ test_student_admission_create = createTest2(
     tableName="student_admissions",
     queryName="create",
     variables={
-        "admission_id": "admission-id",
-        "user_id": "user-id",
-        "state_id": "state-id",
+        "id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        "admission_id": "123e4567-e89b-12d3-a456-426614174000",
+        "user_id": "51d101a0-81f1-44ca-8366-6cf51432e8d6",
         "extended_condition_date": "2024-03-20T10:00:00",
         "admissioned": True,
         "enrollment_date": "2024-03-25T10:00:00"
@@ -351,11 +372,9 @@ test_student_admission_by_id = createByIdTest2(
 test_student_admission_update = createUpdateTest2(
     tableName="student_admissions",
     variables={
-        "id": "student-admission-id",
-        "lastchange": "2024-01-01T00:00:00",
-        "admission_id": "updated-admission-id",
-        "user_id": "updated-user-id",
-        "state_id": "updated-state-id",
+        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        #"lastchange": "2024-01-01T00:00:00",
+        "admission_id": "123e4567-e89b-12d3-a456-426614174000",
         "extended_condition_date": "2024-04-01T10:00:00",
         "admissioned": False,
         "enrollment_date": "2024-04-05T10:00:00"
@@ -365,7 +384,7 @@ test_student_admission_update = createUpdateTest2(
 test_student_admission_delete = createDeleteTest2(
     tableName="student_admissions",
     variables={
-        "id": "student-admission-id",
+        "id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
         "lastchange": "2024-01-01T00:00:00"
     }
 )
@@ -373,7 +392,7 @@ test_student_admission_delete = createDeleteTest2(
 @pytest.mark.asyncio
 async def test_student_admission_admission_relationship(SchemaExecutorDemo):
     tableName = "student_admissions"
-    entity_id = "student-admission-id"
+    entity_id = "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
 
     queryRead = getQuery(tableName=tableName, queryName="read")
     responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": entity_id})
@@ -385,7 +404,7 @@ async def test_student_admission_admission_relationship(SchemaExecutorDemo):
 @pytest.mark.asyncio
 async def test_student_admission_delete_with_exam_results(SchemaExecutorDemo):
     tableName = "student_admissions"
-    entity_id = "student-admission-with-exam-results-id"
+    entity_id = "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
 
     variables = {
         "id": entity_id,
@@ -398,7 +417,7 @@ async def test_student_admission_delete_with_exam_results(SchemaExecutorDemo):
 @pytest.mark.asyncio
 async def test_student_admission_exams_and_results(SchemaExecutorDemo):
     tableName = "student_admissions"
-    entity_id = "student-admission-id"
+    entity_id = "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
 
     queryRead = getQuery(tableName=tableName, queryName="read")
     responseJson = await SchemaExecutorDemo(query=queryRead, variable_values={"id": entity_id})

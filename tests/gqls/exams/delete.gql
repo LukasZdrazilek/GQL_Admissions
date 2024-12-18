@@ -13,4 +13,9 @@ fragment Error on ExamGQLModelDeleteError {
   msg
   input
   failed
+  Entity
+  {
+    id
+    lastchange
+  }
 }

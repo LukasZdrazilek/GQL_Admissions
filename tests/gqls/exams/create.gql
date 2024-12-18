@@ -11,6 +11,7 @@ mutation AddExam($id: UUID, $name: String!, $name_en: String, $exam_date: DateTi
   ) {
     __typename
     ...Error
+    ...FE
   }
 }
 
@@ -18,4 +19,13 @@ fragment Error on InsertError{
   msg
   input
   failed
+}
+
+fragment FE on ExamGQLModel{
+  lastchange
+  id
+  name
+  nameEn
+  examDate
+  examTypeId
 }

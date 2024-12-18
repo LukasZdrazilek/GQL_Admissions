@@ -1,0 +1,26 @@
+query {
+  result: admissionPage {
+    __typename
+    ...Admission
+  }
+}
+
+fragment Admission on AdmissionGQLModel {
+  id
+  lastchange
+  name  
+  nameEn
+  stateId
+  programId
+  applicationStartDate
+  applicationLastDate
+  endDate
+  conditionDate
+  requestConditionStartDate
+  requestConditionLastDate
+  requestExamStartDate
+  requestExamLastDate
+  paymentDate
+  requestEnrollmentStartDate
+  requestEnrollmentEndDate
+}

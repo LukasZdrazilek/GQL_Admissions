@@ -11,6 +11,7 @@ mutation UpdateExamResult($lastchange: DateTime!, $id: UUID!, $score: Float, $ex
   ) {
     __typename
     ...Error
+    ...ExamResult
   }
 }
 
@@ -18,5 +19,16 @@ fragment Error on ExamResultGQLModelUpdateError {
   msg
   input
   failed
-  
+  Entity
+  {
+    lastchange
+  }
+}
+
+fragment ExamResult on ExamResultGQLModel{
+  lastchange
+  id
+  score
+  examId
+  studentAdmissionId
 }
