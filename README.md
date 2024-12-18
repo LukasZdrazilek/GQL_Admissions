@@ -89,7 +89,14 @@ __3.12.2024__ konzultace, počáteční práce na testech
 
 __5.12.2024__ dokončení test queries, příprava na projektový den
 
+__7.12.2024__ finální dokončování CRUD operací
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
+
+__15.12.2024__ začátek práce na testech
+
+__17.12.2024__ práce na testech (zprovozněno)
+
+__18.12.2024__ konzultace - objasnění testů
 
 __29.1.2025__ 3. projektový den, doložení testů
