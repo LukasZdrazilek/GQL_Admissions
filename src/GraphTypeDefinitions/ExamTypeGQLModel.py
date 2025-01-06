@@ -82,14 +82,6 @@ class ExamTypeGQLModel(BaseGQLModel):
         # ]
     )
 
-    data: typing.Optional[JSON] = strawberry.field(
-        default=None,
-        description="The table of data of the exam type"
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
-    )
-
     admission: typing.Optional["AdmissionGQLModel"] = strawberry.field(
         description="""The admission to which ExamType belongs""",
         resolver=ScalarResolver['AdmissionGQLModel'](fkey_field_name="admission_id"),
