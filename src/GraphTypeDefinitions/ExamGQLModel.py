@@ -33,6 +33,8 @@ from .BaseGQLModel import BaseGQLModel
 StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
 ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
 ExamTypeGQLModel = typing.Annotated["ExamTypeGQLModel", strawberry.lazy(".ExamTypeGQLModel")]
+FacilityGQLModel = typing.Annotated["FacilityGQLModel", strawberry.lazy(".FacilityGQLModel")]
+GroupGQLModel = typing.Annotated["GroupGQLModel", strawberry.lazy(".GroupGQLModel")]
 
 
 @strawberry.federation.type(
@@ -91,6 +93,22 @@ class ExamGQLModel(BaseGQLModel):
         # ]
     )
 
+    facility: typing.Optional["FacilityGQLModel"] = strawberry.field(
+        description="""Facility associated with this exam""",
+        resolver=ScalarResolver['FacilityGQLModel'](fkey_field_name="facility_id"),
+        # permission_classes=[
+        #     OnlyForAuthenticated
+        # ],
+    )
+
+    examiners: typing.Optional["GroupGQLModel"] = strawberry.field(
+        description="""Examiners associated with this exam""",
+        resolver=ScalarResolver['GroupGQLModel'](fkey_field_name="examiners_id"),
+        # permission_classes=[
+        #     OnlyForAuthenticated
+        # ],
+    )
+
     exam_type: typing.Optional["ExamTypeGQLModel"] = strawberry.field(
         description="""Type of the exam""",
         resolver=ScalarResolver['ExamTypeGQLModel'](fkey_field_name="exam_type_id"),
@@ -113,7 +131,7 @@ class ExamGQLModel(BaseGQLModel):
         #   OnlyForAuthenticated
         # ]
     )
-    async def students(self, info: strawberry.types.Info) -> typing.List["StudentAdmissionGQLModel"]:
+    async def student_admission(self, info: strawberry.types.Info) -> typing.List["StudentAdmissionGQLModel"]:
         from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
         loader = getLoadersFromInfo(info).student_exam_links
         rows = await loader.filter_by(exam_id=self.id)
