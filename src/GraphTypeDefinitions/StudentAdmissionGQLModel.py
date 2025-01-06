@@ -31,6 +31,7 @@ AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".Admi
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
 UserGQLModel = typing.Annotated["UserGQLModel", strawberry.lazy(".UserGQLModel")]
+StateGQLModel = typing.Annotated["StateGQLModel", strawberry.lazy(".StateGQLModel")]
 
 @strawberry.federation.type(
     keys=["id"], description="""Entity representing a Student Admission"""
@@ -120,6 +121,14 @@ class StudentAdmissionGQLModel(BaseGQLModel):
         # permission_classes=[
         #     OnlyForAuthentized
         # ],
+    )
+
+    state: typing.Optional["StateGQLModel"] = strawberry.field(
+        description="""State related to the admission""",
+        resolver=ScalarResolver['StateGQLModel'](fkey_field_name="state_id"),
+        # permission_classes = [
+        #     OnlyForAuthentized,
+        # ]
     )
 
 @createInputs
