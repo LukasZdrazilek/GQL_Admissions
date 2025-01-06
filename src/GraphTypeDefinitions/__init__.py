@@ -1,4 +1,10 @@
 import strawberry
+from .AdmissionGQLModel import AdmissionGQLModel
+from .BaseGQLModel import BaseGQLModel
+from .ExamGQLModel import ExamGQLModel
+from .ExamResultGQLModel import ExamResultGQLModel
+from .ExamTypeGQLModel import ExamTypeGQLModel
+from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
 
 @strawberry.type(description="""Type for query root""")
 class Query:
@@ -15,19 +21,17 @@ class Query:
     admission_by_id = admission_by_id
     admission_page = admission_page
 
-    from .StudentAdmissionGQLModel import studentadmission_by_id, studentadmission_page
-    studentadmission_by_id = studentadmission_by_id
-    studentadmission_page = studentadmission_page
+    from .StudentAdmissionGQLModel import student_admission_by_id, student_admission_page
+    student_admission_by_id = student_admission_by_id
+    student_admission_page = student_admission_page
 
-    from .ExamTypeGQLModel import exam_type_by_id, exam_type_page, unified_exam_type_by_id
+    from .ExamTypeGQLModel import exam_type_by_id, exam_type_page
     exam_type_by_id = exam_type_by_id
     exam_type_page = exam_type_page
-    unified_exam_type_by_id = unified_exam_type_by_id
 
-    from .ExamGQLModel import exam_by_id, exam_page, unified_exam_by_id
+    from .ExamGQLModel import exam_by_id, exam_page
     exam_by_id = exam_by_id
     exam_page = exam_page
-    unified_exam_by_id = unified_exam_by_id
 
     from .ExamResultGQLModel import exam_result_by_id, exam_result_page
     exam_result_by_id = exam_result_by_id
@@ -65,6 +69,7 @@ from uoishelpers.schema import WhoAmIExtension
 schema = strawberry.federation.Schema(
     query=Query,
     mutation=Mutation,
+    types=[AdmissionGQLModel, BaseGQLModel, ExamGQLModel, ExamResultGQLModel, ExamTypeGQLModel, StudentAdmissionGQLModel],
     extensions=[]
 )
 

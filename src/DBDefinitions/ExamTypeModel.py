@@ -1,26 +1,20 @@
-from sqlalchemy import Column, String, ForeignKey, Float
+from sqlalchemy import String, Float, ForeignKey
 from sqlalchemy.dialects.postgresql import HSTORE
+from sqlalchemy.orm import relationship, mapped_column, Mapped
 from .BaseModel import BaseModel
-from sqlalchemy.orm import relationship
-from .UUIDColumn import UnifiedUUIDColumn
+from uuid import UUID
 
 class ExamTypeModel(BaseModel):
     """
     Represents a type of exam associated with an admission, including metadata.
     """
     __tablename__ = "exam_types"
-    
-    name = Column(String, comment="Name of the exam type")
-    name_en = Column(String, comment="English name of the exam type")
 
-    min_score = Column(Float, comment="Minimum score of the exam type")
-    max_score = Column(Float, comment="Maximum score of the exam type")
+    name: Mapped[str] = mapped_column(nullable= True, default=None, comment="Name of the exam type")
+    name_en: Mapped[str] = mapped_column(nullable= True, default=None, comment="English name of the exam type")
 
-    data = Column(HSTORE, comment="Dictionary of an score table")
+    min_score: Mapped[float] = mapped_column(nullable= True, default=None, comment="Minimum score of the exam type")
+    max_score: Mapped[float] = mapped_column(nullable= True, default=None, comment="Maximum score of the exam type")
 
-    unified_id = UnifiedUUIDColumn(comment="Unified ID of the exam type")
-    unified_name = Column(String, nullable=True, default=None, comment="Unified name of the exam")
-    unified_name_en = Column(String, nullable=True, default=None, comment="English unified name of the exam")
-
-    admission_id = Column(ForeignKey("admissions.id"), nullable=False)
-    admission = relationship("AdmissionModel", viewonly=True, uselist=False, lazy="joined")
+    admission_id: Mapped[UUID] = mapped_column(ForeignKey("admissions.id"), index=True, nullable=True, default=None, comment="Foreign key referencing the related admission")
+    admission = relationship("AdmissionModel", viewonly=True, lazy="joined")

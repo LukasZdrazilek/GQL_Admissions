@@ -1,26 +1,22 @@
-from sqlalchemy import Column, DateTime, String, ForeignKey
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship, mapped_column, Mapped
+
+from datetime import datetime
+from uuid import UUID
+
 from .BaseModel import BaseModel
-from sqlalchemy.orm import relationship
-from .UUIDColumn import UnifiedUUIDColumn
 
 class ExamModel(BaseModel):
     """
-    Represents an actual exam on certain date
+    Represents an actual exam on a certain date.
     """
     __tablename__ = "exams"
 
-    name = Column(String, comment="Name of the exam type")
-    name_en = Column(String, comment="English name of the exam type")
+    name: Mapped[str] = mapped_column(nullable=True, default=None, comment="Name of the exam type")
+    name_en: Mapped[str] = mapped_column(nullable=True, default=None, comment="English name of the exam type")
 
-    exam_date = Column(DateTime, comment="Date of exam")
+    exam_date: Mapped[datetime] = mapped_column(nullable=True, default=None, comment="Date of exam")
 
-    exam_type_id = Column(ForeignKey('exam_types.id'), nullable=False, comment="Foreign key to exam type")
-    exam_type = relationship('ExamTypeModel', viewonly=True, uselist=False, lazy='joined')
+    exam_type_id: Mapped[UUID] = mapped_column(ForeignKey('exam_types.id'), index=True, nullable=True, default=None, comment="Foreign key to exam type")
 
-    unified_id = UnifiedUUIDColumn(comment="UUID used for unification of exams")
-    unified_name = Column(String, nullable=True, default=None, comment="Unified name of the exam")
-    unified_name_en = Column(String, nullable=True, default=None, comment="English unified name of the exam")
-
-    # exam_results = relationship('ExamResultModel', back_populates='exam')
-    # student_admissions = relationship('StudentAdmissionModel', secondary="student_exam_links", uselist=True, lazy="joined")
-    
+    exam_type = relationship("ExamTypeModel", viewonly=True, lazy="joined")

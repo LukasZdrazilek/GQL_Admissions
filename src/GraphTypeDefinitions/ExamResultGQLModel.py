@@ -1,58 +1,104 @@
+import asyncio
+import dataclasses
+import datetime
+import typing
 import strawberry
 import uuid
-import typing
-import strawberry.types
 
-from uoishelpers.resolvers import getLoadersFromInfo
+from uoishelpers.gqlpermissions import (
+    OnlyForAuthentized,
+    SimpleInsertPermission,
+    SimpleUpdatePermission,
+    SimpleDeletePermission
+)
+from uoishelpers.resolvers import (
+    getLoadersFromInfo,
+    createInputs,
+
+    InsertError,
+    Insert,
+    UpdateError,
+    Update,
+    DeleteError,
+    Delete,
+
+    PageResolver,
+    VectorResolver,
+    ScalarResolver,
+)
+
 
 from .BaseGQLModel import BaseGQLModel
 
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
 
-@strawberry.type(description="Represents an exam result entry associated with an exam and a student admission.")
+@strawberry.federation.type(
+    keys=["id"], description="""Represents an exam result entry associated with an exam and a student admission."""
+)
 class ExamResultGQLModel(BaseGQLModel):
-
-    @classmethod
-    def get_table_resolvers(cls):
-        return {
-            "id": lambda row: row.id,
-            "score": lambda row: row.score,
-            "exam_id": lambda row: row.exam_id,
-            "student_admission_id": lambda row: row.student_admission_id,
-        }
 
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamResultModel
 
-    id: uuid.UUID = strawberry.field()
-    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result")
-    exam_id: uuid.UUID = strawberry.field(description="The ID of the associated exam")
-    student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission")
+    score: typing.Optional[float] = strawberry.field(
+        default=None,
+        description="Score achieved in the exam result"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="Exam associated with result")
-    async def exam(self, info: strawberry.types.Info) -> typing.Optional["ExamGQLModel"]:
-        from .ExamGQLModel import ExamGQLModel
-        result = await ExamGQLModel.load_with_loader(info=info, id=self.exam_id)
-        return result
+    exam_id: uuid.UUID = strawberry.field(
+        default=None,
+        description="The ID of the associated exam"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="Student admission associated with result")
-    async def student_admission(self, info: strawberry.types.Info) -> typing.Optional["StudentAdmissionGQLModel"]:
-        from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
-        result = await StudentAdmissionGQLModel.load_with_loader(info=info, id=self.student_admission_id)
-        return result
+    student_admission_id: uuid.UUID = strawberry.field(
+        default=None,
+        description="The ID of the related student admission"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-@strawberry.field(description="""Returns an exam result by id""")
-async def exam_result_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamResultGQLModel]:
-    result = await ExamResultGQLModel.load_with_loader(info=info, id=id)
-    return result
+    exam: typing.Optional["ExamGQLModel"] = strawberry.field(
+        description="""Exam associated with result""",
+        resolver=ScalarResolver['ExamGQLModel'](fkey_field_name="exam_id"),
+        # permission_classes=[
+        #     OnlyForAuthentized
+        # ],
+    )
 
-@strawberry.field(description="""Returns a list of exam results""")
-async def exam_result_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[ExamResultGQLModel]:
-    loader = getLoadersFromInfo(info).exam_results
-    result = await loader.page(skip, limit)
-    return result
+    student_admission: typing.Optional["StudentAdmissionGQLModel"] = strawberry.field(
+        description="""Student admission associated with result""",
+        resolver=ScalarResolver['StudentAdmissionGQLModel'](fkey_field_name="student_admission_id"),
+        # permission_classes=[
+        #     OnlyForAuthentized
+        # ],
+    )
+
+@createInputs
+@dataclasses.dataclass
+class ExamResultInputFilter:
+    id: uuid.UUID
+
+exam_result_by_id = strawberry.field(
+    description="Finds an exam result by ID",
+    # permission_classes=[OnlyForAuthentized],
+    graphql_type=typing.Optional[ExamResultGQLModel],
+    resolver=ExamResultGQLModel.load_with_loader
+)
+
+exam_result_page = strawberry.field(
+    description="Returns a list of exam results",
+    # permission_classes=[OnlyForAuthentized],
+    resolver=PageResolver[ExamResultGQLModel](whereType=ExamResultInputFilter)
+)
 
 ########################################################################################################################
 #                                                                                                                      #

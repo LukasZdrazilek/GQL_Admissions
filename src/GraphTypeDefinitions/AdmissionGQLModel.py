@@ -1,112 +1,203 @@
-import strawberry
-import uuid
+import asyncio
+import dataclasses
 import datetime
 import typing
+import strawberry
+import uuid
 
-import strawberry.types
-from sqlalchemy.engine import row
+from uoishelpers.gqlpermissions import (
+    OnlyForAuthentized,
+    SimpleInsertPermission,
+    SimpleUpdatePermission,
+    SimpleDeletePermission
+)
+from uoishelpers.resolvers import (
+    getLoadersFromInfo,
+    createInputs,
 
-from uoishelpers.resolvers import getLoadersFromInfo, getUserFromInfo
+    InsertError,
+    Insert,
+    UpdateError,
+    Update,
+    DeleteError,
+    Delete,
+
+    PageResolver,
+    ScalarResolver,
+    VectorResolver,
+)
+
 
 from .BaseGQLModel import BaseGQLModel
 
 StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
-# ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 ExamTypeGQLModel = typing.Annotated["ExamTypeGQLModel", strawberry.lazy(".ExamTypeGQLModel")]
-# ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
 
-@strawberry.type(description="""Admission for corresponding year and program""")
+@strawberry.federation.type(
+    keys=["id"], description="""Admission for corresponding year and program"""
+)
 class AdmissionGQLModel(BaseGQLModel):
-
-    @classmethod
-    def get_table_resolvers(cls):
-        return {
-            "id": lambda row: row.id,
-
-            "name": lambda row: row.name,
-            "name_en": lambda row: row.name_en,
-
-            "state_id": lambda row: row.state_id,
-            "program_id": lambda row: row.program_id,
-
-            "application_start_date": lambda row: row.application_start_date,
-            "application_last_date": lambda row: row.application_last_date,
-
-            "end_date": lambda row: row.end_date,
-
-            "condition_date": lambda row: row.condition_date,
-            "request_condition_start_date": lambda row: row.request_condition_start_date,
-            "request_condition_last_date": lambda row: row.request_condition_last_date,
-
-            "request_exam_start_date": lambda row: row.request_exam_start_date,
-            "request_exam_last_date": lambda row: row.request_exam_last_date,
-
-            "payment_date": lambda row: row.payment_date,
-
-            "request_enrollment_start_date": lambda row: row.request_enrollment_start_date,
-            "request_enrollment_end_date": lambda row: row.request_enrollment_end_date,
-
-            "lastchange":lambda row: row.lastchange
-        }
 
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).AdmissionModel
 
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
+    name: typing.Optional[str] = strawberry.field(
+        default=None,
+        description="""Name of the admission entry""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="stav přijímacího řízení", default=None)
-    program_id: typing.Optional[uuid.UUID] = strawberry.field(description="Foreign key referencing the associated course", default=None)
+    name_en: typing.Optional[str] = strawberry.field(
+        default=None,
+        description="""English name of the admission entry""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    application_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy lze podat prihlasku", default=None)
-    application_last_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy lze podat prihlasku", default=None)
+    state_id: typing.Optional[uuid.UUID] = strawberry.field(
+        default=None,
+        description="""Stav přijímacího řízení""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    end_date: typing.Optional[datetime.datetime] = strawberry.field(description="Admission validity end date", default=None)
+    program_id: typing.Optional[uuid.UUID] = strawberry.field(
+        default=None,
+        description="""Foreign key referencing the associated course""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy dolozit pozadavky", default=None)
-    request_condition_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy mozne zadat o prodlouzeni", default=None)
-    request_condition_last_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdz mozne zadat o prodlouzeni", default=None)
+    application_start_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Od kdy lze podat přihlášku""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    request_exam_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy mozne podat zadost o nahradni termin", default=None)
-    request_exam_last_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy mozne podat zadost o nahradni termin", default=None)
+    application_last_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Do kdy lze podat přihlášku""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    payment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy lze zaplatit poplatek", default=None)
+    end_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Admission validity end date""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
-    request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
+    condition_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Do kdy doložit požadavky""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    lastchange: typing.Optional[datetime.datetime] = strawberry.field(description="Last change of the record", default=None)
-    
-    @strawberry.field(description="Exam types associated with this admission")
-    async def exam_types(self, info: strawberry.types.Info) -> typing.List["ExamTypeGQLModel"]:
-        from .ExamTypeGQLModel import ExamTypeGQLModel
-        loader = ExamTypeGQLModel.getLoader(info=info)
-        rows = await loader.filter_by(admission_id=self.id)
-        results = [ExamTypeGQLModel.from_sqlalchemy(row) for row in rows]
-        return results
+    request_condition_start_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Od kdy možné žádat o prodloužení""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="""List of student admissions related to the admission""")
-    async def student_admissions(
-            self, info: strawberry.types.Info
-    ) -> typing.List["StudentAdmissionGQLModel"]:
-        from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
-        loader = StudentAdmissionGQLModel.getLoader(info=info)
-        rows = await loader.filter_by(admission_id=self.id)
-        results = (StudentAdmissionGQLModel.from_sqlalchemy(row) for row in rows)
-        return results
+    request_condition_last_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Do kdy možné žádat o prodloužení""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-@strawberry.field(description="""Returns an admission by id""")
-async def admission_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[AdmissionGQLModel]:
-    result = await AdmissionGQLModel.load_with_loader(info=info, id=id)
-    return result
+    request_exam_start_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Od kdy možné podat žádost o náhradní termín""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-@strawberry.field(description="""Returns a list of admissions""")
-async def admission_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[AdmissionGQLModel]:
-    loader = getLoadersFromInfo(info).admissions
-    result = await loader.page(skip, limit)
-    return result
+    request_exam_last_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Do kdy možné podat žádost o náhradní termín""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    payment_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""Do kdy lze zaplatit poplatek""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""From when it is possible to ask for a different enrollment date""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="""To when it is possible to ask for a different enrollment date""",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    exam_types: typing.List["ExamTypeGQLModel"] = strawberry.field(
+        description="""Exam types associated with this admission""",
+        resolver=VectorResolver["ExamTypeGQLModel"](fkey_field_name="admission_id", whereType=None),
+        # permission_classes = [
+        #     OnlyForAuthentized,
+        # ]
+    )
+
+    student_admissions: typing.List["StudentAdmissionGQLModel"] = strawberry.field(
+        description="""List of student admissions related to the admission""",
+        resolver=VectorResolver["StudentAdmissionGQLModel"](fkey_field_name="admission_id", whereType=None),
+        # permission_classes = [
+        #     OnlyForAuthentized,
+        # ]
+    )
+
+
+@createInputs
+@dataclasses.dataclass
+class AdmissionInputFilter:
+    id: uuid.UUID
+    name: str
+    name_en: str
+
+admission_by_id = strawberry.field(
+        description="""Finds an admission by its id""",
+        # permission_classes=[OnlyForAuthentized],
+        graphql_type=typing.Optional[AdmissionGQLModel],
+        resolver=AdmissionGQLModel.load_with_loader
+        )
+
+admission_page = strawberry.field(
+    description="""Returns a list of admissions""",
+    # permission_classes=[OnlyForAuthentized],
+    resolver=PageResolver[AdmissionGQLModel](whereType=AdmissionInputFilter)
+)
 
 ########################################################################################################################
 #                                                                                                                      #

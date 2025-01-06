@@ -1,7 +1,8 @@
-from .UUIDColumn import UUIDFKey
-from sqlalchemy import Column, DateTime, Boolean, ForeignKey
+from sqlalchemy import Boolean, DateTime, ForeignKey
+from sqlalchemy.orm import relationship, mapped_column, Mapped
 from .BaseModel import BaseModel
-from sqlalchemy.orm import relationship
+import uuid
+from .UUIDColumn import UUIDFKey
 
 class StudentAdmissionModel(BaseModel):
     """
@@ -9,14 +10,14 @@ class StudentAdmissionModel(BaseModel):
     """
     __tablename__ = "student_admissions"
 
-    admission_id = Column(ForeignKey("admissions.id"), index=True, comment="Foreign key referencing the related admission")
+    admission_id: Mapped[int] = mapped_column(ForeignKey("admissions.id"), default=None, nullable=True, index=True, comment="Foreign key referencing the related admission")
+
+    user_id: Mapped[uuid.UUID] = UUIDFKey("gql_ug.id", comment="Foreign key referencing the user associated with this admission")
+    state_id: Mapped[uuid.UUID] = UUIDFKey("gql_state.id",nullable=True, comment="State of the admission")
+
+    extended_condition_date: Mapped[DateTime] = mapped_column(DateTime, nullable=True, default=None, comment="Date of extended condition")
+    admissioned: Mapped[bool] = mapped_column(Boolean, default=None, nullable=True, comment="Indicates if the student has been admitted")
+    enrollment_date: Mapped[DateTime] = mapped_column(DateTime, default=None, nullable=True, comment="Date of enrollment")
+
     admission = relationship("AdmissionModel", viewonly=True, uselist=False, lazy="joined")
 
-    user_id = UUIDFKey("gql_ug.id", comment="Foreign key referencing the user associated with this admission")
-    state_id = UUIDFKey(nullable=True, comment="State of the admission")
-
-    extended_condition_date = Column(DateTime, nullable=True, comment="Date of extended condition")
-    admissioned = Column(Boolean, default=False, comment="Bool if was admissioned")
-    enrollment_date = Column(DateTime, comment="Date of entrollement")
-
-    # exams = relationship("ExamModel", secondary="student_exam_links", uselist=True, lazy="joined")

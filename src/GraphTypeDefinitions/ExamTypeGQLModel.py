@@ -1,110 +1,132 @@
-import strawberry
-import uuid
-import typing
-import datetime
-
-from attr import dataclass
-from uoishelpers.resolvers import getLoadersFromInfo, createInputs
-from .BaseGQLModel import BaseGQLModel
+import dataclasses
 from strawberry.scalars import JSON
 import json
+
+import typing
+import strawberry
+import uuid
+
+from uoishelpers.gqlpermissions import (
+    OnlyForAuthentized,
+    SimpleInsertPermission,
+    SimpleUpdatePermission,
+    SimpleDeletePermission
+)
+from uoishelpers.resolvers import (
+    getLoadersFromInfo,
+    createInputs,
+
+    InsertError,
+    Insert,
+    UpdateError,
+    Update,
+    DeleteError,
+    Delete,
+
+    PageResolver,
+    ScalarResolver,
+    VectorResolver,
+)
+
+
+from .BaseGQLModel import BaseGQLModel
 
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 
-@strawberry.type(description="Represents a type of exam associated with an admission, including metadata.")
+@strawberry.federation.type(
+    keys=["id"], description="""Represents a type of exam associated with an admission, including metadata"""
+)
 class ExamTypeGQLModel(BaseGQLModel):
-
-    @classmethod
-    def get_table_resolvers(cls):
-        return {
-            "id": lambda row: row.id,
-            "name": lambda row: row.name,
-            "name_en": lambda row: row.name_en,
-            "min_score": lambda row: row.min_score,
-            "max_score": lambda row: row.max_score,
-            "admission_id": lambda row: row.admission_id,
-            "data": lambda row: row.data,
-            "unified_id": lambda row: row.unified_id,
-            "unified_name": lambda row: row.unified_name,
-            "unified_name_en": lambda row: row.unified_name_en,
-        }
 
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamTypeModel
 
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
-    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
-    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
-    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type", default=None)
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types", default=None)
-    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
-    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam", default=None)
+    name: typing.Optional[str] = strawberry.field(
+        default=None,
+        description="Name of the exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="The admission to which ExamType belong")
-    async def admission(self, info: strawberry.types.Info) -> typing.Optional["AdmissionGQLModel"]:
-        from .AdmissionGQLModel import AdmissionGQLModel
-        result = await AdmissionGQLModel.load_with_loader(info=info, id=self.admission_id)
-        return result
+    name_en: typing.Optional[str] = strawberry.field(
+        default=None,
+        description="English name of the exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="Exams of corresponding exam type")
-    async def exams(
-            self, info: strawberry.types.Info
-    ) -> typing.List["ExamGQLModel"]:
-        from .ExamGQLModel import ExamGQLModel
-        loader = ExamGQLModel.getLoader(info=info)
-        rows = await loader.filter_by(exam_type_id=self.id)
-        results = (ExamGQLModel.from_sqlalchemy(row) for row in rows)
-        return results
+    min_score: typing.Optional[float] = strawberry.field(
+        default=None,
+        description="Minimum score for this exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-@strawberry.field(description="""Returns a Student Admission by id""")
-async def exam_type_by_id(
-        self,
-        info: strawberry.types.Info,
-        id: uuid.UUID
-) -> typing.Optional[ExamTypeGQLModel]:
-    result = await ExamTypeGQLModel.load_with_loader(info=info, id=id)
-    return result
+    max_score: typing.Optional[float] = strawberry.field(
+        default=None,
+        description="Maximum score for this exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    admission_id: uuid.UUID = strawberry.field(
+        description="The ID of the associated admission"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    data: typing.Optional[JSON] = strawberry.field(
+        default=None,
+        description="The table of data of the exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    admission: typing.Optional["AdmissionGQLModel"] = strawberry.field(
+        description="""The admission to which ExamType belongs""",
+        resolver=ScalarResolver['AdmissionGQLModel'](fkey_field_name="admission_id"),
+        # permission_classes=[
+        #     OnlyForAuthentized
+        # ],
+    )
+
+    exams: typing.List["ExamGQLModel"] = strawberry.field(
+        description="""Exams of corresponding exam type""",
+        resolver=VectorResolver["ExamGQLModel"](fkey_field_name="exam_type_id", whereType=None),
+        # permission_classes = [
+        #     OnlyForAuthentized,
+        # ]
+    )
+
 
 @createInputs
-@dataclass
+@dataclasses.dataclass
 class ExamTypeWhereFilter:
+    id: uuid.UUID
+    name: str
+    name_en: str
     unified_id: uuid.UUID
 
-@strawberry.field(description="""Returns a list of exam types""")
-async def exam_type_page(
-        self,
-        info: strawberry.types.Info,
-        skip: int = 0,
-        limit: int = 10,
-        where: typing.Optional[ExamTypeWhereFilter] = None
-) -> typing.List[ExamTypeGQLModel]:
-    loader = getLoadersFromInfo(info).exam_types
-    where = strawberry.asdict(where) if where else None
-    print(f"Where filter: {where}")
-    result = await loader.page(skip, limit, where=where)
-    return result
+exam_type_by_id = strawberry.field(
+    description="Returns an Exam Type by id",
+    # permission_classes=[OnlyForAuthentized],
+    graphql_type=typing.Optional[ExamTypeGQLModel],
+    resolver=ExamTypeGQLModel.load_with_loader
+)
 
-@strawberry.field(description="""Returns a list of unified exam type by id""")
-async def unified_exam_type_by_id(
-        self,
-        info: strawberry.types.Info,
-        unified_id: uuid.UUID,
-        skip: int = 0,
-        limit: int = 10,
-) -> typing.List[ExamTypeGQLModel]:
-    loader = getLoadersFromInfo(info).exam_types
-    where = {
-        "unified_id" : {
-            "_eq" : unified_id
-        }
-    }
-    result = await loader.page(skip, limit, where=where)
-    return result
+exam_type_page = strawberry.field(
+    description="""Returns a list of exam types""",
+    # permission_classes=[OnlyForAuthentized],
+    resolver=PageResolver[ExamTypeGQLModel](whereType=ExamTypeWhereFilter)
+)
 
 ########################################################################################################################
 #                                                                                                                      #

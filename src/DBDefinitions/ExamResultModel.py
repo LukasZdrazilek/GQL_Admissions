@@ -1,6 +1,7 @@
-from sqlalchemy import Column, ForeignKey, Float
+from sqlalchemy import Float, ForeignKey
+from sqlalchemy.orm import relationship, mapped_column, Mapped
 from .BaseModel import BaseModel
-from sqlalchemy.orm import relationship
+from uuid import UUID
 
 class ExamResultModel(BaseModel):
     """
@@ -8,12 +9,9 @@ class ExamResultModel(BaseModel):
     """
     __tablename__ = "exam_results"
 
-    score = Column(Float, nullable=False, default=0)
+    score: Mapped[float] = mapped_column(nullable= True, default=None, comment="Score achieved in the exam")
+    exam_id: Mapped[UUID] = mapped_column(ForeignKey("exams.id"), index=True, nullable= True, default=None, comment="Foreign key referencing the associated exam")
+    student_admission_id: Mapped[UUID] = mapped_column(ForeignKey("student_admissions.id"), index=True, nullable= True, default=None, comment="Foreign key referencing the related student admission")
 
-    exam_id = Column(ForeignKey("exams.id"), index=True, comment="Foreign key referencing the associated exam")
-
-    exam = relationship("ExamModel", viewonly=True, uselist=False, lazy="joined")
-
-    student_admission_id = Column(ForeignKey("student_admissions.id"), index=True, comment="Foreign key referencing the related student admission")
-    student_admission = relationship("StudentAdmissionModel", viewonly=True, uselist=False, lazy="joined")
-
+    exam = relationship("ExamModel", viewonly=True, lazy="joined")
+    student_admission = relationship("StudentAdmissionModel", viewonly=True, lazy="joined")

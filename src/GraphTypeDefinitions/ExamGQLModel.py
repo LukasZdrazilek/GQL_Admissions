@@ -1,13 +1,32 @@
 import asyncio
-
-import strawberry
-import uuid
+import dataclasses
 import datetime
 import typing
+import strawberry
+import uuid
 
-import strawberry.types
+from uoishelpers.gqlpermissions import (
+    OnlyForAuthentized,
+    SimpleInsertPermission,
+    SimpleUpdatePermission,
+    SimpleDeletePermission
+)
+from uoishelpers.resolvers import (
+    getLoadersFromInfo,
+    createInputs,
 
-from uoishelpers.resolvers import getLoadersFromInfo
+    InsertError,
+    Insert,
+    UpdateError,
+    Update,
+    DeleteError,
+    Delete,
+
+    PageResolver,
+    VectorResolver,
+    ScalarResolver,
+)
+
 
 from .BaseGQLModel import BaseGQLModel
 
@@ -15,52 +34,69 @@ StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawber
 ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
 ExamTypeGQLModel = typing.Annotated["ExamTypeGQLModel", strawberry.lazy(".ExamTypeGQLModel")]
 
-@strawberry.type(description="Represents an actual exam on a certain date")
+
+@strawberry.federation.type(
+    keys=["id"], description="""Represents an actual exam on a certain date"""
+)
 class ExamGQLModel(BaseGQLModel):
 
-    @classmethod
-    def get_table_resolvers(cls):
-        return {
-            "id": lambda row: row.id, 
-            "name": lambda row: row.name,
-            "name_en": lambda row: row.name_en,
-            "exam_date": lambda row: row.exam_date,
-            "exam_type_id": lambda row: row.exam_type_id,
-            "unified_id": lambda row: row.unified_id,
-            "unified_name": lambda row: row.unified_name,
-            "unified_name_en": lambda row: row.unified_name_en,
-        }
-    
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
         return getLoadersFromInfo(info).ExamModel
 
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
-    exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
-    exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams", default=None)
-    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
-    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam", default=None)
+    name: typing.Optional[str] = strawberry.field(
+        default=None,
+        description="Name of the exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="Type of the exam")
-    async def exam_type(self, info: strawberry.types.Info) -> typing.Optional["ExamTypeGQLModel"]:
-        from .ExamTypeGQLModel import ExamTypeGQLModel
-        result = await ExamTypeGQLModel.load_with_loader(info=info, id=self.exam_type_id)
-        return result
+    name_en: typing.Optional[str] = strawberry.field(
+        default=None,
+        description="English name of the exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="Results of the exam")
-    async def exam_results(
-            self, info: strawberry.types.Info
-    ) -> typing.List["ExamResultGQLModel"]:
-        from .ExamResultGQLModel import ExamResultGQLModel
-        loader = ExamResultGQLModel.getLoader(info=info)
-        rows = await loader.filter_by(exam_id=self.id)
-        results = (ExamResultGQLModel.from_sqlalchemy(row) for row in rows)
-        return results
+    exam_date: typing.Optional[datetime.datetime] = strawberry.field(
+        default=None,
+        description="Date of the exam"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
 
-    @strawberry.field(description="Student's Exams")
+    exam_type_id: uuid.UUID = strawberry.field(
+        description="Foreign key to exam type"
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
+
+    exam_type: typing.Optional["ExamTypeGQLModel"] = strawberry.field(
+        description="""Type of the exam""",
+        resolver=ScalarResolver['ExamTypeGQLModel'](fkey_field_name="exam_type_id"),
+        # permission_classes=[
+        #     OnlyForAuthenticated
+        # ],
+    )
+
+    exam_results: typing.List["ExamResultGQLModel"] = strawberry.field(
+        description="""Results of the exam""",
+        resolver=VectorResolver["ExamResultGQLModel"](fkey_field_name="exam_id", whereType=None),
+        # permission_classes = [
+        #     OnlyForAuthorized,
+        # ]
+    )
+
+    @strawberry.field(
+        description="Student's Exams",
+        # permission_classes=[
+        #   OnlyForAuthenticated
+        # ]
+    )
     async def students(self, info: strawberry.types.Info) -> typing.List["StudentAdmissionGQLModel"]:
         from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
         loader = getLoadersFromInfo(info).student_exam_links
@@ -68,33 +104,34 @@ class ExamGQLModel(BaseGQLModel):
         awaitable = (StudentAdmissionGQLModel.resolve_reference(info, row.student_id) for row in rows)
         return await asyncio.gather(*awaitable)
 
-@strawberry.field(description="""Returns an Exam by id""")
-async def exam_by_id(self, info: strawberry.types.Info, id: uuid.UUID) -> typing.Optional[ExamGQLModel]:
-    result = await ExamGQLModel.load_with_loader(info=info, id=id)
+@createInputs
+@dataclasses.dataclass
+class ExamInputFilter:
+    id: uuid.UUID
+    name: str
+    name_en: str
+
+async def exam_by_id(
+    self, info: strawberry.types.Info, id: uuid.UUID
+) -> typing.Union[ExamGQLModel, None]:
+    result = await ExamGQLModel.resolve_reference(info=info, id=id)
     return result
 
-@strawberry.field(description="""Returns a list of exams""")
-async def exam_page(self, info: strawberry.types.Info, skip: int = 0, limit: int = 10,) -> typing.List[ExamGQLModel]:
-    loader = getLoadersFromInfo(info).exams
-    result = await loader.page(skip, limit)
-    return result
+exam_by_id = strawberry.field(
+    description = """Finds an Exam by its id""",
+    graphql_type=typing.Optional[ExamGQLModel],
+    resolver=ExamGQLModel.load_with_loader,
+    # permission_classes=[
+    #     OnlyForAuthentized,
+    # ]
+)
 
-@strawberry.field(description="""Returns a list of unified exams by id""")
-async def unified_exam_by_id(
-        self,
-        info: strawberry.types.Info,
-        unified_id: uuid.UUID,
-        skip: int = 0,
-        limit: int = 10,
-) -> typing.List[ExamGQLModel]:
-    loader = getLoadersFromInfo(info).exams
-    where = {
-        "unified_id" : {
-            "_eq" : unified_id
-        }
-    }
-    result = await loader.page(skip, limit, where=where)
-    return result
+exam_page = strawberry.field(
+    description="""Returns a list of exams""",
+    # permission_classes=[OnlyForAuthentized],
+    resolver=PageResolver[ExamGQLModel](whereType=ExamInputFilter)  # Use appropriate filter if needed
+)
+
 
 ########################################################################################################################
 #                                                                                                                      #
@@ -109,9 +146,6 @@ class ExamInsertGQLModel:
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of the exam", default=None)
     exam_type_id: uuid.UUID = strawberry.field(description="Foreign key to exam type")
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID used for unifying exams", default=None)
-    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
-    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam", default=None)
 
 @strawberry.input(description="Definition of an exam used for creation")
 class ExamUpdateGQLModel:

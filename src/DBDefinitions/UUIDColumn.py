@@ -1,13 +1,26 @@
-from uuid import uuid4
+from uuid import UUID
 from sqlalchemy import Column, Uuid
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import MappedAsDataclass, Mapped, mapped_column
 
-uuid = uuid4
+def UUIDFKey(ForeignKeyArg=None, **kwargs):
+    newkwargs = {
+        **kwargs,
+        "index": True,
+        "primary_key": False,
+        "default": None,
+        "nullable": True,
+        "comment": "foreign key"
+    }
+    return mapped_column(**newkwargs)
 
-def UUIDFKey(nullable=True, **kwargs):
-    return Column(Uuid, index=True, nullable=nullable, **kwargs)
-
-def UUIDColumn():
-    return Column(Uuid, primary_key=True, comment="primary key", default=uuid)
-
-def UnifiedUUIDColumn(**kwargs):
-    return Column(Uuid, nullable=True, default=None, **kwargs)
+def UUIDColumn(**kwargs):
+    newkwargs = {
+        **kwargs,
+        "index": True,
+        "primary_key": True,
+        "default_factory": UUID,
+        "comment": "primary key"
+    }
+    return mapped_column(**newkwargs)

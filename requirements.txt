@@ -4,6 +4,10 @@ uvicorn[standard]
 gunicorn
 
 asyncpg
+sqlalchemy-cockroachdb
+
+aiohttp
+requests
 
 sqlalchemy
 sqlalchemy_utils
@@ -11,19 +15,9 @@ sqlalchemy_utils
 pydantic
 starlette
 strawberry-graphql
-click
 aiodataloader
-aiohttp
-pyjwt
-requests
+pyjwt[crypto]
 
-prometheus-client
-prometheus_fastapi_instrumentator
-
+pyinstrument
+prometheus_client
 https://github.com/hrbolek/uoishelpers/archive/refs/heads/main.zip
-
-pytest
-pytest-cov
-pytest-asyncio
-aiosqlite
-https://github.com/hrbolek/PyMockOAuthServer/archive/refs/heads/main.zip

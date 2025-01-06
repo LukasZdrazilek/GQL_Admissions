@@ -1,21 +1,28 @@
 import sqlalchemy
 
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from .BaseModel import BaseModel
+
+import logging
+
+# Set up logging to see the queries
+# logging.basicConfig()
+# logging.getLogger('sqlalchemy.engine').setLevel(logging.DEBUG)
+
+from .BaseModel import BaseModel, UUIDColumn, UUIDFKey
 from .AdmissionModel import AdmissionModel
-from .StudentAdmissionModel import StudentAdmissionModel
 from .ExamModel import ExamModel
-from .ExamTypeModel import ExamTypeModel
 from .ExamResultModel import ExamResultModel
+from .ExamTypeModel import ExamTypeModel
+from .StudentAdmissionModel import StudentAdmissionModel
 from .StudentExamLinkModel import StudentExamLinkModel
 
 async def startEngine(connectionstring, makeDrop=False, makeUp=True):
     """Provede nezbytne ukony a vrati asynchronni SessionMaker"""
-    print(f"Starting engine for {connectionstring}",flush=True)
     asyncEngine = create_async_engine(connectionstring)
 
     async with asyncEngine.begin() as conn:
@@ -31,12 +38,12 @@ async def startEngine(connectionstring, makeDrop=False, makeUp=True):
                 print("Unable automaticaly create tables")
                 return None
 
-    async_sessionMaker = sessionmaker(asyncEngine, expire_on_commit=False, class_=AsyncSession)
+    async_sessionMaker = sessionmaker(
+        asyncEngine, expire_on_commit=False, class_=AsyncSession
+    )
     return async_sessionMaker
 
-
 import os
-
 
 def ComposeConnectionString():
     """Odvozuje connectionString z promennych prostredi (nebo z Docker Envs, coz je fakticky totez).
