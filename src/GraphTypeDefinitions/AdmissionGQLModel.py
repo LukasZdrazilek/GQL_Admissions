@@ -58,14 +58,6 @@ class AdmissionGQLModel(BaseGQLModel):
         # ]
     )
 
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(
-        default=None,
-        description="""Stav přijímacího řízení""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
-    )
-
     program_id: typing.Optional[uuid.UUID] = strawberry.field(
         default=None,
         description="""Foreign key referencing to the associated program""",
@@ -219,7 +211,6 @@ class AdmissionInsertGQLModel:
     name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
 
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="stav přijímacího řízení", default=None)
     program_id: typing.Optional[uuid.UUID] = strawberry.field(description="Foreign key referencing the associated course", default=None)
 
     application_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy lze podat prihlasku", default=None)
@@ -248,7 +239,6 @@ class AdmissionUpdateGQLModel:
     name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
 
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="stav přijímacího řízení", default=None)
     program_id: typing.Optional[uuid.UUID] = strawberry.field(description="Foreign key referencing the associated course", default=None)
 
     application_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="Od kdy lze podat prihlasku", default=None)
@@ -278,7 +268,6 @@ class AdmissionDeleteGQLModel:
     name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
 
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="stav přijímacího řízení", default=None)
     program_id: typing.Optional[uuid.UUID] = strawberry.field(
         description="Foreign key referencing the associated course", default=None)
 
