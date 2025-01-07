@@ -110,7 +110,7 @@ class StudentAdmissionGQLModel(BaseGQLModel):
     async def exams(self, info: strawberry.types.Info) -> typing.Optional[typing.List["ExamGQLModel"]]:
         from .ExamGQLModel import ExamGQLModel
         loader = getLoadersFromInfo(info).student_exam_links
-        rows = await loader.filter_by(student_id=self.id)
+        rows = await loader.filter_by(student_admission_id=self.id)
         awaitable = (ExamGQLModel.resolve_reference(info, row.exam_id) for row in rows)
         return await asyncio.gather(*awaitable)
 

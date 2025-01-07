@@ -126,7 +126,7 @@ class ExamGQLModel(BaseGQLModel):
     )
 
     @strawberry.field(
-        description="Student's Exams",
+        description="Student Admissions related to this exam",
         # permission_classes=[
         #   OnlyForAuthenticated
         # ]
