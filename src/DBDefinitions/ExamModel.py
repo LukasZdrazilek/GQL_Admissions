@@ -20,7 +20,7 @@ class ExamModel(BaseModel):
 
     exam_type_id: Mapped[UUID] = mapped_column(ForeignKey('exam_types.id'), index=True, nullable=True, default=None, comment="Foreign key to exam type")
 
-    examiners_id: Mapped[UUID] = UUIDFKey("", comment="Foreign key referencing the group of examiners associated with this exam")
-    facility_id: Mapped[UUID] = UUIDFKey("gql_facilities.id", comment="Foreign key referencing the facility associated with this exam")
+    examiners_id: Mapped[UUID] = UUIDFKey("groups.id", comment="Foreign key referencing the group of examiners associated with this exam")
+    facility_id: Mapped[UUID] = UUIDFKey("facilities.id", comment="Foreign key referencing the facility associated with this exam")
 
     exam_type = relationship("ExamTypeModel", viewonly=True, lazy="joined")

@@ -15,7 +15,7 @@ class AdmissionModel(BaseModel):
     name: Mapped[str] = mapped_column(nullable= True, default=None, comment="Name of the admission entry")
     name_en: Mapped[str] = mapped_column(nullable= True, default=None, comment="English name of the admission entry")
 
-    program_id: Mapped[UUID] = UUIDFKey("", comment="Foreign key referencing to program associated with this admission")
+    program_id: Mapped[UUID] = UUIDFKey("acprograms,id", comment="Foreign key referencing to program associated with this admission")
 
     application_start_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="From when its possible to apply")
     application_last_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="To when its possible to apply")
