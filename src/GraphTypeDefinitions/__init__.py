@@ -6,6 +6,12 @@ from .ExamResultGQLModel import ExamResultGQLModel
 from .ExamTypeGQLModel import ExamTypeGQLModel
 from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
 
+from .AcProgramGQLModel import AcProgramGQLModel
+from .FacilityGQLModel import FacilityGQLModel
+from .GroupGQLModel import GroupGQLModel
+from .StateGQLModel import StateGQLModel
+from .UserGQLModel import UserGQLModel
+
 @strawberry.type(description="""Type for query root""")
 class Query:
     @strawberry.field(
@@ -69,7 +75,13 @@ from uoishelpers.schema import WhoAmIExtension
 schema = strawberry.federation.Schema(
     query=Query,
     mutation=Mutation,
-    types=[AdmissionGQLModel, BaseGQLModel, ExamGQLModel, ExamResultGQLModel, ExamTypeGQLModel, StudentAdmissionGQLModel],
+    types=[
+        AcProgramGQLModel,
+        FacilityGQLModel,
+        GroupGQLModel,
+        StateGQLModel,
+        UserGQLModel
+    ],
     extensions=[]
 )
 
