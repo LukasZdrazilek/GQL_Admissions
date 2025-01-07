@@ -207,8 +207,9 @@ admission_page = strawberry.field(
 
 @strawberry.input(description="""Definition of an admission used for creation""")
 class AdmissionInsertGQLModel:
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
+    name: str = strawberry.field(description="Name of the admission entry")
+
+    id: typing.Optional[uuid.UUID] = strawberry.field(description="Primary key", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
 
     program_id: typing.Optional[uuid.UUID] = strawberry.field(description="Foreign key referencing the associated course", default=None)
@@ -230,12 +231,14 @@ class AdmissionInsertGQLModel:
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
 
-    lastchange: typing.Optional[datetime.datetime] = strawberry.field(description="Last change of the record", default=None)
-
+    rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="group_id or user_id defines access rights", default=None)
+    createdby_id: strawberry.Private[uuid.UUID] = None
 
 @strawberry.input(description="""Definition of an admission used for update""")
 class AdmissionUpdateGQLModel:
-    id: uuid.UUID = strawberry.field()
+    id: uuid.UUID = strawberry.field(description="Primary key")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
+
     name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
 
@@ -257,46 +260,14 @@ class AdmissionUpdateGQLModel:
 
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(description="From when it is possible to ask for a different enrollment date", default=None)
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(description="To when it is possible to ask for a different enrollment date", default=None)
-    
-    lastchange: typing.Optional[datetime.datetime] = strawberry.field(description="Last change of the record", default=None)
 
+    changedby_id: strawberry.Private[uuid.UUID] = None
 
 
 @strawberry.input(description="""Definition of an admission used for delete""")
 class AdmissionDeleteGQLModel:
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the admission entry", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the admission entry", default=None)
-
-    program_id: typing.Optional[uuid.UUID] = strawberry.field(
-        description="Foreign key referencing the associated course", default=None)
-
-    application_start_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="Od kdy lze podat prihlasku", default=None)
-    application_last_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="Do kdy lze podat prihlasku", default=None)
-
-    end_date: typing.Optional[datetime.datetime] = strawberry.field(description="Admission validity end date", default=None)
-
-    condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy dolozit pozadavky", default=None)
-    request_condition_start_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="Od kdy mozne zadat o prodlouzeni", default=None)
-    request_condition_last_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="Do kdz mozne zadat o prodlouzeni", default=None)
-
-    request_exam_start_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="Od kdy mozne podat zadost o nahradni termin", default=None)
-    request_exam_last_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="Do kdy mozne podat zadost o nahradni termin", default=None)
-
-    payment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Do kdy lze zaplatit poplatek", default=None)
-
-    request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="From when it is possible to ask for a different enrollment date", default=None)
-    request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(
-        description="To when it is possible to ask for a different enrollment date", default=None)
-    
-    lastchange: typing.Optional[datetime.datetime] = strawberry.field(description="Last change of the record", default=None)
+    id: uuid.UUID = strawberry.field(description="Primary key")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record", default=None)
 
 ########################################################################################################################
 

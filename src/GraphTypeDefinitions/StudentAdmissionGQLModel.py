@@ -157,17 +157,21 @@ student_admission_page = strawberry.field(
 
 @strawberry.input(description="""Definition of an student admission used for creation""")
 class StudentAdmissionInsertGQLModel:
-    id: typing.Optional[uuid.UUID] = strawberry.field()
     admission_id: uuid.UUID = strawberry.field(description="UUID of an admission")
-    student_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a user")
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state")
-    extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition")
-    admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission")
-    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment")
+
+    id: typing.Optional[uuid.UUID] = strawberry.field(description="Primary key", default=None)
+    student_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a user", default=None)
+    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state", default=None)
+    extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition", default=None)
+    admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission", default=None)
+    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)
+
+    rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="group_id or user_id defines access rights", default=None)
+    createdby_id: strawberry.Private[uuid.UUID] = None
 
 @strawberry.input(description="""Definition of an student admission used for creation""")
 class StudentAdmissionUpdateGQLModel:
-    id: uuid.UUID = strawberry.field()
+    id: uuid.UUID = strawberry.field(description="Primary key")
     lastchange: datetime.datetime = strawberry.field(description="Timestamp")
 
     admission_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of an admission", default=None)
@@ -177,15 +181,12 @@ class StudentAdmissionUpdateGQLModel:
     admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission", default=None)
     enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)
 
+    changedby_id: strawberry.Private[uuid.UUID] = None
+
 @strawberry.input(description="""Definition of an student admission used for creation""")
 class StudentAdmissionDeleteGQLModel:
-    id: typing.Optional[uuid.UUID] = strawberry.field()
-    admission_id: uuid.UUID = strawberry.field(description="UUID of an admission")
-    student_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a user")
-    state_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a state")
-    extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition")
-    admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission")
-    enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment")    
+    id: typing.Optional[uuid.UUID] = strawberry.field(description="Primary key")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
 
 @strawberry.type(description="Result of a mutation for a student admission")
 class StudentAdmissionMutationResultGQLModel:

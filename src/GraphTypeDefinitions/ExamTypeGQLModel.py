@@ -1,6 +1,5 @@
 import dataclasses
-from strawberry.scalars import JSON
-import json
+import datetime
 
 import typing
 import strawberry
@@ -128,33 +127,34 @@ exam_type_page = strawberry.field(
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeInsertGQLModel:
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
+    name: str = strawberry.field(description="Name of the exam type")
+    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+
+    id: typing.Optional[uuid.UUID] = strawberry.field(description="Primary key", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
-    score_table: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type", default=None)
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+
+    rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="group_id or user_id defines access rights", default=None)
+    createdby_id: strawberry.Private[uuid.UUID] = None
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeUpdateGQLModel:
-    id: uuid.UUID = strawberry.field()
+    id: uuid.UUID = strawberry.field(description="Primary key")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
+
     name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
-    score_table: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type",default=None)
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+    admission_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the associated admission", default=None)
+
+    changedby_id: strawberry.Private[uuid.UUID] = None
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeDeleteGQLModel:
-    id: uuid.UUID = strawberry.field()
-    name: typing.Optional[str] = strawberry.field(description="Name of the exam type", default=None)
-    name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
-    min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
-    max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
-    score_table: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type",default=None)
-    admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
+    id: uuid.UUID = strawberry.field(description="Primary key")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
 
 @strawberry.type(description="Result of a mutation for an exam type")
 class ExamTypeMutationResultGQLModel:
