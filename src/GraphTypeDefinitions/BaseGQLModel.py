@@ -72,48 +72,6 @@ class BaseGQLModel:
         # permission_classes=[OnlyForAuthentized]
     )
 
-    # @classmethod
-    # def from_sqlalchemy(cls, db_row):
-    #     keyed_resolvers = cls.get_table_resolvers()
-    #     instance_values = {
-    #         name: resolver(db_row)
-    #         for name, resolver in keyed_resolvers.items()
-    #     } if db_row is not None else {}
-    #
-    #     # print(f"{cls}, {instance_values}", flush=True)
-    #     instance = cls(**instance_values) if db_row is not None else None
-    #     return instance
-    #
-    # @classmethod
-    # async def load_with_loader(cls, info: strawberry.types.Info, id: UUID):
-    #     loader = cls.getLoader(info=info)
-    #     db_row = await loader.load(id)
-    #     return cls.from_sqlalchemy(db_row=db_row)
-    #
-    # @classmethod
-    # async def resolve_reference(cls, info: strawberry.types.Info, id: UUID):
-    #     if id is None: return None
-    #     loader = cls.getLoader(info)
-    #     if isinstance(id, str): id = UUID(id)
-    #     result = await loader.load(id)
-    #     if result is not None:
-    #         result.__strawberry_definition__ = cls.__strawberry_definition__  # little hack :)
-    #     return result
-    #
-    # @classmethod
-    # async def load_with_loader(cls, info: strawberry.types.Info, id: UUID):
-    #     if id is None: return None
-    #
-    #     _id = UUID(id) if isinstance(id, str) else id
-    #     loader = cls.getLoader(info=info)
-    #     db_row = await loader.load(_id)
-    #
-    #     return None if db_row is None else cls.from_dataclass(db_row=db_row)
-    #
-    # @classmethod
-    # def resolve_reference(cls, info: strawberry.types.Info, id: UUID, **otherdata):
-    #     return cls.load_with_loader(info=info, id=id)
-
     @strawberry.field(
         description="who created this entity",
         # permission_classes=[OnlyForAuthentized]
