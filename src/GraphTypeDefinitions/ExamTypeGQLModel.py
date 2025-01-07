@@ -133,12 +133,8 @@ class ExamTypeInsertGQLModel:
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
+    score_table: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type", default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
-    data: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type", default=None)
-    unified_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the unified exam types", default=None)
-    unified_name: typing.Optional[str] = strawberry.field(description="Name of the unified exam", default=None)
-    unified_name_en: typing.Optional[str] = strawberry.field(description="English name of the unified exam",default=None)
-
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
 class ExamTypeUpdateGQLModel:
@@ -147,6 +143,7 @@ class ExamTypeUpdateGQLModel:
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
+    score_table: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type",default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
 
 @strawberry.input(description="""Definition of an exam type used for creation""")
@@ -156,6 +153,7 @@ class ExamTypeDeleteGQLModel:
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
+    score_table: typing.Optional[JSON] = strawberry.field(description="The table of data of the exam type",default=None)
     admission_id: uuid.UUID = strawberry.field(description="The ID of the associated admission")
 
 @strawberry.type(description="Result of a mutation for an exam type")
@@ -173,7 +171,6 @@ class ExamTypeMutationResultGQLModel:
 from uoishelpers.resolvers import Insert, InsertError
 @strawberry.mutation(description="Adds a new exam type using stefek magic.")
 async def exam_type_insert(self, info: strawberry.types.Info, exam_type: ExamTypeInsertGQLModel) -> typing.Union[ExamTypeGQLModel, InsertError[ExamTypeGQLModel]]:
-    exam_type.data = ', '.join(f'"{key}" => "{value}"' for key, value in json.loads(exam_type.data).items())
     result = await Insert[ExamTypeGQLModel].DoItSafeWay(info=info, entity=exam_type)
     return result
 
