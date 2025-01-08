@@ -131,12 +131,13 @@ class ExamGQLModel(BaseGQLModel):
         #   OnlyForAuthenticated
         # ]
     )
-    async def student_admission(self, info: strawberry.types.Info) -> typing.List["StudentAdmissionGQLModel"]:
+    async def student_admissions(self, info: strawberry.types.Info) -> typing.Optional[typing.List["StudentAdmissionGQLModel"]]:
         from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
         loader = getLoadersFromInfo(info).student_exam_links
         rows = await loader.filter_by(exam_id=self.id)
-        awaitable = (StudentAdmissionGQLModel.resolve_reference(info, row.student_id) for row in rows)
+        awaitable = (StudentAdmissionGQLModel.resolve_reference(info, row.student_admission_id) for row in rows)
         return await asyncio.gather(*awaitable)
+
 
 @createInputs
 @dataclasses.dataclass
@@ -144,6 +145,10 @@ class ExamInputFilter:
     id: uuid.UUID
     name: str
     name_en: str
+    exam_date: datetime.datetime
+    exam_type_id: uuid.UUID
+    examiners_id: uuid.UUID
+    facility_id: uuid.UUID
 
 exam_by_id = strawberry.field(
     description = """Finds an Exam by its id""",
@@ -156,8 +161,10 @@ exam_by_id = strawberry.field(
 
 exam_page = strawberry.field(
     description="""Returns a list of exams""",
-    # permission_classes=[OnlyForAuthentized],
-    resolver=PageResolver[ExamGQLModel](whereType=ExamInputFilter)  # Use appropriate filter if needed
+    resolver=PageResolver[ExamGQLModel](whereType=ExamInputFilter),
+    # permission_classes=[
+    #     OnlyForAuthentized,
+    # ],
 )
 
 
@@ -213,7 +220,7 @@ class ExamMutationResultGQLModel:
 @strawberry.input(description="Definition of an StudentExam Link used for addition")
 class StudentExamLinkAddGQLModel:
     exam_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam")
-    student_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the student")
+    student_admission_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the student")
 
 ########################################################################################################################
 
@@ -221,7 +228,7 @@ from uoishelpers.resolvers import InsertError
 @strawberry.mutation(description="""Links student to exam""")
 async def link_student_to_exam(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:#ExamMutationResultGQLModel:
     loader = getLoadersFromInfo(info).student_exam_links
-    rows = await loader.filter_by(exam_id=link.exam_id, student_id=link.student_id)
+    rows = await loader.filter_by(exam_id=link.exam_id, student_admission_id=link.student_admission_id)
     row = next(rows, None)
     if row is None:
         row = await loader.insert(link)

@@ -86,18 +86,25 @@ class ExamResultGQLModel(BaseGQLModel):
 @dataclasses.dataclass
 class ExamResultInputFilter:
     id: uuid.UUID
+    score: float
+    exam_id: uuid.UUID
+    student_admission_id: uuid.UUID
 
 exam_result_by_id = strawberry.field(
     description="Finds an exam result by ID",
-    # permission_classes=[OnlyForAuthentized],
     graphql_type=typing.Optional[ExamResultGQLModel],
-    resolver=ExamResultGQLModel.load_with_loader
+    resolver=ExamResultGQLModel.load_with_loader,
+    # permission_classes=[
+    #     OnlyForAuthentized,
+    # ]
 )
 
 exam_result_page = strawberry.field(
     description="Returns a list of exam results",
-    # permission_classes=[OnlyForAuthentized],
-    resolver=PageResolver[ExamResultGQLModel](whereType=ExamResultInputFilter)
+    resolver=PageResolver[ExamResultGQLModel](whereType=ExamResultInputFilter),
+    # permission_classes=[
+    #     OnlyForAuthentized,
+    # ]
 )
 
 ########################################################################################################################

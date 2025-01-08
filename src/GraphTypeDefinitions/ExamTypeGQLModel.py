@@ -104,19 +104,25 @@ class ExamTypeWhereFilter:
     id: uuid.UUID
     name: str
     name_en: str
-    unified_id: uuid.UUID
+    min_score: float
+    max_score: float
+    admission_id: uuid.UUID
 
 exam_type_by_id = strawberry.field(
     description="Returns an Exam Type by id",
-    # permission_classes=[OnlyForAuthentized],
     graphql_type=typing.Optional[ExamTypeGQLModel],
-    resolver=ExamTypeGQLModel.load_with_loader
+    resolver=ExamTypeGQLModel.load_with_loader,
+    # permission_classes=[
+    #   OnlyForAuthentized
+    # ],
 )
 
 exam_type_page = strawberry.field(
     description="""Returns a list of exam types""",
-    # permission_classes=[OnlyForAuthentized],
-    resolver=PageResolver[ExamTypeGQLModel](whereType=ExamTypeWhereFilter)
+    resolver=PageResolver[ExamTypeGQLModel](whereType=ExamTypeWhereFilter),
+    # permission_classes=[
+    #     OnlyForAuthentized
+    # ],
 )
 
 ########################################################################################################################

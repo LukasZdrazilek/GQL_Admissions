@@ -106,11 +106,18 @@ class StudentAdmissionGQLModel(BaseGQLModel):
         # ]
     )
 
-    @strawberry.field(description="Exams related to the student admission")
+    @strawberry.field(
+        description="Exams related to the student admission",
+        # permission_classes=[
+        #     OnlyForAuthentized,
+        # ],
+    )
     async def exams(self, info: strawberry.types.Info) -> typing.Optional[typing.List["ExamGQLModel"]]:
         from .ExamGQLModel import ExamGQLModel
         loader = getLoadersFromInfo(info).student_exam_links
         rows = await loader.filter_by(student_admission_id=self.id)
+        if not rows:
+            return None
         awaitable = (ExamGQLModel.resolve_reference(info, row.exam_id) for row in rows)
         return await asyncio.gather(*awaitable)
 
@@ -135,18 +142,28 @@ class StudentAdmissionGQLModel(BaseGQLModel):
 @dataclasses.dataclass
 class StudentAdmissionInputFilter:
     id: uuid.UUID
+    admission_id: uuid.UUID
+    student_id: uuid.UUID
+    state_id: uuid.UUID
+    extended_condition_date: datetime.datetime
+    admissioned: bool
+    enrollment_date: datetime.datetime
 
 student_admission_by_id = strawberry.field(
     description="Returns a Student Admission by id",
-    # permission_classes=[OnlyForAuthentized],  # Uncomment if needed
     graphql_type=typing.Union[StudentAdmissionGQLModel, None],
-    resolver=StudentAdmissionGQLModel.resolve_reference
+    resolver=StudentAdmissionGQLModel.resolve_reference,
+    # permission_classes=[
+    #     OnlyForAuthentized
+    # ],
 )
 
 student_admission_page = strawberry.field(
     description="""Returns a list of student admissions""",
-    # permission_classes=[OnlyForAuthentized],
-    resolver=PageResolver[StudentAdmissionGQLModel](whereType=StudentAdmissionInputFilter)
+    resolver=PageResolver[StudentAdmissionGQLModel](whereType=StudentAdmissionInputFilter),
+    # permission_classes=[
+    #     OnlyForAuthentized
+    # ],
 )
 
 ########################################################################################################################

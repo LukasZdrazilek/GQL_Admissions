@@ -185,18 +185,34 @@ class AdmissionInputFilter:
     id: uuid.UUID
     name: str
     name_en: str
+    program_id: str
+    application_start_date: datetime.datetime
+    application_last_date: datetime.datetime
+    end_date: datetime.datetime
+    condition_date: datetime.datetime
+    request_condition_start_date: datetime.datetime
+    request_condition_last_date: datetime.datetime
+    request_exam_start_date: datetime.datetime
+    request_exam_last_date: datetime.datetime
+    payment_date: datetime.datetime
+    request_enrollment_start_date: datetime.datetime
+    request_enrollment_last_date: datetime.datetime
 
 admission_by_id = strawberry.field(
-        description="""Finds an admission by its id""",
-        # permission_classes=[OnlyForAuthentized],
-        graphql_type=typing.Optional[AdmissionGQLModel],
-        resolver=AdmissionGQLModel.load_with_loader
+    description="""Finds an admission by its id""",
+    graphql_type=typing.Optional[AdmissionGQLModel],
+    resolver=AdmissionGQLModel.load_with_loader,
+    # permission_classes=[
+    #     OnlyForAuthentized,
+    # ]
         )
 
 admission_page = strawberry.field(
     description="""Returns a list of admissions""",
-    # permission_classes=[OnlyForAuthentized],
-    resolver=PageResolver[AdmissionGQLModel](whereType=AdmissionInputFilter)
+    resolver=PageResolver[AdmissionGQLModel](whereType=AdmissionInputFilter),
+    # permission_classes=[
+    #         OnlyForAuthentized,
+    # ]
 )
 
 ########################################################################################################################
