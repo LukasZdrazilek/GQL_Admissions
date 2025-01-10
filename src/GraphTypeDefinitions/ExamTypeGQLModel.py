@@ -5,6 +5,7 @@ import typing
 import strawberry
 import uuid
 
+from certifi import where
 from uoishelpers.gqlpermissions import (
     OnlyForAuthentized,
     SimpleInsertPermission,
@@ -68,14 +69,38 @@ class ExamTypeGQLModel(BaseGQLModel):
 
     max_score: typing.Optional[float] = strawberry.field(
         default=None,
-        description="Maximum score for this exam type"
+        description="Maximum score for this exam type",
         # permission_classes=[
         #   OnlyForAuthenticated
         # ]
     )
 
+    master_exam_type_id: typing.Optional[uuid.UUID] = strawberry.field(
+        default=None,
+        description="The ID of the examType that this examType belongs to",
+        # permission_classes=[
+        #     OnlyForAuthentized,
+        # ]
+    )
+
+    master_exam_type: typing.Optional["ExamTypeGQLModel"] = strawberry.field(
+        description="The examType that this examType belongs to",
+        resolver=ScalarResolver["ExamTypeGQLModel"](fkey_field_name="master_exam_type_id"),
+        # permission_classes=[
+        #     OnlyForAuthentized,
+        # ]
+    )
+
+    sub_exam_types: typing.List["ExamTypeGQLModel"] = strawberry.field(
+        description="ExamTypes that belong to this examType",
+        resolver=VectorResolver["ExamTypeGQLModel"](fkey_field_name="master_exam_type_id", whereType=None),
+        # permission_classes=[
+        #     OnlyForAuthentized,
+        # ]
+    )
+
     admission_id: uuid.UUID = strawberry.field(
-        description="The ID of the associated admission"
+        description="The ID of the associated admission",
         # permission_classes=[
         #   OnlyForAuthenticated
         # ]
@@ -106,6 +131,7 @@ class ExamTypeWhereFilter:
     name_en: str
     min_score: float
     max_score: float
+    master_exam_type_id: uuid.UUID
     admission_id: uuid.UUID
 
 exam_type_by_id = strawberry.field(
@@ -140,6 +166,7 @@ class ExamTypeInsertGQLModel:
     name_en: typing.Optional[str] = strawberry.field(description="English name of the exam type", default=None)
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
+    master_exam_type_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the examType that this exam type belongs to", default=None)
 
     rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="group_id or user_id defines access rights", default=None)
     createdby_id: strawberry.Private[uuid.UUID] = None
@@ -154,6 +181,7 @@ class ExamTypeUpdateGQLModel:
     min_score: typing.Optional[float] = strawberry.field(description="Minimum score for this exam type", default=None)
     max_score: typing.Optional[float] = strawberry.field(description="Maximum score for this exam type", default=None)
     admission_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the associated admission", default=None)
+    master_exam_type_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the examType that this exam type belongs to", default=None)
 
     changedby_id: strawberry.Private[uuid.UUID] = None
 

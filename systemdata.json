@@ -68,36 +68,72 @@
   ],
   "exam_types": [
     {
-        "id": "e19b1d5c-7e29-4f38-a609-abc2d233a842",
-        "name": "Mathematics",
-        "name_en": "Mathematics",
-        "min_score": 50.0,
-        "max_score": 100.0,
-        "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+      "id": "e19b1d5c-7e29-4f38-a609-abc2d233a842",
+      "name": "Mathematics",
+      "name_en": "Mathematics",
+      "min_score": 50.0,
+      "max_score": 100.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
     },
     {
-        "id": "f4b3a1fa-3b1e-42bc-bd2d-ef234d7b7c61",
-        "name": "Physics",
-        "name_en": "Physics",
-        "min_score": 40.0,
-        "max_score": 90.0,
-        "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+      "id": "f4b3a1fa-3b1e-42bc-bd2d-ef234d7b7c61",
+      "name": "Physics",
+      "name_en": "Physics",
+      "min_score": 40.0,
+      "max_score": 90.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
     },
     {
-        "id": "c1df3f1e-2b4d-4323-bf92-11a2c1e8d8e7",
-        "name": "English Language",
-        "name_en": "English Language",
-        "min_score": 60.0,
-        "max_score": 100.0,
-        "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+      "id": "c1df3f1e-2b4d-4323-bf92-11a2c1e8d8e7",
+      "name": "English Language",
+      "name_en": "English Language",
+      "min_score": 60.0,
+      "max_score": 100.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
     },
     {
-        "id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b29",
-        "name": "Computer Science",
-        "name_en": "Computer Science",
-        "min_score": 55.0,
-        "max_score": 95.0,
-        "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+      "id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b29",
+      "name": "Computer Science",
+      "name_en": "Computer Science",
+      "min_score": 55.0,
+      "max_score": 95.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "name": "Test fyzické zdatnosti",
+      "name_en": "Physical fitness test",
+      "min_score": 0.0,
+      "max_score": 100.0,
+      "master_exam_type_id": null,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "b5dedf81-6e57-4681-b0e3-ebb7972e9c6e",
+      "name": "Sed-lehy",
+      "name_en": "Sit-ups",
+      "min_score": 0.0,
+      "max_score": 50.0,
+      "master_exam_type_id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "c55b89bd-8f48-4e4a-9179-ecbb20173524",
+      "name": "Kliky",
+      "name_en": "Push-ups",
+      "min_score": 0.0,
+      "max_score": 50.0,
+      "master_exam_type_id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "65eebc01-6326-40d8-bad6-4bcea0ccf1e9",
+      "name": "Dvanáctiminutový běh",
+      "name_en": "Twelve minute run",
+      "min_score": 0.0,
+      "max_score": 50.0,
+      "master_exam_type_id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
     }
   ],
   "exams": [
