@@ -135,9 +135,10 @@ class ExamGQLModel(BaseGQLModel):
         from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
         loader = getLoadersFromInfo(info).student_exam_links
         rows = await loader.filter_by(exam_id=self.id)
-        awaitable = (StudentAdmissionGQLModel.resolve_reference(info, row.student_admission_id) for row in rows)
+        if rows is None:
+            return []
+        awaitable = (StudentAdmissionGQLModel.resolve_reference_old(info, row.student_admission_id) for row in rows)
         return await asyncio.gather(*awaitable)
-
 
 @createInputs
 @dataclasses.dataclass

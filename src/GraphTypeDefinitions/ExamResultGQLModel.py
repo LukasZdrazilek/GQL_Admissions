@@ -119,7 +119,7 @@ class ExamResultInsertGQLModel:
     student_admission_id: uuid.UUID = strawberry.field(description="The ID of the related student admission")
 
     id: typing.Optional[uuid.UUID] = strawberry.field(description="Primary key", default=None)
-    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result")
+    score: typing.Optional[float] = strawberry.field(description="Score achieved in the exam result", default=None)
 
     rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="group_id or user_id defines access rights", default=None)
     createdby_id: strawberry.Private[uuid.UUID] = None
