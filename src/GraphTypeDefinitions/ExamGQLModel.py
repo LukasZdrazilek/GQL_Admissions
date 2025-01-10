@@ -48,88 +48,88 @@ class ExamGQLModel(BaseGQLModel):
 
     name: typing.Optional[str] = strawberry.field(
         default=None,
-        description="Name of the exam type"
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        description="Name of the exam type",
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     name_en: typing.Optional[str] = strawberry.field(
         default=None,
-        description="English name of the exam type"
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        description="English name of the exam type",
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     exam_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
-        description="Date of the exam"
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        description="Date of the exam",
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     examiners_id: typing.Optional[uuid.UUID] = strawberry.field(
         default=None,
         description="Foreign key referencing to group of examiners",
-        # permission_classes=[
-        #     OnlyForAuthentized,
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     facility_id: typing.Optional[uuid.UUID] = strawberry.field(
         default=None,
         description="Foreign key referencing to facility of exam",
-        # permission_classes=[
-        #     OnlyForAuthentized,
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     exam_type_id: uuid.UUID = strawberry.field(
-        description="Foreign key to exam type"
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        description="Foreign key to exam type",
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     facility: typing.Optional["FacilityGQLModel"] = strawberry.field(
         description="""Facility associated with this exam""",
         resolver=ScalarResolver['FacilityGQLModel'](fkey_field_name="facility_id"),
-        # permission_classes=[
-        #     OnlyForAuthenticated
-        # ],
+        permission_classes=[
+            OnlyForAuthentized,
+        ],
     )
 
     examiners: typing.Optional["GroupGQLModel"] = strawberry.field(
         description="""Examiners associated with this exam""",
         resolver=ScalarResolver['GroupGQLModel'](fkey_field_name="examiners_id"),
-        # permission_classes=[
-        #     OnlyForAuthenticated
-        # ],
+        permission_classes=[
+            OnlyForAuthentized,
+        ],
     )
 
     exam_type: typing.Optional["ExamTypeGQLModel"] = strawberry.field(
         description="""Type of the exam""",
         resolver=ScalarResolver['ExamTypeGQLModel'](fkey_field_name="exam_type_id"),
-        # permission_classes=[
-        #     OnlyForAuthenticated
-        # ],
+        permission_classes=[
+            OnlyForAuthentized,
+        ],
     )
 
     exam_results: typing.List["ExamResultGQLModel"] = strawberry.field(
         description="""Results of the exam""",
         resolver=VectorResolver["ExamResultGQLModel"](fkey_field_name="exam_id", whereType=None),
-        # permission_classes = [
-        #     OnlyForAuthorized,
-        # ]
+        permission_classes = [
+            OnlyForAuthentized,
+        ]
     )
 
     @strawberry.field(
         description="Student Admissions related to this exam",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
     async def student_admissions(self, info: strawberry.types.Info) -> typing.Optional[typing.List["StudentAdmissionGQLModel"]]:
         from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
@@ -155,17 +155,17 @@ exam_by_id = strawberry.field(
     description = """Finds an Exam by its id""",
     graphql_type=typing.Optional[ExamGQLModel],
     resolver=ExamGQLModel.load_with_loader,
-    # permission_classes=[
-    #     OnlyForAuthentized,
-    # ]
+    permission_classes=[
+        OnlyForAuthentized,
+    ]
 )
 
 exam_page = strawberry.field(
     description="""Returns a list of exams""",
     resolver=PageResolver[ExamGQLModel](whereType=ExamInputFilter),
-    # permission_classes=[
-    #     OnlyForAuthentized,
-    # ],
+    permission_classes=[
+        OnlyForAuthentized,
+    ],
 )
 
 
@@ -208,16 +208,6 @@ class ExamDeleteGQLModel:
     id: uuid.UUID = strawberry.field(description="Primary key")
     lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
 
-@strawberry.type(description="Result of a mutation for an exam")
-class ExamMutationResultGQLModel:
-    id: uuid.UUID = strawberry.field(description="The ID of the exam", default=None)
-    msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
-
-    @strawberry.field(description="Returns the exam type")
-    async def exam(self, info: strawberry.types.Info) -> typing.Union[ExamGQLModel, None]:
-        result = await ExamGQLModel.resolve_reference(info, self.id)
-        return result
-
 @strawberry.input(description="Definition of an StudentExam Link used for addition")
 class StudentExamLinkAddGQLModel:
     exam_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam")
@@ -241,20 +231,39 @@ async def link_student_to_exam(self, info: strawberry.types.Info, link: StudentE
     result.input = link
     return result
 
-from uoishelpers.resolvers import Insert, InsertError
-@strawberry.mutation(description="Adds a new exam using stefek magic.")
+
+
+@strawberry.mutation(
+    description="Adds a new admission using stefek magic.",
+    permission_classes=[
+        OnlyForAuthentized,
+        SimpleInsertPermission[ExamGQLModel](roles=["administrátor", "administrátor přijímacího řízení"])
+    ]
+)
 async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:
-    result = await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
-    return result
+    exam.rbacobject_id = exam.rbacobject_id # if admission.rbacobject_id else admission.group_id
+    return await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
 
-from uoishelpers.resolvers import Update, UpdateError
-@strawberry.mutation(description="Updates an exam using stefek magic.")
-async def exam_update(self, info: strawberry.types.Info, exam: ExamUpdateGQLModel) -> typing.Union[ExamGQLModel, UpdateError[ExamGQLModel]]:
-    result = await Update[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
-    return result
 
-from uoishelpers.resolvers import Delete, DeleteError
-@strawberry.mutation(description="Deletes exam using stefek magic.")
-async def exam_delete(self, info: strawberry.types.Info, exam: ExamDeleteGQLModel) -> typing.Union[ExamGQLModel, DeleteError[ExamGQLModel]]:
-    result = await Delete[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
-    return result
+
+@strawberry.mutation(
+    description="Updates an admission using stefek magic.",
+    permission_classes=[
+        OnlyForAuthentized,
+        SimpleUpdatePermission[ExamGQLModel](roles=["administrátor", "administrátor přijímacího řízení"])
+    ]
+)
+async def exam_update(self, info: strawberry.types.Info, exam: typing.Annotated[ExamUpdateGQLModel, strawberry.argument(description="desc")]) -> typing.Union[ExamGQLModel, UpdateError[ExamGQLModel]]:
+    return await Update[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
+
+
+
+@strawberry.mutation(
+    description="Deletes admission using stefek magic.",
+    permission_classes=[
+        OnlyForAuthentized,
+        SimpleDeletePermission[ExamGQLModel](roles=["administrátor", "administrátor přijímacího řízení"])
+    ]
+)
+async def exam_delete(self, info: strawberry.types.Info, exam: ExamDeleteGQLModel) -> typing.Optional[DeleteError[ExamGQLModel]]:
+    return await Delete[ExamGQLModel].DoItSafeWay(info=info, entity=exam)

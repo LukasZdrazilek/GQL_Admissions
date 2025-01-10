@@ -5,6 +5,7 @@ import typing
 import strawberry.types
 
 from uoishelpers.resolvers import VectorResolver
+from uoishelpers.gqlpermissions import OnlyForAuthentized
 
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
 
@@ -19,8 +20,8 @@ class AcProgramGQLModel:
     admissions: typing.List["AdmissionGQLModel"] = strawberry.field(
         description = """List of admissions related to the program""",
         resolver = VectorResolver["AdmissionGQLModel"](fkey_field_name="program_id", whereType=None),
-        # permission_classes = [
-        #     OnlyForAuthentized,
-        # ]
+        permission_classes = [
+            OnlyForAuthentized,
+        ]
     )
 

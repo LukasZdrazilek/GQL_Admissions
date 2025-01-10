@@ -27,6 +27,7 @@ from uoishelpers.resolvers import (
     VectorResolver,
 )
 
+
 from .BaseGQLModel import BaseGQLModel
 
 StudentAdmissionGQLModel = typing.Annotated["StudentAdmissionGQLModel", strawberry.lazy(".StudentAdmissionGQLModel")]
@@ -45,137 +46,137 @@ class AdmissionGQLModel(BaseGQLModel):
     name: typing.Optional[str] = strawberry.field(
         default=None,
         description="""Name of the admission entry""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     name_en: typing.Optional[str] = strawberry.field(
         default=None,
         description="""English name of the admission entry""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     program_id: typing.Optional[uuid.UUID] = strawberry.field(
         default=None,
         description="""Foreign key referencing to the associated program""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     application_start_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Od kdy lze podat přihlášku""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     application_last_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Do kdy lze podat přihlášku""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     end_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Admission validity end date""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     condition_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Do kdy doložit požadavky""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     request_condition_start_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Od kdy možné žádat o prodloužení""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     request_condition_last_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Do kdy možné žádat o prodloužení""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     request_exam_start_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Od kdy možné podat žádost o náhradní termín""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     request_exam_last_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Do kdy možné podat žádost o náhradní termín""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     payment_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Do kdy lze zaplatit poplatek""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     request_enrollment_start_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""From when it is possible to ask for a different enrollment date""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     request_enrollment_end_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""To when it is possible to ask for a different enrollment date""",
-        # permission_classes=[
-        #   OnlyForAuthenticated
-        # ]
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
     )
 
     program: typing.Optional["AcProgramGQLModel"] = strawberry.field(
         description="""Program associated with this admission""",
         resolver=ScalarResolver['ExamTypeGQLModel'](fkey_field_name="program_id"),
-        # permission_classes=[
-        #     OnlyForAuthenticated
-        # ],
+        permission_classes=[
+            OnlyForAuthentized,
+        ],
     )
 
     exam_types: typing.List["ExamTypeGQLModel"] = strawberry.field(
         description="""Exam types associated with this admission""",
         resolver=VectorResolver["ExamTypeGQLModel"](fkey_field_name="admission_id", whereType=None),
-        # permission_classes = [
-        #     OnlyForAuthentized,
-        # ]
+        permission_classes = [
+            OnlyForAuthentized,
+        ]
     )
 
     student_admissions: typing.List["StudentAdmissionGQLModel"] = strawberry.field(
         description="""List of student admissions related to the admission""",
         resolver=VectorResolver["StudentAdmissionGQLModel"](fkey_field_name="admission_id", whereType=None),
-        # permission_classes = [
-        #     OnlyForAuthentized,
-        # ]
+        permission_classes = [
+            OnlyForAuthentized,
+        ]
     )
 
 
@@ -202,17 +203,17 @@ admission_by_id = strawberry.field(
     description="""Finds an admission by its id""",
     graphql_type=typing.Optional[AdmissionGQLModel],
     resolver=AdmissionGQLModel.load_with_loader,
-    # permission_classes=[
-    #     OnlyForAuthentized,
-    # ]
-        )
+    permission_classes=[
+        OnlyForAuthentized,
+    ]
+)
 
 admission_page = strawberry.field(
     description="""Returns a list of admissions""",
     resolver=PageResolver[AdmissionGQLModel](whereType=AdmissionInputFilter),
-    # permission_classes=[
-    #         OnlyForAuthentized,
-    # ]
+    permission_classes=[
+            OnlyForAuthentized,
+    ]
 )
 
 ########################################################################################################################
@@ -287,30 +288,37 @@ class AdmissionDeleteGQLModel:
 
 ########################################################################################################################
 
-@strawberry.type(description="Result of a mutation for an admission")
-class AdmissionMutationResultGQLModel:
-    id: uuid.UUID = strawberry.field(description="The ID of the admission", default=None)
-    msg: str = strawberry.field(description="Result of the operation (OK/Fail)", default=None)
-
-    @strawberry.field(description="Returns the admission")
-    async def admission(self, info: strawberry.types.Info) -> typing.Union[AdmissionGQLModel, None]:
-        result = await AdmissionGQLModel.resolve_reference(info, self.id)
-        return result
-
-from uoishelpers.resolvers import Insert, InsertError
-@strawberry.mutation(description="Adds a new admission using stefek magic.")
+@strawberry.mutation(
+    description="Adds a new admission using stefek magic.",
+    permission_classes=[
+        OnlyForAuthentized,
+        SimpleInsertPermission[AdmissionGQLModel](roles=["administrátor", "administrátor přijímacího řízení"])
+    ]
+)
 async def admission_insert(self, info: strawberry.types.Info, admission: AdmissionInsertGQLModel) -> typing.Union[AdmissionGQLModel, InsertError[AdmissionGQLModel]]:
-    result = await Insert[AdmissionGQLModel].DoItSafeWay(info=info, entity=admission)
-    return result
+    admission.rbacobject_id = admission.rbacobject_id # if admission.rbacobject_id else admission.group_id
+    return await Insert[AdmissionInsertGQLModel].DoItSafeWay(info=info, entity=admission)
 
-from uoishelpers.resolvers import Update, UpdateError
-@strawberry.mutation(description="Updates an admission using stefek magic.")
-async def admission_update(self, info: strawberry.types.Info, admission: AdmissionUpdateGQLModel) -> typing.Union[AdmissionGQLModel, UpdateError[AdmissionGQLModel]]:
-    result = await Update[AdmissionGQLModel].DoItSafeWay(info=info, entity=admission)
-    return result
 
-from uoishelpers.resolvers import Delete, DeleteError
-@strawberry.mutation(description="Deletes admission using stefek magic.")
-async def admission_delete(self, info: strawberry.types.Info, admission: AdmissionDeleteGQLModel) -> typing.Union[AdmissionGQLModel, DeleteError[AdmissionGQLModel]]:
-    result = await Delete[AdmissionGQLModel].DoItSafeWay(info=info, entity=admission)
-    return result
+
+@strawberry.mutation(
+    description="Updates an admission using stefek magic.",
+    permission_classes=[
+        OnlyForAuthentized,
+        SimpleUpdatePermission[AdmissionGQLModel](roles=["administrátor", "administrátor přijímacího řízení"])
+    ]
+)
+async def admission_update(self, info: strawberry.types.Info, admission: typing.Annotated[AdmissionUpdateGQLModel, strawberry.argument(description="desc")]) -> typing.Union[AdmissionGQLModel, UpdateError[AdmissionGQLModel]]:
+    return await Update[AdmissionGQLModel].DoItSafeWay(info=info, entity=admission)
+
+
+
+@strawberry.mutation(
+    description="Deletes admission using stefek magic.",
+    permission_classes=[
+        OnlyForAuthentized,
+        SimpleDeletePermission[AdmissionGQLModel](roles=["administrátor", "administrátor přijímacího řízení"])
+    ]
+)
+async def admission_delete(self, info: strawberry.types.Info, admission: AdmissionDeleteGQLModel) -> typing.Optional[DeleteError[AdmissionGQLModel]]:
+    return await Delete[AdmissionGQLModel].DoItSafeWay(info=info, entity=admission)

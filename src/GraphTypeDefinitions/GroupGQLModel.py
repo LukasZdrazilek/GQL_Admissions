@@ -5,6 +5,7 @@ import typing
 import strawberry.types
 
 from uoishelpers.resolvers import VectorResolver
+from uoishelpers.gqlpermissions import OnlyForAuthentized
 
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 
@@ -19,7 +20,7 @@ class GroupGQLModel:
     exams: typing.List["ExamGQLModel"] = strawberry.field(
         description="""List of exams related to the group""",
         resolver=VectorResolver["ExamGQLModel"](fkey_field_name="examiners_id", whereType=None),
-        # permission_classes = [
-        #     OnlyForAuthentized,
-        # ]
+        permission_classes = [
+            OnlyForAuthentized,
+        ]
     )
