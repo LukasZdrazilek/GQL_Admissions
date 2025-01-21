@@ -1,7 +1,7 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 from .BaseModel import BaseModel
-from uuid import UUID
+import uuid
 import json
 
 class ExamTypeModel(BaseModel):
@@ -29,8 +29,8 @@ class ExamTypeModel(BaseModel):
     min_score: Mapped[float] = mapped_column(nullable= True, default=None, comment="Minimum score of the exam type")
     max_score: Mapped[float] = mapped_column(nullable= True, default=None, comment="Maximum score of the exam type")
 
-    master_exam_type_id: Mapped[UUID] = mapped_column(ForeignKey("exam_types.id"), index=True, nullable=True, default=None, comment="UUID of the master exam type")
-    admission_id: Mapped[UUID] = mapped_column(ForeignKey("admissions.id"), index=True, nullable=True, default=None, comment="Foreign key referencing the related admission")
+    master_exam_type_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("exam_types.id"), index=True, nullable=True, default=None, comment="UUID of the master exam type")
+    admission_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("admissions.id"), index=True, nullable=True, default=None, comment="Foreign key referencing the related admission")
 
     master_exam_type = relationship("ExamTypeModel", viewonly=True)
     subexam_types = relationship("ExamTypeModel", remote_side="ExamTypeModel.id", viewonly=True, uselist=True)

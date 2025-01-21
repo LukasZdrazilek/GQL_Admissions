@@ -2,7 +2,7 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 
 from datetime import datetime
-from uuid import UUID
+import uuid
 
 from .BaseModel import BaseModel
 from .UUIDColumn import UUIDFKey
@@ -18,9 +18,9 @@ class ExamModel(BaseModel):
 
     exam_date: Mapped[datetime] = mapped_column(nullable=True, default=None, comment="Date of exam")
 
-    exam_type_id: Mapped[UUID] = mapped_column(ForeignKey('exam_types.id'), index=True, nullable=True, default=None, comment="Foreign key to exam type")
+    exam_type_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('exam_types.id'), index=True, nullable=True, default=None, comment="Foreign key to exam type")
 
-    examiners_id: Mapped[UUID] = UUIDFKey("groups.id", comment="Foreign key referencing the group of examiners associated with this exam")
-    facility_id: Mapped[UUID] = UUIDFKey("facilities.id", comment="Foreign key referencing the facility associated with this exam")
+    examiners_id: Mapped[uuid.UUID] = UUIDFKey("groups.id", comment="Foreign key referencing the group of examiners associated with this exam")
+    facility_id: Mapped[uuid.UUID] = UUIDFKey("facilities.id", comment="Foreign key referencing the facility associated with this exam")
 
     exam_type = relationship("ExamTypeModel", viewonly=True, lazy="joined")

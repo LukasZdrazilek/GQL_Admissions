@@ -1,4 +1,4 @@
-from uuid import UUID
+import uuid
 from sqlalchemy import Column, Uuid
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import DeclarativeBase
@@ -20,7 +20,7 @@ def UUIDColumn(**kwargs):
         **kwargs,
         "index": True,
         "primary_key": True,
-        "default_factory": UUID,
+        "default_factory": uuid.uuid4,
         "comment": "primary key"
     }
     return mapped_column(**newkwargs)
