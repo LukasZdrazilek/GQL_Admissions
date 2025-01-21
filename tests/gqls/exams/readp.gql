@@ -1,0 +1,15 @@
+query{
+  result: examPage{
+    __typename
+    ...Exam
+  }
+}
+
+fragment Exam on ExamGQLModel{
+  lastchange
+  id
+  name
+  nameEn
+  examDate
+  examTypeId
+}

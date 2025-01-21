@@ -1,0 +1,21 @@
+mutation deleteExam($id: UUID!,$lastchange: DateTime!) {
+  examDelete(exam:
+  {
+ 		id: $id,
+    lastchange: $lastchange
+  }){
+    __typename
+    ...Error
+  }
+}
+
+fragment Error on ExamGQLModelDeleteError {
+  msg
+  input
+  failed
+  Entity
+  {
+    id
+    lastchange
+  }
+}

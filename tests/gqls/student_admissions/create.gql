@@ -1,0 +1,34 @@
+mutation AddStudentAdmission($id: UUID, $admission_id: UUID!, $student_id: UUID, $state_id: UUID, $extended_condition_date: DateTime, $admissioned: Boolean, $enrollment_date: DateTime) {
+  studentAdmissionInsert(
+    studentAdmission: {
+      id: $id
+      admissionId: $admission_id
+      studentId: $student_id
+      stateId: $state_id
+      extendedConditionDate: $extended_condition_date
+      admissioned: $admissioned
+      enrollmentDate: $enrollment_date
+    }
+  ) {
+    __typename
+    ...Error
+    ...FE
+  }
+}
+
+fragment Error on InsertError{
+  msg
+  input
+  failed
+}
+
+fragment FE on StudentAdmissionGQLModel{
+  lastchange
+  id
+  admissionId
+  studentId
+  stateId
+  extendedConditionDate
+  admissioned
+  enrollmentDate
+}

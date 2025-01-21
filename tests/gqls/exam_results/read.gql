@@ -1,0 +1,14 @@
+query ($id: UUID!) {
+  result: examResultById(id: $id) {
+    __typename
+    ...ExamResult
+  }
+}
+
+fragment ExamResult on ExamResultGQLModel{
+  lastchange
+  id
+  score
+  examId
+  studentAdmissionId
+}

@@ -1,0 +1,31 @@
+mutation AddExam($id: UUID, $name: String!, $name_en: String, $exam_date: DateTime, $exam_type_id: UUID!) {
+  examInsert(
+    exam: {
+      id: $id
+    	name: $name
+      nameEn: $name_en
+      examDate: $exam_date
+      examTypeId: $exam_type_id
+      
+    }
+  ) {
+    __typename
+    ...Error
+    ...FE
+  }
+}
+
+fragment Error on InsertError{
+  msg
+  input
+  failed
+}
+
+fragment FE on ExamGQLModel{
+  lastchange
+  id
+  name
+  nameEn
+  examDate
+  examTypeId
+}

@@ -1,0 +1,52 @@
+mutation AddAdmission($id: UUID, $name: String!, $name_en: String, $program_id: UUID, $application_start_date: DateTime, $application_last_date: DateTime, $end_date: DateTime, $condition_date: DateTime, $request_condition_start_date: DateTime, $request_condition_last_date: DateTime, $request_exam_start_date: DateTime, $request_exam_last_date: DateTime, $payment_date: DateTime, $request_enrollment_start_date: DateTime, $request_enrollment_end_date: DateTime) {
+  admissionInsert(
+    admission: {
+      id: $id
+      name: $name
+      nameEn: $name_en
+      programId: $program_id
+      applicationStartDate: $application_start_date
+      applicationLastDate: $application_last_date
+      endDate: $end_date
+      conditionDate: $condition_date
+      requestConditionStartDate: $request_condition_start_date
+      requestConditionLastDate: $request_condition_last_date
+      requestExamStartDate: $request_exam_start_date
+      requestExamLastDate: $request_exam_last_date
+      paymentDate: $payment_date
+      requestEnrollmentStartDate: $request_enrollment_start_date
+      requestEnrollmentEndDate: $request_enrollment_end_date
+    }
+  ) {
+    __typename
+    ...Error
+    ...FE
+  }
+}
+
+fragment Error on InsertError{
+  __typename
+  msg
+  input
+  failed
+}
+
+fragment FE on AdmissionGQLModel{
+  __typename
+  lastchange
+  id
+  name
+  nameEn
+  programId
+  applicationStartDate
+  applicationLastDate
+  endDate
+  conditionDate
+  requestConditionStartDate
+  requestConditionLastDate
+  requestExamStartDate
+  requestExamLastDate
+  paymentDate
+  requestEnrollmentStartDate
+  requestEnrollmentEndDate
+}

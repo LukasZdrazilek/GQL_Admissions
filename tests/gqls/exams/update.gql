@@ -1,0 +1,35 @@
+mutation UpdateExam($lastchange: DateTime!, $id: UUID!, $name: String, $name_en: String, $exam_date: DateTime, $exam_type_id: UUID!) {
+  examUpdate(
+    exam: {
+      lastchange: $lastchange
+      id: $id
+      name: $name
+      nameEn: $name_en
+      examDate: $exam_date
+      examTypeId: $exam_type_id
+    }
+  ) {
+    __typename
+    ...Error
+    ...Exam
+  }
+}
+
+fragment Error on ExamGQLModelUpdateError {
+  msg
+  input
+  failed
+  Entity
+  {
+    lastchange
+  }
+}
+
+fragment Exam on ExamGQLModel{
+  id
+  lastchange
+  name
+  nameEn
+  examDate
+  examTypeId
+}

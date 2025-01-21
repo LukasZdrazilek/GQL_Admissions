@@ -1,0 +1,238 @@
+{
+  "admissions": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "name": "Přijímací řízení 2025/26 KB",
+      "name_en": "Admission 2025/26 KB",
+      "state_id": "987e6543-e21c-98d7-a765-426614170000",
+      "program_id": "456e7890-e12d-34b5-b678-426614171111",
+      "application_start_date": "2024-01-01T09:00:00Z",
+      "application_last_date": "2024-03-15T23:59:59Z",
+      "end_date": "2024-09-01T00:00:00Z",
+      "condition_date": "2024-05-01T23:59:59Z",
+      "request_condition_start_date": "2024-05-02T00:00:00Z",
+      "request_condition_last_date": "2024-05-31T23:59:59Z",
+      "request_exam_start_date": "2024-04-01T09:00:00Z",
+      "request_exam_last_date": "2024-04-30T23:59:59Z",
+      "payment_date": "2024-03-20T00:00:00Z",
+      "request_enrollment_start_date": "2024-07-01T09:00:00Z",
+      "request_enrollment_end_date": "2024-08-15T23:59:59Z"
+    }
+  ],
+  "student_admissions": [
+    {
+      "id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000",
+      "student_id": "8f7b59dc-f2a8-4d4f-b1d5-91d8b6d6f301",
+      "state_id": null,
+      "extended_condition_date": "2024-08-15T00:00:00",
+      "admissioned": true,
+      "enrollment_date": "2024-09-01T00:00:00"
+    },
+    {
+      "id": "89b10735-ef94-49d4-965f-fbd475d65d1f",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000",
+      "student_id": "c1a7b40d-2b4a-4f56-a845-3f4e5d4c3b07",
+      "state_id": null,
+      "extended_condition_date": null,
+      "admissioned": false,
+      "enrollment_date": "2024-09-10T00:00:00"
+    },
+    {
+      "id": "7b5dc42a-8e33-4223-85c4-6526993c1063",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000",
+      "student_id": "d5c7f8f4-a0a7-4316-bc9f-7f3e4d1e5f5c",
+      "state_id": null,
+      "extended_condition_date": "2024-09-20T00:00:00",
+      "admissioned": true,
+      "enrollment_date": "2024-10-01T00:00:00"
+    },
+    {
+      "id": "8076d3f3-63b1-49f5-a65a-eea917e41a35",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000",
+      "student_id": "a9d8f1c3-3e4b-42d5-b6a5-5f1d3a3c2b12",
+      "state_id": null,
+      "extended_condition_date": "2024-09-25T00:00:00",
+      "admissioned": false,
+      "enrollment_date": "2024-10-10T00:00:00"
+    },
+    {
+      "id": "a9158244-5ce6-4582-bfa2-281923561062",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000",
+      "student_id": "2f6c5b9e-b5d4-4326-9a7f-8e4d7d6c5e5f",
+      "state_id": null,
+      "extended_condition_date": null,
+      "admissioned": true,
+      "enrollment_date": "2024-11-01T00:00:00"
+    }
+  ],
+  "exam_types": [
+    {
+      "id": "e19b1d5c-7e29-4f38-a609-abc2d233a842",
+      "name": "Mathematics",
+      "name_en": "Mathematics",
+      "min_score": 50.0,
+      "max_score": 100.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "f4b3a1fa-3b1e-42bc-bd2d-ef234d7b7c61",
+      "name": "Physics",
+      "name_en": "Physics",
+      "min_score": 40.0,
+      "max_score": 90.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "c1df3f1e-2b4d-4323-bf92-11a2c1e8d8e7",
+      "name": "English Language",
+      "name_en": "English Language",
+      "min_score": 60.0,
+      "max_score": 100.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b29",
+      "name": "Computer Science",
+      "name_en": "Computer Science",
+      "min_score": 55.0,
+      "max_score": 95.0,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "name": "Test fyzické zdatnosti",
+      "name_en": "Physical fitness test",
+      "min_score": 0.0,
+      "max_score": 100.0,
+      "master_exam_type_id": null,
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "b5dedf81-6e57-4681-b0e3-ebb7972e9c6e",
+      "name": "Sed-lehy",
+      "name_en": "Sit-ups",
+      "min_score": 0.0,
+      "max_score": 50.0,
+      "master_exam_type_id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "c55b89bd-8f48-4e4a-9179-ecbb20173524",
+      "name": "Kliky",
+      "name_en": "Push-ups",
+      "min_score": 0.0,
+      "max_score": 50.0,
+      "master_exam_type_id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    {
+      "id": "65eebc01-6326-40d8-bad6-4bcea0ccf1e9",
+      "name": "Dvanáctiminutový běh",
+      "name_en": "Twelve minute run",
+      "min_score": 0.0,
+      "max_score": 50.0,
+      "master_exam_type_id": "2df4d01b-d568-4ce2-b915-354c2c31715b",
+      "admission_id": "123e4567-e89b-12d3-a456-426614174000"
+    }
+  ],
+  "exams": [
+    {
+        "id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5",
+        "name": "Mathematics Proper Term",
+        "name_en": "Mathematics Proper Term",
+        "exam_date": "2024-05-15T09:00:00",
+        "exam_type_id": "e19b1d5c-7e29-4f38-a609-abc2d233a842"
+    },
+    {
+        "id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f",
+        "name": "Physics Proper Term",
+        "name_en": "Physics Proper Term",
+        "exam_date": "2024-05-20T10:00:00",
+        "exam_type_id": "f4b3a1fa-3b1e-42bc-bd2d-ef234d7b7c61"
+    },
+    {
+        "id": "c3d8b2e6-4e6a-4d4b-931f-a4f9d8b3f1a4",
+        "name": "English Corrective Term",
+        "name_en": "English Corrective Term",
+        "exam_date": "2024-06-10T11:00:00",
+        "exam_type_id": "c1df3f1e-2b4d-4323-bf92-11a2c1e8d8e7"
+    },
+    {
+        "id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+        "name": "Computer Science Final Exam",
+        "name_en": "Computer Science Final Exam",
+        "exam_date": "2024-06-15T14:00:00",
+        "exam_type_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b29"
+    }
+  ],
+  "exam_results": [
+  {
+    "id": "158c09c9-9881-4b0d-915a-ba89d917ae18",
+    "score": 87,
+    "student_admission_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135",
+    "exam_id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5"
+  },
+  {
+    "id": "1a1bc900-8b48-4a88-883c-1d9237aae24c",
+    "score": 74,
+    "student_admission_id": "89b10735-ef94-49d4-965f-fbd475d65d1f",
+    "exam_id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f"
+  },
+  {
+    "id": "9a23470e-4ba7-48ab-85ed-26f6dcc9fac5",
+    "score": 92,
+    "student_admission_id": "7b5dc42a-8e33-4223-85c4-6526993c1063",
+    "exam_id": "c3d8b2e6-4e6a-4d4b-931f-a4f9d8b3f1a4"
+  },
+  {
+    "id": "835a5824-89b5-4821-b758-437366b06a4a",
+    "score": 61,
+    "student_admission_id": "8076d3f3-63b1-49f5-a65a-eea917e41a35",
+    "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c"
+  },
+  {
+    "id": "bc8dd444-cca2-4ee2-a770-354281e56ca0",
+    "score": 55,
+    "student_admission_id": "a9158244-5ce6-4582-bfa2-281923561062",
+    "exam_id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5"
+  }
+],
+  "student_exam_links": [
+    {
+      "id": "067d10e8-b188-4f6b-a50e-687c3fd49b01",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    },
+    {
+      "id": "0ce60eb9-3feb-46e6-837b-f1ec057eb479",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "7b5dc42a-8e33-4223-85c4-6526993c1063"
+    },
+    {
+      "id": "12f96e4d-038f-4f28-b8df-8992cde48928",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "89b10735-ef94-49d4-965f-fbd475d65d1f"
+    },
+    {
+      "id": "0369a9a4-7b1f-44d8-a3c9-101963ff54fb",
+      "exam_id": "b4a7d2e5-9d2b-4e2a-821d-1e8d5a4b2f1c",
+      "student_id": "8076d3f3-63b1-49f5-a65a-eea917e41a35"
+    },
+    {
+      "id": "0ed8b157-4467-4bfa-999c-d6abcfc617be",
+      "exam_id": "a15d2b5f-3e0f-4f9e-8f1e-9d3a2c2c8b3f",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    },
+    {
+      "id": "038796bc-d443-4aeb-9991-c70c26c4bea9",
+      "exam_id": "c3d8b2e6-4e6a-4d4b-931f-a4f9d8b3f1a4",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    },
+    {
+      "id": "298c957a-211e-49b7-bec2-3768e54b7364",
+      "exam_id": "d21a1c6b-5e8f-4b6d-933f-918d39e5e1e5",
+      "student_id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088135"
+    }
+  ]
+}

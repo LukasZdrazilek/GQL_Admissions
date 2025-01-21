@@ -1,0 +1,187 @@
+{
+    "admissions": [
+        {
+            "id": "995a0dd2-3697-4e40-ae68-5bc3d9fe8c81",
+            "startdate": "2024-11-01T00:00:00",
+            "enddate": "2025-03-31T23:59:59",
+
+            "program_id": "77bb4a23-1003-4dd4-af62-4511fc013e6d",
+            "payment_info_id": "2dd560b8-7c4c-41a5-aaeb-75f9f8e30409",
+
+            "application_start_date": "2024-11-01T00:00:00",
+            "application_last_date": "2025-03-31T23:59:59",
+            "end_date": "",
+            "condition_date": "2025-06-13T23:59:59",
+            "payment_date": "2025-04-05T23:59:59",
+            "condition_extended_date": "2025-09-30T23:59:59",
+            "request_condition_extend_date": "",
+            "request_extra_conditions_date": "",
+            "request_extra_date_date": "2025-06-13T23:59:59",
+            "exam_start_date": "2025-04-22T00:00:00",
+            "exam_last_date": "2025-06-03T23:59:59",
+            "student_entry_date": ""
+        
+        }
+    ],
+    "admission_exam_results": [
+        {
+            "id": "759f2205-44ca-4060-92c2-58b4a13da1b6",
+            "user_id": "15315904-811b-4248-ac96-f670104646d6"
+        }
+    ],
+    "admission_payment_infos": [
+        {
+            "id": "2dd560b8-7c4c-41a5-aaeb-75f9f8e30409",
+            "account_number": "19-26030881/0710",
+            "specific_symbol": "299400",
+            "constant_symbol": "558",
+            "IBAN": "CZ52 0710 0000 1900 2603 0881",
+            "SWIFT": "CNBACZPP",
+            "amount": 400
+
+        }
+    ],
+    "admission_payments": [
+        {
+            "id": "c3af1c6d-78f2-4d9c-b963-82f1fba09abf",
+            "payment_info_id": "2dd560b8-7c4c-41a5-aaeb-75f9f8e30409",
+            "bank_unique_data": "",
+            "variable_symbol": "",
+            "student_id": "5d36bb38-b29d-44e8-893d-b5e5a3b2591f",
+            "amount": 400
+        }
+    ],
+    "admission_discipline_results": [
+        {
+            "id": "4c57223e-cb53-4e31-9744-27d3637fdade",
+            "student_id": "5d36bb38-b29d-44e8-893d-b5e5a3b2591f",
+            "description": "",
+            "score": 20,
+            "user_id": "15315904-811b-4248-ac96-f670104646d6",
+            "examiner_id": "ccb397ad-0de7-46e7-bff0-42452f11dd5e",
+            "discipline_id": "c64ec760-7361-4cd2-a879-f867d7a98af0",
+            "exam_planed_date": ""       
+        },
+        {
+            "id": "4b1dc28a-fbdb-4a9d-9fb0-187531b4ba19",
+            "student_id": "5d36bb38-b29d-44e8-893d-b5e5a3b2591f",
+            "description": "",
+            "score": 20,
+            "user_id": "15315904-811b-4248-ac96-f670104646d6",
+            "examiner_id": "ccb397ad-0de7-46e7-bff0-42452f11dd5e",
+            "discipline_id": "7c81f985-d015-456f-88db-a6f5c711493e",
+            "exam_planed_date": ""       
+        },
+        {
+            "id": "65a98754-a707-422c-96bf-3fa96a7eb9e7",
+            "student_id": "5d36bb38-b29d-44e8-893d-b5e5a3b2591f",
+            "description": "",
+            "score": 2,
+            "user_id": "15315904-811b-4248-ac96-f670104646d6",
+            "examiner_id": "ccb397ad-0de7-46e7-bff0-42452f11dd5e",
+            "discipline_id": "d8f7808b-7ce5-43c8-bfaa-664ba8493766",
+            "exam_planed_date": ""       
+        },
+        {
+            "id": "31fa4314-c7bd-4cb0-ab14-0bc7066c2469",
+            "student_id": "5d36bb38-b29d-44e8-893d-b5e5a3b2591f",
+            "description": "",
+            "score": 5,
+            "user_id": "15315904-811b-4248-ac96-f670104646d6",
+            "examiner_id": "ccb397ad-0de7-46e7-bff0-42452f11dd5e",
+            "discipline_id": "ecae0c20-6bed-4344-8941-44ab47dbbf33",
+            "exam_planed_date": ""       
+        },
+        {
+            "id": "0d4ed048-0a3f-4ff7-94fe-e2bca6c663c3",
+            "student_id": "5d36bb38-b29d-44e8-893d-b5e5a3b2591f",
+            "description": "",
+            "score": 5,
+            "user_id": "15315904-811b-4248-ac96-f670104646d6",
+            "examiner_id": "ccb397ad-0de7-46e7-bff0-42452f11dd5e",
+            "discipline_id": "a24f3394-ba8a-4727-aae4-e9b356f7e648",
+            "exam_planed_date": ""
+        }
+    ],
+    "admission_disciplines": [
+        {
+            "id": "c64ec760-7361-4cd2-a879-f867d7a98af0",
+            "name": "TSP",
+            "max_score": 60,
+            "min_score": 20,
+            "discipline_type_id": "1fe08f56-1a45-4483-9090-0b5d586aed24",
+            "admission_id": "995a0dd2-3697-4e40-ae68-5bc3d9fe8c81"
+        },
+        {
+            "id": "7c81f985-d015-456f-88db-a6f5c711493e",
+            "name": "TAJ",
+            "max_score": 50,
+            "min_score": 20,
+            "discipline_type_id": "9e081724-27a0-4adc-8cab-f01c592cb174",
+            "admission_id": "995a0dd2-3697-4e40-ae68-5bc3d9fe8c81"
+        },
+        {
+            "id": "d8f7808b-7ce5-43c8-bfaa-664ba8493766",
+            "name": "TIT",
+            "max_score": 30,
+            "min_score": 2,
+            "discipline_type_id": "e11ccb73-af79-40e6-b1b6-8d40accd558b",
+            "admission_id": "995a0dd2-3697-4e40-ae68-5bc3d9fe8c81"
+        },
+        {
+            "id": "ecae0c20-6bed-4344-8941-44ab47dbbf33",
+            "name": "Běh 12 minut",
+            "max_score": 25,
+            "min_score": 5,
+            "discipline_type_id": "a2b2a61e-a567-4183-b2bb-0b4b9aeba04e",
+            "admission_id": "995a0dd2-3697-4e40-ae68-5bc3d9fe8c81"
+        },
+        {
+            "id": "a24f3394-ba8a-4727-aae4-e9b356f7e648",
+            "name": "Sedy lehy 1 minuta",
+            "max_score": 25,
+            "min_score": 5,
+            "discipline_type_id": "a2b2a61e-a567-4183-b2bb-0b4b9aeba04e",
+            "admission_id": "995a0dd2-3697-4e40-ae68-5bc3d9fe8c81"
+        }
+    ],
+    "admission_discipline_types": [
+        {
+            "id": "1fe08f56-1a45-4483-9090-0b5d586aed24",
+            "name": "Písemný test studijních předpokladů",
+            "name_en": "",
+            "description": "ověření matematických znalostí a dovedností, numerického myšlení a logického uvažování",
+            "description_en": "",
+            "weight": 0.25,
+            "min_score": 20
+        },
+        {
+            "id": "9e081724-27a0-4adc-8cab-f01c592cb174",
+            "name": "Písemný test z anglického jazyka",
+            "name_en": "",
+            "description": "ověření znalostí a jazykových schopností uchazeče v anglickém jazyce",
+            "description_en": "",
+            "weight": 0.25,
+            "min_score": 20
+        },
+        {
+            "id": "e11ccb73-af79-40e6-b1b6-8d40accd558b",
+            "name": "Písemný test znalostí z informačních technologií",
+            "name_en": "",
+            "description": "ověření všeobecných znalostí z oblasti informačních technologií",
+            "description_en": "",
+            "weight": 0.25,
+            "min_score": 2
+        },
+        {
+            "id": "a2b2a61e-a567-4183-b2bb-0b4b9aeba04e",
+            "name": "Praktické ověření tělesné zdatnosti",
+            "name_en": "",
+            "description": "fyzického ověření tělesné zdatnosti",
+            "description_en": "",
+            "weight": 0.25,
+            "min_score": 10
+        }        
+    ]
+    
+}

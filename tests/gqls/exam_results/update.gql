@@ -1,0 +1,34 @@
+mutation UpdateExamResult($lastchange: DateTime!, $id: UUID!, $score: Float, $exam_id: UUID!, $student_admission_id: UUID!) {
+  examResultUpdate(
+    examResult: {
+      lastchange: $lastchange
+      id: $id
+    	score: $score
+      examId: $exam_id
+      studentAdmissionId: $student_admission_id
+      
+    }
+  ) {
+    __typename
+    ...Error
+    ...ExamResult
+  }
+}
+
+fragment Error on ExamResultGQLModelUpdateError {
+  msg
+  input
+  failed
+  Entity
+  {
+    lastchange
+  }
+}
+
+fragment ExamResult on ExamResultGQLModel{
+  lastchange
+  id
+  score
+  examId
+  studentAdmissionId
+}

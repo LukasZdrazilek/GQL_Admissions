@@ -1,0 +1,29 @@
+mutation AddExamResult($id: UUID, $score: Float, $exam_id: UUID!, $student_admission_id: UUID!) {
+  examResultInsert(
+    examResult: {
+      id: $id
+    	score: $score
+      examId: $exam_id
+      studentAdmissionId: $student_admission_id
+      
+    }
+  ) {
+    __typename
+    ...Error
+    ...FE
+  }
+}
+
+fragment Error on InsertError{
+  msg
+  input
+  failed
+}
+
+fragment FE on ExamResultGQLModel{
+  lastchange
+  id
+  score
+  examId
+  studentAdmissionId
+}

@@ -1,0 +1,38 @@
+mutation UpdateExamType($lastchange: DateTime!, $id: UUID!, $master_exam_type_id: UUID, $name: String, $name_en: String, $min_score: Float, $max_score: Float) {
+  examTypeUpdate(
+    examType: {
+      lastchange: $lastchange
+      id: $id
+      masterExamTypeId: master_exam_type_id
+      name: $name
+      nameEn: $name_en
+      minScore: $min_score
+      maxScore: $max_score
+    }
+  ) {
+    __typename
+    ...Error
+    ...ExamType
+  }
+}
+
+fragment Error on ExamTypeGQLModelUpdateError {
+  msg
+  input
+  failed
+  Entity
+  {
+    lastchange
+  }
+}
+
+fragment ExamType on ExamTypeGQLModel{
+  lastchange
+  id
+  masterExamTypeId
+  name
+  nameEn
+  minScore
+  maxScore
+  admissionId
+}

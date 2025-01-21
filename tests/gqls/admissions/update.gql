@@ -1,0 +1,56 @@
+mutation UpdateAdmission($lastchange: DateTime!, $id: UUID!, $name: String, $name_en: String, $program_id: UUID, $application_start_date: DateTime, $application_last_date: DateTime, $end_date: DateTime, $condition_date: DateTime, $request_condition_start_date: DateTime, $request_condition_last_date: DateTime, $request_exam_start_date: DateTime, $request_exam_last_date: DateTime, $payment_date: DateTime, $request_enrollment_start_date: DateTime, $request_enrollment_end_date: DateTime) {
+  admissionUpdate(
+    admission: {
+      lastchange: $lastchange
+      id: $id
+      name: $name
+      nameEn: $name_en
+      programId: $program_id
+      applicationStartDate: $application_start_date
+      applicationLastDate: $application_last_date
+      endDate: $end_date
+      conditionDate: $condition_date
+      requestConditionStartDate: $request_condition_start_date
+      requestConditionLastDate: $request_condition_last_date
+      requestExamStartDate: $request_exam_start_date
+      requestExamLastDate: $request_exam_last_date
+      paymentDate: $payment_date
+      requestEnrollmentStartDate: $request_enrollment_start_date
+      requestEnrollmentEndDate: $request_enrollment_end_date
+    }
+  ) {
+    __typename
+    ...Error
+    ...Admission
+  }
+}
+
+fragment Error on AdmissionGQLModelUpdateError {
+  msg
+  input
+  failed
+  Entity
+  {
+    lastchange
+  }
+  
+}
+
+fragment Admission on AdmissionGQLModel {
+  id
+  lastchange
+  name  
+  nameEn
+  programId
+  applicationStartDate
+  applicationLastDate
+  endDate
+  conditionDate
+  requestConditionStartDate
+  requestConditionLastDate
+  requestExamStartDate
+  requestExamLastDate
+  paymentDate
+  requestEnrollmentStartDate
+  requestEnrollmentEndDate
+}

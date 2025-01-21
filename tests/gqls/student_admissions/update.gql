@@ -1,0 +1,40 @@
+mutation UpdateStudentAdmissionType($lastchange: DateTime!, $id: UUID!, $admission_id: UUID!, $student_id: UUID, $state_id: UUID, $extended_condition_date: DateTime, $admissioned: Boolean, $enrollment_date: DateTime) {
+  studentAdmissionUpdate(
+    studentAdmission: {
+      lastchange: $lastchange
+      id: $id
+      admissionId: $admission_id
+      studentId: $student_id
+      stateId: $state_id
+      extendedConditionDate: $extended_condition_date
+      admissioned: $admissioned
+      enrollmentDate: $enrollment_date
+    }
+  ) {
+    __typename
+    ...Error
+    ...StudentAdmission
+  }
+}
+
+fragment Error on StudentAdmissionGQLModelUpdateError {
+  msg
+  input
+  failed
+  Entity
+  {
+    lastchange
+  }
+}
+
+fragment StudentAdmission on StudentAdmissionGQLModel{
+  lastchange
+  id
+  admissionId
+  studentId
+  stateId
+  extendedConditionDate
+  admissioned
+  enrollmentDate
+}
+
