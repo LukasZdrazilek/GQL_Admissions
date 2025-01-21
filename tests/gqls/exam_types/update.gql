@@ -3,7 +3,7 @@ mutation UpdateExamType($lastchange: DateTime!, $id: UUID!, $master_exam_type_id
     examType: {
       lastchange: $lastchange
       id: $id
-      masterExamTypeId: master_exam_type_id
+      masterExamTypeId: $master_exam_type_id
       name: $name
       nameEn: $name_en
       minScore: $min_score

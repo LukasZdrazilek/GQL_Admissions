@@ -50,6 +50,7 @@ test_admission_create = createTest2(    # v query pak nastavit povinne program I
         "request_exam_start_date": "2024-01-01T09:00:00",
         "request_exam_last_date": "2024-01-01T09:00:00",
         "payment_date": "2024-01-01T09:00:00",
+        "payment_info_id": "43bd65ba-c870-4f99-b432-ab412755eb81",
         "request_enrollment_start_date": "2024-01-01T09:00:00",
         "request_enrollment_end_date": "2024-01-01T09:00:00"
     }

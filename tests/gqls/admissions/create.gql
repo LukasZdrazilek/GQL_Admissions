@@ -1,4 +1,4 @@
-mutation AddAdmission($id: UUID, $name: String!, $name_en: String, $program_id: UUID, $application_start_date: DateTime, $application_last_date: DateTime, $end_date: DateTime, $condition_date: DateTime, $request_condition_start_date: DateTime, $request_condition_last_date: DateTime, $request_exam_start_date: DateTime, $request_exam_last_date: DateTime, $payment_date: DateTime, $request_enrollment_start_date: DateTime, $request_enrollment_end_date: DateTime) {
+mutation AddAdmission($id: UUID, $name: String!, $name_en: String, $program_id: UUID, $application_start_date: DateTime, $application_last_date: DateTime, $end_date: DateTime, $condition_date: DateTime, $request_condition_start_date: DateTime, $request_condition_last_date: DateTime, $request_exam_start_date: DateTime, $request_exam_last_date: DateTime, $payment_date: DateTime, $payment_info_id: UUID, $request_enrollment_start_date: DateTime, $request_enrollment_end_date: DateTime) {
   admissionInsert(
     admission: {
       id: $id
@@ -14,6 +14,7 @@ mutation AddAdmission($id: UUID, $name: String!, $name_en: String, $program_id: 
       requestExamStartDate: $request_exam_start_date
       requestExamLastDate: $request_exam_last_date
       paymentDate: $payment_date
+      paymentInfoId: $payment_info_id
       requestEnrollmentStartDate: $request_enrollment_start_date
       requestEnrollmentEndDate: $request_enrollment_end_date
     }

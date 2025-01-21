@@ -43,7 +43,7 @@ async def prepare_demodata(async_session_maker):
 
 
 async def createContext(asyncSessionMaker):
-    from src.utils.Dataloaders import createLoaders_3
+    from src.Dataloaders import createLoaders_3
     return {
         "asyncSessionMaker": asyncSessionMaker,
         "all": await createLoaders_3(asyncSessionMaker),

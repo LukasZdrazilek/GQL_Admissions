@@ -35,6 +35,7 @@ from .BaseGQLModel import BaseGQLModel
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
 ExamGQLModel = typing.Annotated["ExamGQLModel", strawberry.lazy(".ExamGQLModel")]
 ExamResultGQLModel = typing.Annotated["ExamResultGQLModel", strawberry.lazy(".ExamResultGQLModel")]
+PaymentGQLModel = typing.Annotated["PaymentGQLModel", strawberry.lazy(".PaymentGQLModel")]
 UserGQLModel = typing.Annotated["UserGQLModel", strawberry.lazy(".UserGQLModel")]
 StateGQLModel = typing.Annotated["StateGQLModel", strawberry.lazy(".StateGQLModel")]
 
@@ -90,6 +91,22 @@ class StudentAdmissionGQLModel(BaseGQLModel):
     enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(
         default=None,
         description="""Date of enrollment""",
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
+    )
+
+    payment_id: typing.Optional["uuid.UUID"] = strawberry.field(
+        default=None,
+        description="""UUID of a payment for admission""",
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
+    )
+
+    payment: typing.Optional["PaymentGQLModel"] = strawberry.field(
+        description="Payment for admission",
+        resolver = ScalarResolver['PaymentGQLModel'](fkey_field_name="payment_id"),
         permission_classes=[
             OnlyForAuthentized,
         ]
@@ -153,11 +170,12 @@ class StudentAdmissionInputFilter:
     extended_condition_date: datetime.datetime
     admissioned: bool
     enrollment_date: datetime.datetime
+    payment_id: uuid.UUID
 
 student_admission_by_id = strawberry.field(
     description="Returns a Student Admission by id",
-    graphql_type=typing.Union[StudentAdmissionGQLModel, None],
-    resolver=StudentAdmissionGQLModel.resolve_reference,
+    graphql_type=typing.Optional[StudentAdmissionGQLModel],
+    resolver=StudentAdmissionGQLModel.load_with_loader,
     permission_classes=[
         OnlyForAuthentized
     ],
@@ -187,6 +205,7 @@ class StudentAdmissionInsertGQLModel:
     extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition", default=None)
     admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission", default=None)
     enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)
+    payment_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a payment", default=None)
 
     rbacobject_id: typing.Optional[uuid.UUID] = strawberry.field(description="group_id or user_id defines access rights", default=None)
     createdby_id: strawberry.Private[uuid.UUID] = None
@@ -202,6 +221,7 @@ class StudentAdmissionUpdateGQLModel:
     extended_condition_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of extended condition", default=None)
     admissioned: typing.Optional[bool] = strawberry.field(description="True if an admissioned admission", default=None)
     enrollment_date: typing.Optional[datetime.datetime] = strawberry.field(description="Date of enrollment", default=None)
+    payment_id: typing.Optional[uuid.UUID] = strawberry.field(description="UUID of a payment", default=None)
 
     changedby_id: strawberry.Private[uuid.UUID] = None
 
