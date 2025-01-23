@@ -1,5 +1,5 @@
-query ReadPayment($id: UUID!) {
-  result: paymentById(id: $id) {
+query ReadPayment{
+  paymentPage {
     __typename
     ...Payment
   }

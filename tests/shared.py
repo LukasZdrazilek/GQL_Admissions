@@ -32,13 +32,13 @@ async def prepare_demodata(async_session_maker):
     await ImportModels(
         async_session_maker,
         [
+            PaymentInfoModel,
+            PaymentModel,
             AdmissionModel, 
             ExamModel,
             ExamResultModel, 
             ExamTypeModel,
-            StudentAdmissionModel,
-            PaymentModel,
-            PaymentInfoModel
+            StudentAdmissionModel
         ],
         data,
     )

@@ -81,6 +81,48 @@ test_payment_info_delete = createDeleteTest2(
     }
 )
 
+   ############################################################################ Payments CRUD Tests
+
+# Payment Tests
+test_payment_create = createTest2(
+    tableName="payments",
+    queryName="create",
+    variables={
+        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
+        "bank_unique_data": "KB",
+        "variable_symbol": "12345678",
+        "amount": 1000.00,
+    }
+)
+
+test_payment_by_id = createByIdTest2(
+    tableName="payments"
+)
+
+test_payment_update = createUpdateTest2(
+    tableName="payments",
+    variables={
+        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        #"lastchange": "2024-01-01T00:00:00",
+        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
+        "bank_unique_data": "KB updated",
+        "variable_symbol": "12345678 updated",
+        "amount": 1000.00,
+    }
+)
+
+test_payment_delete = createDeleteTest2(
+    tableName="payments",
+    variables={
+        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
+        "bank_unique_data": "KB",
+        "variable_symbol": "12345679",
+        "amount": 1001,
+    }
+)
+
 ######################################################################### Admission CRUD Tests
 
 # Create Admission
@@ -423,48 +465,6 @@ test_student_admission_delete = createDeleteTest2(
         "extended_condition_date": "2024-03-20T10:00:00",
         "admissioned": True,
         "enrollment_date": "2024-03-25T10:00:00"
-    }
-)
-
-    ############################################################################ Payments CRUD Tests
-
-# Payment Tests
-test_payment_create = createTest2(
-    tableName="payments",
-    queryName="create",
-    variables={
-        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
-        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
-        "bank_unique_data": "KB",
-        "variable_symbol": "12345678",
-        "amount": 1000.00,
-    }
-)
-
-test_payment_by_id = createByIdTest2(
-    tableName="payments"
-)
-
-test_payment_update = createUpdateTest2(
-    tableName="payments",
-    variables={
-        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
-        #"lastchange": "2024-01-01T00:00:00",
-        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
-        "bank_unique_data": "KB updated",
-        "variable_symbol": "12345678 updated",
-        "amount": 1000.00,
-    }
-)
-
-test_payment_delete = createDeleteTest2(
-    tableName="payments",
-    variables={
-        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
-        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
-        "bank_unique_data": "KB",
-        "variable_symbol": "12345679",
-        "amount": 1001,
     }
 )
 
