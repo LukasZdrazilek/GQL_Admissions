@@ -23,6 +23,36 @@
       "amount": 300.00
     }
   ],
+  "payments": [
+  {
+    "id": "c3163ba0-2ffd-462b-bbb8-b928c32d2915",
+    "payment_info_id": "d57dc3e0-1b10-4531-9e6d-fdc2309903fc",
+    "bank_unique_data": "A1B2C3D4E5F67890",
+    "variable_symbol": "123456789",
+    "amount": 5000.00
+  },
+  {
+    "id": "f73816f9-728f-448f-ab33-0bb0fa54902f",
+    "payment_info_id": "0f6a5e77-99f9-4a37-afe1-782f37c8a1bd",
+    "bank_unique_data": "9Z8Y7X6W5V4U3T2S1",
+    "variable_symbol": "987654321",
+    "amount": 300.00
+  },
+  {
+    "id": "4c15ff3c-2951-4bb7-93b2-aac16bac424b",
+    "payment_info_id": "d57dc3e0-1b10-4531-9e6d-fdc2309903fc",
+    "bank_unique_data": "M9N8O7P6Q5R4S3T2U1",
+    "variable_symbol": "192837465",
+    "amount": 5000.00
+  },
+  {
+    "id": "16243bdf-d5ba-4f0b-b7a5-79005006b59b",
+    "payment_info_id": "0f6a5e77-99f9-4a37-afe1-782f37c8a1bd",
+    "bank_unique_data": "J6K5L4M3N2O1P0Q9R",
+    "variable_symbol": "564738291",
+    "amount": 300.00
+  }
+],
   "admissions": [
     {
       "id": "123e4567-e89b-12d3-a456-426614174000",
