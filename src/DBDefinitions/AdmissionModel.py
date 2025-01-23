@@ -1,6 +1,6 @@
 from datetime import datetime
-from sqlalchemy.orm import mapped_column, Mapped
-from uuid import UUID
+from sqlalchemy.orm import mapped_column, Mapped, relationship
+import uuid
 from sqlalchemy import ForeignKey
 from .UUIDColumn import UUIDFKey
 
@@ -15,7 +15,7 @@ class AdmissionModel(BaseModel):
     name: Mapped[str] = mapped_column(nullable= True, default=None, comment="Name of the admission entry")
     name_en: Mapped[str] = mapped_column(nullable= True, default=None, comment="English name of the admission entry")
 
-    program_id: Mapped[UUID] = UUIDFKey("acprograms.id", comment="Foreign key referencing to program associated with this admission")
+    program_id: Mapped[uuid.UUID] = UUIDFKey("acprograms.id", comment="Foreign key referencing to program associated with this admission")
 
     application_start_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="From when its possible to apply")
     application_last_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="To when its possible to apply")
@@ -30,7 +30,9 @@ class AdmissionModel(BaseModel):
     request_exam_last_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="To when its possible to ask for different date of exam")
 
     payment_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="")
-    payment_info_id: Mapped[UUID] = mapped_column(ForeignKey("payment_infos.id"), index=True, nullable=True, default=None, comment="Payment related to this admission")
+    payment_info_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("payment_infos.id"), index=True, nullable=True, default=None, comment="Payment related to this admission")
 
     request_enrollment_start_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="From when its possible to ask for different date of enrollment")
     request_enrollment_end_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="To when its possible to ask for different date of enrollment")
+
+    payment_info = relationship("PaymentInfoModel", viewonly=True, lazy="joined")

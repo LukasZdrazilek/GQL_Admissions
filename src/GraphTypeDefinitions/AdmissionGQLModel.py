@@ -317,7 +317,7 @@ class AdmissionDeleteGQLModel:
 )
 async def admission_insert(self, info: strawberry.types.Info, admission: AdmissionInsertGQLModel) -> typing.Union[AdmissionGQLModel, InsertError[AdmissionGQLModel]]:
     admission.rbacobject_id = admission.rbacobject_id # if admission.rbacobject_id else admission.group_id
-    return await Insert[AdmissionInsertGQLModel].DoItSafeWay(info=info, entity=admission)
+    return await Insert[AdmissionGQLModel].DoItSafeWay(info=info, entity=admission)
 
 
 

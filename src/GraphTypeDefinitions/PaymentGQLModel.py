@@ -41,7 +41,7 @@ class PaymentGQLModel(BaseGQLModel):
 
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
-        return getLoadersFromInfo(info).ExamModel
+        return getLoadersFromInfo(info).PaymentModel
 
     payment_info_id: uuid.UUID = strawberry.field(
         description="The payment info id",
@@ -72,6 +72,14 @@ class PaymentGQLModel(BaseGQLModel):
         permission_classes=[
             OnlyForAuthentized,
         ]
+    )
+
+    payment_info: typing.Optional["PaymentInfoGQLModel"] = strawberry.field(
+        description="""PaymentInfo associated with payment""",
+        resolver=ScalarResolver['PaymentInfoGQLModel'](fkey_field_name="payment_info_id"),
+        permission_classes=[
+            OnlyForAuthentized,
+        ],
     )
 
     student_admissions: typing.List["StudentAdmissionGQLModel"] = strawberry.field(

@@ -1,0 +1,19 @@
+query{
+  result: paymentInfoPage{
+    __typename
+    ...PaymentInfo
+  }
+}
+
+fragment PaymentInfo on PaymentInfoGQLModel{
+    lastchange
+    id
+    name
+    nameEn
+    accountNumber
+    specificSymbol
+    constantSymbol
+    IBAN
+    SWIFT
+    amount
+}

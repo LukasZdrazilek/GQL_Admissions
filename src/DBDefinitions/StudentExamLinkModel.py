@@ -1,6 +1,7 @@
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import mapped_column, Mapped
 from .BaseModel import BaseModel
+import uuid
 
 
 class StudentExamLinkModel(BaseModel):
@@ -9,6 +10,6 @@ class StudentExamLinkModel(BaseModel):
     """
     __tablename__ = "student_exam_links"
 
-    exam_id: Mapped[int] = mapped_column(ForeignKey("exams.id"), index=True, default=None, nullable=True, comment="Foreign key referencing the exam")
+    exam_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("exams.id"), index=True, default=None, nullable=True, comment="Foreign key referencing the exam")
 
-    student_admission_id: Mapped[int] = mapped_column(ForeignKey("student_admissions.id"), index=True, default=None, nullable=True, comment="Foreign key referencing the student")
+    student_admission_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("student_admissions.id"), index=True, default=None, nullable=True, comment="Foreign key referencing the student")

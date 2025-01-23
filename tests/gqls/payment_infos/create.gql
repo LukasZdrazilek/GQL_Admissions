@@ -1,0 +1,48 @@
+mutation AddPaymentInfo(
+    $id: UUID,
+    $name: String!,
+    $name_en: String,
+    $account_number: String,
+    $specific_symbol: String,
+    $constant_symbol: String,
+    $IBAN: String,
+    $SWIFT: String,
+    $amount: Float
+) {
+  paymentInfoInsert(
+    paymentInfo: {
+        id: $id
+        name: $name
+        nameEn: $name_en
+        accountNumber: $account_number
+        specificSymbol: $specific_symbol
+        constantSymbol: $constant_symbol
+        IBAN: $IBAN
+        SWIFT: $SWIFT
+        amount: $amount
+    }
+  ) {
+    __typename
+    ...Error
+    ...FE
+  }
+}
+
+fragment Error on InsertError{
+  msg
+  input
+  failed
+}
+
+fragment FE on PaymentInfoGQLModel{
+    lastchange
+    id
+    name
+    nameEn
+    accountNumber
+    specificSymbol
+    constantSymbol
+    IBAN
+    SWIFT
+    amount
+}

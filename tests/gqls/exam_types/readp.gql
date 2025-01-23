@@ -8,7 +8,6 @@ query{
 fragment ExamType on ExamTypeGQLModel{
   lastchange
   id
-  examTypeId
   masterExamTypeId
   name
   nameEn
