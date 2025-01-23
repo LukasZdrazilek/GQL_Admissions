@@ -23,7 +23,7 @@ async def prepare_in_memory_sqllite():
 
 async def prepare_demodata(async_session_maker):
     from src.utils.DBFeeder import get_demodata
-    from src.DBDefinitions import AdmissionModel, ExamModel, ExamResultModel, ExamTypeModel, StudentAdmissionModel
+    from src.DBDefinitions import AdmissionModel, ExamModel, ExamResultModel, ExamTypeModel, StudentAdmissionModel, PaymentModel, PaymentInfoModel
 
     data = get_demodata()
 
@@ -36,7 +36,9 @@ async def prepare_demodata(async_session_maker):
             ExamModel,
             ExamResultModel, 
             ExamTypeModel,
-            StudentAdmissionModel            
+            StudentAdmissionModel,
+            PaymentModel,
+            PaymentInfoModel  
         ],
         data,
     )

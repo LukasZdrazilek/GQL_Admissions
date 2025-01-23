@@ -1,0 +1,30 @@
+mutation AddPayment($payment_info_id: UUID!, $id: UUID, $bank_unique_data: String, $variable_symbol: String, $amount: Float) {
+  paymentInsert(
+    payment: {
+      paymentInfoId: $payment_info_id
+      id: $id
+      bankUniqueData: $bank_unique_data
+      variableSymbol: $variable_symbol
+      amount: $amount
+    }
+  ) {
+    __typename
+    ...Error
+    ...FE
+  }
+}
+
+fragment Error on InsertError{
+  msg
+  input
+  failed
+}
+
+fragment FE on PaymentGQLModel{
+  lastchange
+  paymentInfoId
+  id
+  bankUniqueData
+  variableSymbol
+  amount
+}

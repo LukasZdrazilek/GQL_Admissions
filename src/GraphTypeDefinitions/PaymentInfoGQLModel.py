@@ -40,7 +40,7 @@ class PaymentInfoGQLModel(BaseGQLModel):
 
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
-        return getLoadersFromInfo(info).ExamModel
+        return getLoadersFromInfo(info).PaymentInfoModel
 
     name: typing.Optional[str] = strawberry.field(
         default=None,

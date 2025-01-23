@@ -30,6 +30,57 @@ async def test_result_test(NoRole_UG_Server):
     assert response["data"]["me"] is not None, "Expected 'me' field in response data"
     logging.info(f"User data: {response}")
 
+######################################################################### PaymentInfo CRUD Tests
+
+# Create PaymentInfo
+test_payment_info_create = createTest2(    # v query pak nastavit povinne program ID !
+    tableName="payment_infos",
+    queryName="create",
+    variables={
+        "name": "Testova Payment Information",
+        "nameEn": "Test Payment Infomation",
+        "accountNumber": "1234567890",
+        "specificSymbol": "123456",
+        "constantSymbol": "0308",
+        "IBAN": "CZ6508000000192000145399",
+        "SWIFT": "GIBACZPX",
+        "amount": 1500.75
+    }
+)
+
+# Read PaymentInfo by ID
+test_payment_info_by_id = createByIdTest2(tableName="payment_infos")
+
+# Update PaymentInfo
+test_payment_info_update = createUpdateTest2(      # povinne parametry update
+    tableName="payment_infos",
+    variables={
+        "name": "Testova Payment Information Updated",
+        "nameEn": "Test Payment Infomation Updated",
+        "accountNumber": "9876543210",
+        "specificSymbol": "654321",
+        "constantSymbol": "0008",
+        "IBAN": "CZ1208000000192800165234",
+        "SWIFT": "KOMBCZPP",
+        "amount": 300.00
+    }
+)
+
+# Delete PaymentInfo
+test_payment_info_delete = createDeleteTest2(
+    tableName="payment_infos",
+    variables={
+        "name": "Testova Payment Information",
+        "nameEn": "Test Payment Infomation",
+        "accountNumber": "1234567890",
+        "specificSymbol": "123456",
+        "constantSymbol": "0308",
+        "IBAN": "CZ6508000000192000145399",
+        "SWIFT": "GIBACZPX",
+        "amount": 1500.75
+    }
+)
+
 ######################################################################### Admission CRUD Tests
 
 # Create Admission
@@ -372,6 +423,48 @@ test_student_admission_delete = createDeleteTest2(
         "extended_condition_date": "2024-03-20T10:00:00",
         "admissioned": True,
         "enrollment_date": "2024-03-25T10:00:00"
+    }
+)
+
+    ############################################################################ Payments CRUD Tests
+
+# Payment Tests
+test_payment_create = createTest2(
+    tableName="payments",
+    queryName="create",
+    variables={
+        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
+        "bank_unique_data": "KB",
+        "variable_symbol": "12345678",
+        "amount": 1000.00,
+    }
+)
+
+test_payment_by_id = createByIdTest2(
+    tableName="payments"
+)
+
+test_payment_update = createUpdateTest2(
+    tableName="payments",
+    variables={
+        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        #"lastchange": "2024-01-01T00:00:00",
+        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
+        "bank_unique_data": "KB updated",
+        "variable_symbol": "12345678 updated",
+        "amount": 1000.00,
+    }
+)
+
+test_payment_delete = createDeleteTest2(
+    tableName="payments",
+    variables={
+        #"id": "d2815b9c-75ee-4d2e-9c8a-ffc8df088136",
+        "payment_info_id": "7b0d8b9f-2f4f-45fd-b7d5-ec3e2d4b5b22",
+        "bank_unique_data": "KB",
+        "variable_symbol": "12345679",
+        "amount": 1001,
     }
 )
 

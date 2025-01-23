@@ -1,0 +1,54 @@
+mutation UpdatePaymentInfo(
+  $lastchange: DateTime!,
+  $id: UUID!,
+  $name: String,
+  $name_en: String,
+  $account_number: String,
+  $specific_symbol: String,
+  $constant_symbol: String,
+  $IBAN: String,
+  $SWIFT: String,
+  $amount: Float
+){
+  paymentInfoUpdate(
+    paymentInfo: {
+      lastchange: $lastchange
+      id: $id
+      name: $name
+      nameEn: $name_en
+      accountNumber: $account_number
+      specificSymbol: $specific_symbol
+      constantSymbol: $constant_symbol
+      IBAN: $IBAN
+      SWIFT: $SWIFT
+      amount: $amount
+    }
+  ) {
+    __typename
+    ...Error
+    ...PaymentInfo
+  }
+}
+
+fragment Error on PaymentInfoGQLModelUpdateError{
+  msg
+  input
+  failed
+  Entity
+  {
+    lastchange
+  }
+}
+
+fragment PaymentInfo on PaymentInfoGQLModel{
+  lastchange
+  id
+  name
+  nameEn
+  accountNumber
+  specificSymbol
+  constantSymbol
+  IBAN
+  SWIFT
+  amount
+}

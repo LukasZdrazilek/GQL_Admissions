@@ -1,0 +1,20 @@
+mutation DeletePayment($id: UUID!,$lastchange: DateTime!) {
+  paymentDelete(payment:
+  {
+ 		id: $id,
+    lastchange: $lastchange
+  }){
+    __typename
+    ...Error
+  }
+}
+
+fragment Error on PaymentGQLModelDeleteError {
+  msg
+  input
+  failed
+  Entity {
+    id
+    lastchange
+  }
+}

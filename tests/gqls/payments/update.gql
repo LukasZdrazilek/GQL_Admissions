@@ -1,0 +1,24 @@
+mutation UpdatePayment($id: UUID!, $lastchange: DateTime!, $bank_unique_data: String, $variable_symbol: String, $amount: Float, $payment_info_id: UUID) {
+  paymentUpdate(
+    payment: {
+      id: $id
+      lastchange: $lastchange
+      bankUniqueData: $bank_unique_data
+      variableSymbol: $variable_symbol
+      amount: $amount
+      paymentInfoId: $payment_info_id
+    }
+  ) {
+    __typename
+    ...Error
+  }
+}
+
+fragment Error on PaymentGQLModelUpdateError{
+  msg
+  input
+  Entity{
+    id
+    lastchange
+  }
+}

@@ -41,7 +41,7 @@ class PaymentGQLModel(BaseGQLModel):
 
     @classmethod
     def getLoader(cls, info: strawberry.types.Info):
-        return getLoadersFromInfo(info).ExamModel
+        return getLoadersFromInfo(info).PaymentModel
 
     payment_info_id: uuid.UUID = strawberry.field(
         description="The payment info id",
@@ -118,7 +118,7 @@ payment_page = strawberry.field(
 
 @strawberry.input(description="Definition of a Payment used for creation")
 class PaymentInsertGQLModel:
-    payment_info_id: uuid.UUID = strawberry.field(description="Payment id")
+    payment_info_id: uuid.UUID = strawberry.field(description="Payment id", default=None)
 
     id: typing.Optional[uuid.UUID] = strawberry.field(description="Primary key", default=None)
     bank_unique_data: typing.Optional[str] = strawberry.field(description="Unique bank identifier or something", default=None)
@@ -143,7 +143,7 @@ class PaymentUpdateGQLModel:
 @strawberry.input(description="Definition of a Payment used for delete")
 class PaymentDeleteGQLModel:
     id: uuid.UUID = strawberry.field(description="Primary key")
-    lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
+    lastchange: datetime.datetime = strawberry.field(description="Last change of the record", default=None)
 
 ########################################################################################################################
 

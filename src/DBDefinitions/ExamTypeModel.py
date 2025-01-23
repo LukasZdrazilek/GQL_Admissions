@@ -5,7 +5,7 @@ import uuid
 import json
 
 class ExamTypeModel(BaseModel):
-    """
+    r"""
     Represents a type of exam associated with an admission, including metadata.
 
     Master examType is a way to add a discipline, disciplineType respectively, without the need of adding additional database table.

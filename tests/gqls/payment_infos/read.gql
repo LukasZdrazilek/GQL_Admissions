@@ -1,0 +1,19 @@
+query ($id: UUID!) {
+  result: paymentInfoById(id: $id) {
+    __typename
+    ...PaymentInfo
+  }
+}
+
+fragment PaymentInfo on PaymentInfoGQLModel{
+    lastchange
+    id
+    name
+    nameEn
+	accountNumber
+    specificSymbol
+    constantSymbol
+    IBAN
+    SWIFT
+    amount
+}
