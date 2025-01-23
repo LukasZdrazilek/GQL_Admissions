@@ -1,4 +1,28 @@
 {
+  "payment_infos": [
+    {
+      "id": "d57dc3e0-1b10-4531-9e6d-fdc2309903fc",
+      "name": "Platební informace na Fakultu vojenských technologíí",
+      "name_en": "Payment Information for Faculty of Military Technology",
+      "account_number": "5678901234",
+      "specific_symbol": "789456",
+      "constant_symbol": "1234",
+      "IBAN": "CZ7508000000193200148256",
+      "SWIFT": "CEKOCZPP",
+      "amount": 5000.00
+    },
+    {
+      "id": "0f6a5e77-99f9-4a37-afe1-782f37c8a1bd",
+      "name": "Platební informace pro Fakultu Vojesnkého Leadershipu",
+      "name_en": "Payment Information for Faculty of Military Leadership",
+      "account_number": "9876543210",
+      "specific_symbol": "654321",
+      "constant_symbol": "0008",
+      "IBAN": "CZ1208000000192800165234",
+      "SWIFT": "KOMBCZPP",
+      "amount": 300.00
+    }
+  ],
   "admissions": [
     {
       "id": "123e4567-e89b-12d3-a456-426614174000",
@@ -16,7 +40,8 @@
       "request_exam_last_date": "2024-04-30T23:59:59Z",
       "payment_date": "2024-03-20T00:00:00Z",
       "request_enrollment_start_date": "2024-07-01T09:00:00Z",
-      "request_enrollment_end_date": "2024-08-15T23:59:59Z"
+      "request_enrollment_end_date": "2024-08-15T23:59:59Z",
+      "payment_info_id": "d57dc3e0-1b10-4531-9e6d-fdc2309903fc"
     }
   ],
   "student_admissions": [

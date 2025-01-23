@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy.orm import mapped_column, Mapped
+from sqlalchemy.orm import mapped_column, Mapped, relationship
 import uuid
 from sqlalchemy import ForeignKey
 from .UUIDColumn import UUIDFKey
@@ -34,3 +34,5 @@ class AdmissionModel(BaseModel):
 
     request_enrollment_start_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="From when its possible to ask for different date of enrollment")
     request_enrollment_end_date: Mapped[datetime] = mapped_column(nullable= True, default=None, comment="To when its possible to ask for different date of enrollment")
+
+    payment_info = relationship("PaymentInfoModel", viewonly=True, lazy="joined")

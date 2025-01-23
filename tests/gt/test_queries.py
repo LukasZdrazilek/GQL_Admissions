@@ -30,6 +30,58 @@ async def test_result_test(NoRole_UG_Server):
     assert response["data"]["me"] is not None, "Expected 'me' field in response data"
     logging.info(f"User data: {response}")
 
+######################################################################### PaymentInfo CRUD Tests
+
+# Create PaymentInfo
+test_payment_info_create = createTest2(    # v query pak nastavit povinne program ID !
+    tableName="payment_infos",
+    queryName="create",
+    variables={
+        "name": "Testova Payment Information",
+        "nameEn": "Test Payment Infomation",
+        "accountNumber": "1234567890",
+        "specificSymbol": "123456",
+        "constantSymbol": "0308",
+        "IBAN": "CZ6508000000192000145399",
+        "SWIFT": "GIBACZPX",
+        "amount": 1500.75
+    }
+)
+
+# Read PaymentInfo by ID
+test_payment_info_by_id = createByIdTest2(tableName="payment_infos")
+
+# Update PaymentInfo
+test_payment_info_update = createUpdateTest2(      # povinne parametry update
+    tableName="payment_infos",
+    variables={
+        "name": "Testova Payment Information Updated",
+        "nameEn": "Test Payment Infomation Updated",
+        "accountNumber": "9876543210",
+        "specificSymbol": "654321",
+        "constantSymbol": "0008",
+        "IBAN": "CZ1208000000192800165234",
+        "SWIFT": "KOMBCZPP",
+        "amount": 300.00
+    }
+)
+
+# Delete PaymentInfo
+test_payment_info_delete = createDeleteTest2(
+    tableName="payment_infos",
+    variables={
+        "name": "Testova Payment Information",
+        "nameEn": "Test Payment Infomation",
+        "accountNumber": "1234567890",
+        "specificSymbol": "123456",
+        "constantSymbol": "0308",
+        "IBAN": "CZ6508000000192000145399",
+        "SWIFT": "GIBACZPX",
+        "amount": 1500.75
+    }
+)
+
+
 ######################################################################### Admission CRUD Tests
 
 # Create Admission
@@ -132,7 +184,7 @@ test_exam_create = createTest2(
 )
 
 # Read Exam by ID
-test_admission_by_id = createByIdTest2(tableName="admissions")
+test_exam_by_id = createByIdTest2(tableName="admissions")
 
 # Update Exam
 test_exam_update = createUpdateTest2(
