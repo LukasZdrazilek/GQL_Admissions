@@ -31,6 +31,7 @@ from uoishelpers.resolvers import (
 from .BaseGQLModel import BaseGQLModel
 
 AdmissionGQLModel = typing.Annotated["AdmissionGQLModel", strawberry.lazy(".AdmissionGQLModel")]
+PaymentGQLModel = typing.Annotated["PaymentGQLModel", strawberry.lazy(".PaymentGQLModel")]
 
 
 @strawberry.federation.type(
@@ -109,6 +110,14 @@ class PaymentInfoGQLModel(BaseGQLModel):
     admissions: typing.List["AdmissionGQLModel"] = strawberry.field(
         description="""Admissions related to this payment info""",
         resolver=VectorResolver["AdmissionGQLModel"](fkey_field_name="payment_info_id", whereType=None),
+        permission_classes=[
+            OnlyForAuthentized,
+        ]
+    )
+
+    payments: typing.List["PaymentGQLModel"] = strawberry.field(
+        description="""Payments related to this payment info""",
+        resolver=VectorResolver["PaymentGQLModel"](fkey_field_name="payment_info_id", whereType=None),
         permission_classes = [
             OnlyForAuthentized,
         ]

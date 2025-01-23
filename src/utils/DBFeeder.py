@@ -55,13 +55,13 @@ async def initDB(asyncSessionMaker, filename="./systemdata.json"):
     if DEMODATA:
         dbModels = [
             PaymentInfoModel,
+            PaymentModel,
             AdmissionModel,
             StudentAdmissionModel,
             ExamTypeModel,
             ExamModel,
             ExamResultModel,
             StudentExamLinkModel,
-            PaymentModel
         ]
     else:
         dbModels = []
