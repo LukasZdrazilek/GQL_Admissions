@@ -74,6 +74,14 @@ class PaymentGQLModel(BaseGQLModel):
         ]
     )
 
+    payment_info: typing.Optional["PaymentInfoGQLModel"] = strawberry.field(
+        description="""PaymentInfo associated with payment""",
+        resolver=ScalarResolver['PaymentInfoGQLModel'](fkey_field_name="payment_info_id"),
+        permission_classes=[
+            OnlyForAuthentized,
+        ],
+    )
+
     student_admissions: typing.List["StudentAdmissionGQLModel"] = strawberry.field(
         description="""Student Admissions related to this payment""",
         resolver=VectorResolver["StudentAdmissionGQLModel"](fkey_field_name="payment_id", whereType=None),

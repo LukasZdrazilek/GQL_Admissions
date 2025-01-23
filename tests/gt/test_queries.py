@@ -183,7 +183,7 @@ test_exam_create = createTest2(
 )
 
 # Read Exam by ID
-test_admission_by_id = createByIdTest2(tableName="admissions")
+test_exam_by_id = createByIdTest2(tableName="admissions")
 
 # Update Exam
 test_exam_update = createUpdateTest2(

@@ -5,7 +5,8 @@ import uuid
 from uoishelpers.feeders import ImportModels
 
 from src.DBDefinitions import (
-    AdmissionModel, StudentAdmissionModel, ExamTypeModel, ExamModel, ExamResultModel, StudentExamLinkModel
+    AdmissionModel, StudentAdmissionModel, ExamTypeModel, ExamModel, ExamResultModel, StudentExamLinkModel,
+    PaymentModel, PaymentInfoModel
 )
 
 
@@ -53,12 +54,14 @@ async def initDB(asyncSessionMaker, filename="./systemdata.json"):
     DEMODATA = True
     if DEMODATA:
         dbModels = [
+            PaymentInfoModel,
             AdmissionModel,
             StudentAdmissionModel,
             ExamTypeModel,
             ExamModel,
             ExamResultModel,
-            StudentExamLinkModel
+            StudentExamLinkModel,
+            PaymentModel
         ]
     else:
         dbModels = []

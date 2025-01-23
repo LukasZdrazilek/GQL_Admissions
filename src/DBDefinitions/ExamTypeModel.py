@@ -2,7 +2,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, mapped_column, Mapped
 from .BaseModel import BaseModel
 import uuid
-import json
 
 class ExamTypeModel(BaseModel):
     r"""
