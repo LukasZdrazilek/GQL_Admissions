@@ -111,7 +111,7 @@ __20.1.2025__ Fix query test HEX erroru
 
 __21.1.2025__ Rebase (nový main)
 
-__22.1.2025__ Fix všech errorů
+__22.1.2025__ Fix všech errorů testů - 93 %
 
 __23.1.2025__ Práce na Payments a PaymentsInfo testech
 
