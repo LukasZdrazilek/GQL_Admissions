@@ -34,11 +34,13 @@ ________________________________________________________________________
 
 - [x] Dokončit UPDATE operace na GQL modelech
 
-- [ ] Dokončit DELETE operace na GQL modelech
+- [x] Dokončit DELETE operace na GQL modelech
 
-- [ ] Dokončit Disciplíny
+- [x] Dokončit Disciplíny
 
-- [ ] Dokončit Payments
+- [x] Dokončit Payments
+
+- [x] Dokončit Testy
 
 
 ________________________________________________________________________
@@ -85,7 +87,34 @@ __26.11.2024__ práce na Disciplínách a linku
 
 __27.11.2024__ práce na SECRET datatypu, UUUID, implementace nových UPDATE a DELETE funkcí
 
+__2.12.2024__ implementace a testy nových DELETE funkcí
 
 __9.12.2024__ 2. projektový den, doložení funkcionality (crud)
+
+__14.12.2024__ Prvotní úplné testy - 75 %
+
+__18.12.2024__ Konzultace ohledně errorů v testech
+
+__6.1.2025__ Testy po konzultaci a fixu některých errorů - 85 %
+
+__10.1.2025__ Předělání Base a ostatních GQL modelů dle nových požadavků
+
+__11.1.2025__ Testy po předělání GQL - 92 %
+
+__14.1.2025__ Práce na Payments CRUD
+
+__15.1.2025__ Fix UUID test erroru
+
+__16.1.2025__ Práce na PaymentInfo CRUD
+
+__20.1.2025__ Fix query test HEX erroru  
+
+__21.1.2025__ Rebase (nový main)
+
+__22.1.2025__ Fix všech errorů
+
+__23.1.2025__ Práce na Payments a PaymentsInfo testech
+
+__24.1.2025__ Práce na many to many
 
 __29.1.2025__ 3. projektový den, doložení testů
