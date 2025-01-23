@@ -1,0 +1,15 @@
+query ReadPayment($id: UUID!) {
+  result: paymentById(id: $id) {
+    __typename
+    ...Payment
+  }
+}
+
+fragment Payment on PaymentGQLModel{
+  lastchange
+  paymentInfoId
+  id
+  bankUniqueData
+  variableSymbol
+  amount
+}
