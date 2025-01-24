@@ -70,11 +70,10 @@ class Mutation:
     exam_result_update = exam_result_update
     exam_result_delete = exam_result_delete
     
-    from .ExamGQLModel import exam_insert, link_student_to_exam, exam_update, exam_delete
+    from .ExamGQLModel import exam_insert, exam_update, exam_delete
     exam_insert = exam_insert
     exam_update = exam_update
     exam_delete = exam_delete
-    link_student_to_exam = link_student_to_exam
 
     from .StudentAdmissionGQLModel import student_admission_insert, student_admission_update, student_admission_delete
     student_admission_insert = student_admission_insert

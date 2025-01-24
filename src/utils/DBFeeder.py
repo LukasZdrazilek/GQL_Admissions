@@ -5,7 +5,7 @@ import uuid
 from uoishelpers.feeders import ImportModels
 
 from src.DBDefinitions import (
-    AdmissionModel, StudentAdmissionModel, ExamTypeModel, ExamModel, ExamResultModel, StudentExamLinkModel,
+    AdmissionModel, StudentAdmissionModel, ExamTypeModel, ExamModel, ExamResultModel,
     PaymentModel, PaymentInfoModel
 )
 
@@ -61,7 +61,6 @@ async def initDB(asyncSessionMaker, filename="./systemdata.json"):
             ExamTypeModel,
             ExamModel,
             ExamResultModel,
-            StudentExamLinkModel,
         ]
     else:
         dbModels = []

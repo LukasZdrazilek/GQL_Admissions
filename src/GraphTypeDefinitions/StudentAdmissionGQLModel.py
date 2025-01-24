@@ -128,22 +128,6 @@ class StudentAdmissionGQLModel(BaseGQLModel):
         ]
     )
 
-    @strawberry.field(
-        description="Exams related to the student admission",
-        permission_classes=[
-            OnlyForAuthentized,
-        ],
-    )
-    async def exams(self, info: strawberry.types.Info) -> typing.List["ExamGQLModel"]:
-        from .ExamGQLModel import ExamGQLModel
-        loader = getLoadersFromInfo(info).student_exam_links
-        rows = await loader.filter_by(student_admission_id=self.id)
-        if rows is None:
-            return []
-        awaitable = (ExamGQLModel.resolve_reference(info, row.exam_id) for row in rows)
-        return await asyncio.gather(*awaitable)
-
-
     student: typing.Optional["UserGQLModel"] = strawberry.field(
         description="""Student related to the admission""",
         resolver=ScalarResolver['UserGQLModel'](fkey_field_name="student_id"),

@@ -7,8 +7,6 @@ from src.DBDefinitions import BaseModel, AdmissionModel
 from strawberry.dataloader import DataLoader
 
 DBModel = typing.TypeVar("DBModel", BaseModel)
-
-
 def createLoader(asyncSessionMaker, dbModel: DBModel) -> DataLoader[str, DBModel]:
     mainstmt = select(dbModel)
     filtermethod = dbModel.id.in_

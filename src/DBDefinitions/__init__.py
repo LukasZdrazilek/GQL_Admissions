@@ -19,7 +19,6 @@ from .ExamModel import ExamModel
 from .ExamResultModel import ExamResultModel
 from .ExamTypeModel import ExamTypeModel
 from .StudentAdmissionModel import StudentAdmissionModel
-from .StudentExamLinkModel import StudentExamLinkModel
 from .PaymentInfoModel import PaymentInfoModel
 from .PaymentModel import PaymentModel
 

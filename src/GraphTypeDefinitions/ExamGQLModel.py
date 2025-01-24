@@ -125,21 +125,6 @@ class ExamGQLModel(BaseGQLModel):
         ]
     )
 
-    @strawberry.field(
-        description="Student Admissions related to this exam",
-        permission_classes=[
-            OnlyForAuthentized,
-        ]
-    )
-    async def student_admissions(self, info: strawberry.types.Info) -> typing.Optional[typing.List["StudentAdmissionGQLModel"]]:
-        from .StudentAdmissionGQLModel import StudentAdmissionGQLModel
-        loader = getLoadersFromInfo(info).student_exam_links
-        rows = await loader.filter_by(exam_id=self.id)
-        if rows is None:
-            return []
-        awaitable = (StudentAdmissionGQLModel.resolve_reference_old(info, row.student_admission_id) for row in rows)
-        return await asyncio.gather(*awaitable)
-
 @createInputs
 @dataclasses.dataclass
 class ExamInputFilter:
@@ -208,30 +193,7 @@ class ExamDeleteGQLModel:
     id: uuid.UUID = strawberry.field(description="Primary key")
     lastchange: datetime.datetime = strawberry.field(description="Last change of the record")
 
-@strawberry.input(description="Definition of an StudentExam Link used for addition")
-class StudentExamLinkAddGQLModel:
-    exam_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the exam")
-    student_admission_id: typing.Optional[uuid.UUID] = strawberry.field(description="The ID of the student")
-
 ########################################################################################################################
-
-from uoishelpers.resolvers import InsertError
-@strawberry.mutation(description="""Links student to exam""")
-async def link_student_to_exam(self, info: strawberry.types.Info, link: StudentExamLinkAddGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:#ExamMutationResultGQLModel:
-    loader = getLoadersFromInfo(info).student_exam_links
-    rows = await loader.filter_by(exam_id=link.exam_id, student_admission_id=link.student_admission_id)
-    row = next(rows, None)
-    if row is None:
-        row = await loader.insert(link)
-        result = await ExamGQLModel.resolve_reference(info, link.exam_id)
-        return result
-
-    result = InsertError[ExamGQLModel]()
-    result.msg = "item exists"
-    result.input = link
-    return result
-
-
 
 @strawberry.mutation(
     description="Adds a new admission using stefek magic.",
@@ -243,7 +205,6 @@ async def link_student_to_exam(self, info: strawberry.types.Info, link: StudentE
 async def exam_insert(self, info: strawberry.types.Info, exam: ExamInsertGQLModel) -> typing.Union[ExamGQLModel, InsertError[ExamGQLModel]]:
     exam.rbacobject_id = exam.rbacobject_id # if admission.rbacobject_id else admission.group_id
     return await Insert[ExamGQLModel].DoItSafeWay(info=info, entity=exam)
-
 
 
 @strawberry.mutation(
