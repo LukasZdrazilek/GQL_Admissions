@@ -44,6 +44,8 @@ ________________________________________________________________________
 
 - [x] Odstraněno Many to many, testy 95%
 
+- [x] Publish docker image 
+
 
 ________________________________________________________________________
 
@@ -118,5 +120,9 @@ __22.1.2025__ Fix všech errorů testů - 93 %
 __23.1.2025__ Práce na Payments a PaymentsInfo testech
 
 __24.1.2025__ Práce na many to many - EDIT many to many odstraněno
+
+__27.1.2025__ Finální revize - vše v pořádku
+
+__28.1.2025__ Publish docker image
 
 __29.1.2025__ 3. projektový den, doložení testů
