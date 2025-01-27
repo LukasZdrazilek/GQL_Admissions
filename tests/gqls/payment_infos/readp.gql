@@ -16,4 +16,17 @@ fragment PaymentInfo on PaymentInfoGQLModel{
     IBAN
     SWIFT
     amount
+    created
+  createdbyId
+  createdby{
+    id
+  }
+  changedbyId
+  changedby{
+    id
+  }
+  rbacobjectId
+  rbacobject{
+    id
+  }
 }

@@ -11,4 +11,17 @@ fragment ExamResult on ExamResultGQLModel{
   score
   examId
   studentAdmissionId
+  created
+  createdbyId
+  createdby{
+    id
+  }
+  changedbyId
+  changedby{
+    id
+  }
+  rbacobjectId
+  rbacobject{
+    id
+  }
 }

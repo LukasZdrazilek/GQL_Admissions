@@ -12,4 +12,17 @@ fragment Payment on PaymentGQLModel{
   bankUniqueData
   variableSymbol
   amount
+  created
+  createdbyId
+  createdby{
+    id
+  }
+  changedbyId
+  changedby{
+    id
+  }
+  rbacobjectId
+  rbacobject{
+    id
+  }
 }

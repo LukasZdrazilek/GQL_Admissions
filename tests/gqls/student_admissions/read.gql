@@ -14,4 +14,17 @@ fragment StudentAdmission on StudentAdmissionGQLModel{
   extendedConditionDate
   admissioned
   enrollmentDate
+  created
+  createdbyId
+  createdby{
+    id
+  }
+  changedbyId
+  changedby{
+    id
+  }
+  rbacobjectId
+  rbacobject{
+    id
+  }
 }

@@ -12,4 +12,17 @@ fragment Exam on ExamGQLModel{
   nameEn
   examDate
   examTypeId
+  created
+  createdbyId
+  createdby{
+    id
+  }
+  changedbyId
+  changedby{
+    id
+  }
+  rbacobjectId
+  rbacobject{
+    id
+  }
 }
